@@ -1,0 +1,114 @@
+﻿<div class="modal fade  " id="restApiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="RestApiWidgetController as vm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Call a Rest Api</h4>
+            </div>
+            <div class="modal-body" style="padding-bottom: 5px">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#restbody">Body </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#restheader">Headers</a>
+                    </li>
+                </ul>
+                <div class="tab-content" style="margin-bottom:5px">
+                    <div id="restbody" class="tab-pane fade in active">
+                        <form class="form-horizontal ">
+                             
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-offset-1 col-sm-3">
+                                        <label>Method</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" data-ng-model="vm.model.method">
+                                            <option value="">..Method..</option>
+                                            <option value="GET">GET</option>
+                                            <option value="POST">POST</option>
+                                            <option value="PUT">PUT</option>
+                                            <option value="PATCH">PATCH</option>
+                                            <option value="DELETE">DELETE</option>
+                                            <option value="__specify__">__Other Method__</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3" data-ng-show="vm.model.method=='__specify__'">
+                                        <input type="text" class="form-control parsley-validated" placeholder="_Other Request Method_" data-ng-model="vm.model.otherMethod">
+                                    </div>
+                                </div>
+                                </div>
+
+                            <hr style="border-bottom: 1px solid #8b0000"/>
+
+                            <div class="form-group">
+                                <div class="row">
+
+                                    <div class="col-sm-offset-1 col-sm-3">
+                                        <label>Content Type</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" data-ng-model="vm.model.contentType">
+                                            <option value="">..Content Type..</option>
+                                            <option value="application/json">application/json</option>
+                                            <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+                                            <option value="application/xml">application/xml</option>
+                                            <option value="text/xml">text/xml</option>
+                                            <option value="text/html">text/html</option>
+                                            <option value="__specify__">__Other Content Type__</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3" data-ng-show="vm.model.contentType=='__specify__'">
+                                        <input type="text" class="form-control parsley-validated" placeholder="_Other Content Type_" data-ng-model="vm.model.otherContentType">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <h5>Request Body</h5>
+                        <textarea cols="10" rows="10" class="form-control" data-ng-model="vm.model.body"></textarea> 
+                    </div>
+                    <div id="restheader" class="tab-pane fade">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Basic Authentication</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control parsley-validated" placeholder="User Name" data-ng-model="vm.model.basicAuth.username">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control parsley-validated" placeholder="Password" data-ng-model="vm.model.basicAuth.password">
+                                </div>
+                            </div>
+                            <hr style="border-bottom: 1px solid #8b0000" />
+                            <div class="form-group">
+                                <label></label>
+                                <div class="col-sm-3">
+                                    <input type="button" class="btn btn-primary" data-ng-click="vm.addHeader()" value="Add Custom Header">
+                                </div>
+                            </div>
+                            <div class="form-group" data-ng-repeat="item in vm.model.headers">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control parsley-validated" placeholder="Header Key" data-ng-model="item.headerKey">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control parsley-validated" placeholder="Header Value" data-ng-model="item.headerValue">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="button" class="btn btn-danger btn-xs" value="Delete" data-ng-click="vm.removeHeader($index)">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

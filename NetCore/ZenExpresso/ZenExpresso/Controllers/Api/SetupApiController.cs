@@ -1,0 +1,153 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using ZenExpresso.Helpers;
+using ZenExpresso.Models;
+using ZenExpressoCore;
+using ZenExpressoCore.Models;
+
+namespace ZenExpresso.Controllers
+{
+    public class SetupApiController : ApiController
+    {
+        // GET: Settings
+        [HttpGet]
+        public ServiceResponse GetMenuList()
+        {
+
+            var response = new ServiceResponse();
+            var list = DbHandler.Instance.GetList<TopMenu>();
+            response.status = "00";
+            response.message = "Success";
+            response.data = list;
+            return response;
+        }
+
+        [HttpPost]
+        public ServiceResponse SaveMenu([FromBody]JObject data)
+        {
+            var Menu = new TopMenu();
+            Menu.menuName = data["menuName"].ToStringOrEmpty();
+            DbHandler.Instance.Save(Menu);
+            MemDb.Instance.ReloadMenus();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.message = "Success";
+            return response;
+        }
+
+
+        [HttpPost]
+        public ServiceResponse DeleteMenu([FromBody]JObject data)
+        {
+            
+            int id = data["id"].ToInteger();
+            DbHandler.Instance.DeleteTopMenuById(id);
+            MemDb.Instance.ReloadMenus();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.message = "Success";
+            return response;
+        }
+
+        /***************************************************DataSources***************************************/
+
+
+
+        public ServiceResponse GetDataSources()
+        {
+
+            var response = new ServiceResponse();
+            var list = DbHandler.Instance.GetList<DataSource>();
+            response.status = "00";
+            response.message = "Success";
+            response.data = list;
+            return response;
+        }
+
+        [HttpPost]
+        public ServiceResponse SaveDataSource([FromBody]JObject data)
+        {
+            var dataSource = JsonConvert.DeserializeObject<DataSource>(data.ToString());
+            if (dataSource.Id > 0)
+            {
+                DbHandler.Instance.Update(dataSource);
+            }
+            else
+            {
+                DbHandler.Instance.Save(dataSource);
+            }
+           
+            MemDb.Instance.ReloadDataSources();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.message = "Success";
+            return response;
+        }
+
+
+        [HttpPost]
+        public ServiceResponse DeleteDataSource([FromBody]JObject data)
+        {
+
+            int id = data["id"].ToInteger();
+            DbHandler.Instance.DeleteTopMenuById(id);
+            MemDb.Instance.ReloadMenus();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.message = "Success";
+            return response;
+        }
+
+        /******************************************************Admin****************************/
+        [HttpGet]
+        public ServiceResponse GetAdminList()
+        {
+
+            var response = new ServiceResponse();
+            var list = DbHandler.Instance.GetList<DedicatedAdmin>();
+            response.status = "00";
+            response.message = "Success";
+            response.data = list;
+            return response;
+        }
+
+        [HttpPost]
+        public ServiceResponse SaveDedicatedAdmin([FromBody]JObject data)
+        {
+            var admin = new DedicatedAdmin();
+            admin.userName = data["userName"].ToStringOrEmpty();
+            admin.fullName = data["fullName"].ToStringOrEmpty();
+            DbHandler.Instance.Save(admin);
+            MemDb.Instance.ReloadAdmins();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.message = "Success";
+            return response;
+        }
+
+
+        [HttpPost]
+        public ServiceResponse DeleteAdmin([FromBody]JObject data)
+        {
+
+            int id = data["id"].ToInteger();
+            DbHandler.Instance.DeleteAdminById(id);
+            MemDb.Instance.ReloadAdmins();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.message = "Success";
+            return response;
+        }
+         
+
+
+
+
+    }
+}

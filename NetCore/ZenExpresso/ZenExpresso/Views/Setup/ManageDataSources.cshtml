@@ -1,0 +1,160 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Manage DataSource";
+}
+ 
+
+<div class="row" ng-app="app">
+    <div class="col-md-12" data-ng-Controller="DataSourceSetupController as vm" data-ng-init="vm.init()">
+        <div class="block-web">
+            <div class="header">
+                <div class="actions">
+
+                </div>
+                <h3 class="content-header">@ViewBag.Title <span data-ng-show="vm.editMode">Editting : <span data-ng-bind="vm.model.dataSourceLabel"></span></span>  </h3>
+            </div>
+            <div class="porlets-content ">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form name="addDataSourceForm" method="POST" class="form-horizontal group-border-dashed" parsley-validate="" novalidate="" data-ng-submit="vm.saveDataSource(addDataSourceForm.$valid)">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Data Source Label</label>
+                                        <div class="col-sm-8" data-ng-class="{'has-error': addDataSourceForm.dataSourceLabel.$invalid }">
+                                            <input type="text" data-ng-model="vm.model.dataSourceLabel" name="dataSourceLabel" class="form-control parsley-validated" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Data Source Name</label>
+                                        <div class="col-sm-8" data-ng-class="{'has-error': addDataSourceForm.dataSourceName.$invalid }">
+                                            <input data-ng-disabled="vm.editMode" type="text" data-ng-model="vm.model.dataSourceName" name="dataSourceName" class="form-control parsley-validated" required="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Server Ip </label>
+                                        <div class="col-sm-8" data-ng-class="{'has-error': addDataSourceForm.serverIp.$invalid }">
+                                            <input type="text" data-ng-model="vm.model.serverIp" name="serverIp" class="form-control parsley-validated" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Server Port</label>
+                                        <div class="col-sm-8" data-ng-class="{'has-error': addDataSourceForm.serverPort.$invalid }">
+                                            <input type="text" data-ng-model="vm.model.serverPort" name="serverPort" class="form-control parsley-validated" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Data Provider </label>
+                                        <div class="col-sm-8" data-ng-class="{'has-error': addDataSourceForm.serverPort.$invalid }">
+                                            <select class="form-control" data-ng-model="vm.model.dataProvider" required="" name="dataProvider">
+                                                <option value="">..Select One..</option>
+                                                <option value="sqlServer">SQL Server</option>
+                                                <option value="sybase">Sybase Server</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">Default Database </label>
+                                        <div class="col-sm-8" data-ng-class="{'has-error': addDataSourceForm.defaultDatabase.$invalid }">
+                                            <input type="text" data-ng-model="vm.model.defaultDatabase" name="defaultDatabase" class="form-control parsley-validated" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">
+                                            <input type="checkbox" data-ng-model="vm.model.useRawConnectingString" />
+                                            Connection String
+                                        </label>
+                                        <div class="col-sm-9" >
+                                            <input type="text" data-ng-disabled="!vm.model.useRawConnectingString" data-ng-model="vm.model.connectionString" name="connectionString" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-offset-4 col-sm-8">
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-success btn-block">Save</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" data-ng-click="vm.cancelEdit()" class="btn btn btn-danger btn-block">Cancel</button>
+                                    </div>  
+                                </div> 
+                            </div>
+                            <!--/form-group-->
+                        </form>
+                    </div>  
+                </div>
+              
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-offset-1  control-label"></label>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-6 h4 ">List of DataSources </label>
+                                <table id="example" class="display table table-condensed" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-sm-2">Label</th>
+                                        <th class="col-sm-2"> Name</th>
+                                        <th class="col-sm-1"> Server IP</th>
+                                        <th class="col-sm-1"> Data Provider</th>
+                                        <th class="col-sm-1"> DefaultDb</th>
+                                        <th class="col-sm-2"> Is ConnString</th>
+                                        <th class="col-sm-1"> ConnString</th>
+                                        <th class="col-sm-2"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr data-ng-repeat="item in vm.list">
+                                        <td data-ng-bind="item.dataSourceLabel"></td>
+                                        <td data-ng-bind="item.dataSourceName"></td>
+                                        <td data-ng-bind="item.serverIp +':' + item.serverPort"></td>
+                                        <td data-ng-bind="item.dataProvider"></td>
+                                        <td data-ng-bind="item.defaultDatabase"></td>
+                                        <td data-ng-bind="item.useRawConnectingString"></td>
+                                        <td data-ng-bind="item.connectionString"></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-xs btn-danger action-view" data-ng-click="vm.deleteDataSource(item)"><i class="fa fa-eye"></i>Delete</button>
+                                                <button type="button" class="btn btn-xs btn-info action-view" data-ng-click="vm.editDataSource(item)"><i class="fa fa-eye"></i>Edit</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!--/porlets-content-->
+        </div>
+        <!--/block-web-->
+
+
+    </div><!--/col-md-12-->
+</div>

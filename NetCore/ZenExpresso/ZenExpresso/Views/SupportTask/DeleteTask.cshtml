@@ -1,0 +1,53 @@
+﻿@model ZenExpressoCore.Models.SupportTask
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "title";
+
+}
+
+@if (ViewBag.Deleted == null)
+{
+    <section class="panel default blue_title h2">
+        <div class="panel-heading">Delete <span class="semi-bold">@Model.taskName</span> </div>
+        <div class="panel-body">
+
+            <div class="bs-example">
+
+                @using (Html.BeginForm("DeleteTask", "SupportTask", method: FormMethod.Post))
+                {
+                    @Html.HiddenFor(f => f.id)
+                    <div class="alert alert-warning fade in">
+                        Are you sure you want to Support Task  <strong> @Model.taskName!</strong>
+                        <p>
+                            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                        </p>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </section>
+}
+else if ((bool)ViewBag.Deleted)
+{
+    <section class="panel default blue_title h2">
+        <div class="panel-heading">Delete <span class="semi-bold"> Successful</span> </div>
+        <div class="panel-body">
+
+            <div class="alert alert-success">
+                Data successfully Deleted
+            </div>
+            <a href="@Url.Action("ListTasks", "SupportTask")" class="btn btn-primary btn-lg">  Back to list</a>
+        </div>
+    </section>
+}
+else
+{
+    <div class="alert alert-danger"> <strong>Oh snap!</strong> <a class="alert-link" href="#">An error occured</a> and try submitting again. </div>
+}
