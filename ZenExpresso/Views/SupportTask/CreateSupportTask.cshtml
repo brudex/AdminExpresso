@@ -1,0 +1,17 @@
+﻿@model ZenExpressoCore.Models.SupportTask
+@{
+    ViewBag.Title = "Create Support Task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="row" ng-app="app">
+    <div class="col-md-12" data-ng-Controller="CreateSupportTaskController as vm">
+
+        @Html.Partial("_SuppotTaskForm", Model.GetDataSources())
+
+    </div><!--/col-md-12-->
+</div>
+
+
+

@@ -1,0 +1,98 @@
+﻿@model List<ZenExpressoCore.Models.ExecutedTasks>
+@{
+    ViewBag.Title = "Home ";
+}
+<div class="">
+ @if (Model.Any())
+ {
+     <div class="row">
+         <div class="col-md-12">
+             <div class="block-web">
+                 <div class="header">
+                     <div class="actions">
+                     </div>
+                     <h3 class="content-header"> Recent Tasks</h3>
+                 </div>
+                 <div class="porlets-content">
+
+                     @for (int k = 0; k <= Model.Count; k += 3)
+                     {
+
+                         <div class="row">
+
+                             <div class="col-md-12">
+
+                                 @for (int i = k; i < k + 3; i++)
+                                 {
+                                     var index = k + i;
+                                     if (index < Model.Count)
+                                     {
+                                         var item = Model[index];
+                                         <div class="col-md-4 col-sm-4">
+                                             <div class="block-update-card">
+                                                 <div class="v-status">
+                                                 </div>
+                                                 <img class="pull-left media-object update-card-MDimentions" src="~/assets/images/icon-recent.png" alt="Table Result"/>
+                                                 <div class="media-body update-card-body">
+                                                     <div style="padding-left: 5px">
+                                                         <h4 class="media-heading"> @item.taskDescription </h4>
+                                                         <p>
+                                                             <div class="col-lg-7 col-md-7 col-sm-7 pull-left" style="padding-left: 0">
+                                                                 <span class="pull-left"> <strong>@item.dateExecuted.ToString("dd MMM HH:mm")</strong> </span>
+                                                             </div>
+                                                             <div class="col-lg-5 col-md-5 col-sm-5 pull-left">
+                                                                 <a class="btn btn-sm btn-success" href="@Url.Action("ExecuteTask", "SupportTask", new {id = item.taskId})">Execute</a>
+                                                             </div>
+                                                             <span class="label label-primary">@item.topMenu</span>
+                                                         </p>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     }
+                                 }
+                             </div>
+
+                         </div>
+                         <div class="row"></div>
+                         <p></p>
+                     }
+
+                 </div><!--/porlets-content-->
+             </div><!--/block-web-->
+         </div><!--/col-md-12-->
+     </div>
+
+ }
+ else
+ {
+     <div class="">
+         <div class="row">
+             <div class="col-md-6 h4">
+                 Welcome !!
+             </div>
+         </div>
+         <div class="row">
+             <div class="col-md-6">
+                 <div class="col-md-5">
+                     <img src="~/assets/images/zenExpresso.gif" width="200">
+                 </div>
+
+             </div>
+         </div>
+         <div class="row">
+             <div class="col-md-6 h4">
+                 ASPD Application Support Made Easy
+             </div>
+         </div>
+
+     </div>
+ }
+
+
+
+
+
+
+</div>
+

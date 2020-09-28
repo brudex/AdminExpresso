@@ -1,0 +1,75 @@
+﻿@using ZenExpresso.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Zen Expresso</title>
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    <link href="~/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/animate.css" rel="stylesheet" />
+    <link href="~/assets/css/admin.css" rel="stylesheet" />
+</head>
+<body class="light_theme  fixed_header left_nav_fixed"> 
+<div class="wrapper">
+    <div class="login_page">
+        <div class="login_content">
+            <div class="border login_heading">
+                <img src="~/assets/images/zenExpresso.gif" />
+             
+            </div>
+            @using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+            {
+                @Html.AntiForgeryToken()
+
+                if(ViewData.ModelState["Error"] != null && ViewData.ModelState["Error"].Errors.Count() > 0)
+                {
+                    <div class="alert alert-danger">
+                        @Html.ValidationMessage("Error")
+                    </div>
+                }
+                <div class="form-group"> 
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control", placeholder = "Email"})
+                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-10">
+                        @Html.PasswordFor(m => m.Password, new {@class = "form-control", placeholder = "Password"})
+                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger"})
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class=" col-sm-10">
+                        <div class="checkbox checkbox_margin">
+                            <label class="lable_margin">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                <p class="pull-left"> Remember me</p>
+                            </label>
+
+                            <button class="btn btn-danger pull-right" type="submit">Sign in</button>
+
+                        </div>
+                    </div>
+                </div> 
+            }
+        </div>
+    </div>
+     
+</div>
+    <script src="~/assets/js/jquery-2.1.0.js"></script>
+    <script src="~/assets/js/common-script.js"></script>
+    <script src="~/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="~/assets/js/jPushMenu.js"></script>
+    <script src="~/assets/js/sweetalert.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+</body>
+</html>

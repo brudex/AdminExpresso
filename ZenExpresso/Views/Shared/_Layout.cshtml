@@ -1,0 +1,147 @@
+﻿@using ZenExpresso
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title - ZenExpresso</title>
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"/> 
+    <link href="~/assets/css/font-awesome.css" rel="stylesheet"/>
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="~/assets/css/animate.css" rel="stylesheet"/>
+    <link href="~/assets/css/admin.css" rel="stylesheet"/>
+    <link href="~/assets/css/sweetalert.css" rel="stylesheet"/> 
+    <link href="~/assets/plugins/dataTables/datatables.min.css" rel="stylesheet" />
+    <link href="~/assets/plugins/dataTables/Scroller-2.0.0/css/scroller.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/plugins/dataTables/Scroller-2.0.0/css/scroller.dataTables.min.css" rel="stylesheet" />
+    <link href="~/assets/plugins/spinjs/spin.css" rel="stylesheet"/>
+    <link href="~/assets/css/datepicker.min.css" rel="stylesheet" />
+</head> 
+<body class="light_theme  fixed_header left_nav_fixed">
+    <div class="wrapper">
+        <!--\\\\\\\ wrapper Start \\\\\\-->
+        <div class="header_bar">
+            <!--\\\\\\\ header Start \\\\\\-->
+            <div class="brand" style="background: white">
+                <!--\\\\\\\ brand Start \\\\\\-->
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="~/">
+                            <img src="~/assets/images/zenExpressoLogo2.gif" width="170" alt="s-logo" />
+                        </a> 
+                    </div>
+                    <div class="col-md-9">
+                        <div class="small_logo" style="display: none">
+                            <img src="~/assets/images/zenExpresso.gif"  alt="s-logo" />
+                            <img src="~/assets/images/zenExpresso.gif"  alt="r-logo" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--\\\\\\\ brand end \\\\\\-->
+            <div class="header_top_bar">
+                <!--\\\\\\\ header top bar start \\\\\\-->
+                <a href="javascript:void(0);" class="menutoggle"> <i class="fa fa-bars"></i> </a>
+                <div class="top_left">
+                    <div class="top_left_menu">
+                        <ul></ul>
+                    </div>
+                </div>
+                @if (User.IsAdmin())
+                {
+                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="add_user"> <i class="fa fa-plus-square"></i> <span>New Task</span> </a> 
+                     <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user"> <i class="fa fa-plus-square"></i> <span>Advanced Task</span> </a> 
+                }
+                <div class="top_right_bar">
+                    <div class="top_right">
+                        <div class="top_right_menu">
+                            <ul></ul>
+                        </div>
+                    </div>
+                    <div class="user_admin dropdown">
+                        <a href="javascript:void(0);" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="user_adminname">@User.Identity.Name</span> <b class="caret"></b> </a>
+                        <ul class="dropdown-menu">
+                            <div class="top_pointer"></div>
+                            <li>  </li>
+                            <li>  </li>
+                            <li>
+                                <a href="">
+                                    <form method="POST" action="@Url.Action("LogOff", "Account")">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-power-off"></i> Logout</button>
+                                    </form>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inner">
+            <div class="left_nav">
+                <div class="left_nav_slidebar">
+                    @Html.Partial("_MenuPartial")
+                </div>
+            </div>
+            <div class="contentpanel">
+                <div class="pull-left breadcrumb_admin clear_both">
+
+                </div>
+                <div class="container clear_both padding_fix">
+                    <div id="spinnerContainer" class="spinner">
+                    </div>
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" value="@Url.Content("~")" id="___applicationbaseUrl"/>
+    <script src="~/assets/js/jquery-2.1.0.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/common-script.js"></script>
+    <script src="~/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="~/assets/js/jPushMenu.js"></script>
+    <script src="~/assets/js/side-chats.js"></script>
+    <script src="~/assets/js/sweetalert.js"></script>
+    <script src="~/assets/plugins/spinjs/spin.js"></script> 
+    <script src="~/assets/js/datepicker.js"></script>
+    <script src="~/assets/js/datepicker.en.js"></script>
+    <script src="~/scripts/angular.js"></script>
+    <script src="~/scripts/angular-animate.js"></script>
+    <script src="~/scripts/app/app.module.js"></script>
+    <script src="~/scripts/app/services.factory.js"></script>
+    <script src="~/scripts/app/dataholder.factory.js"></script>
+    <script src="~/scripts/app/utils.factory.js"></script>
+    <script src="~/assets/js/validate.min.js"></script>
+    <script src="~/assets/js/lodash.min.js"></script> 
+    <script src="~/assets/js/scroller.bootstrap.min.js"></script>
+    <script src="~/assets/plugins/dataTables/datatables.min.js"></script>
+    <script src="~/assets/plugins/dataTables/JSZip-2.5.0/jszip.min.js"></script>
+    <script src="~/assets/plugins/dataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
+
+   
+    <script src="~/scripts/app/dblog.controller.js"></script>
+    <script src="~/scripts/app/searchlog.controller.js"></script>
+    <script src="~/scripts/app/createsupporttask.controller.js"></script>
+    <script src="~/scripts/app/menu.setup.controller.js"></script>
+    <script src="~/scripts/app/datasource.setup.controller.js"></script>
+    <script src="~/scripts/app/executetask.controller.js"></script>
+    <script src="~/scripts/app/assigngroups.controller.js"></script>
+    <script src="~/scripts/app/admin.setup.controller.js"></script>
+    <script src="~/scripts/app/advanced.taskflow.controller.js"></script>
+    <script src="~/scripts/app/widget.clientinput.controller.js"></script>
+    <script src="~/scripts/app/widget.restapi.controller.js"></script>
+    <script src="~/scripts/app/widget.sqlquery.controller.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+        $('.mdatepicker').datepicker({
+            language: 'en',
+            dateFormat: 'yyyy-mm-dd',
+            todayButton: new Date(),
+            autoClose: true
+        });
+    </script>
+
+</body>
+</html>

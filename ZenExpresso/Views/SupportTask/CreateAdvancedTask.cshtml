@@ -1,0 +1,258 @@
+﻿@model ZenExpressoCore.Models.SupportTask
+@{
+    ViewBag.Title = "Create Advanced Task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row" ng-app="app">
+    <div class="col-md-12" data-ng-Controller="AdvancedTaskFlowController as vm">
+        <div>
+            <div class="col-md-8">
+                <section class="panel default blue_title h2">
+                    <div class="panel-heading">Support Task Flow Design</div>
+                    <div class="panel-body">
+                        <form name="addTaskForm" class="form-horizontal group-border-dashed" autocomplete="off" parsley-validate="" novalidate="" data-ng-submit="vm.submitSupportTask(addLogForm.$valid)">
+                            <input autocomplete="false" name="hidden" type="text" style="display:none;">
+                            <div class="form-group" data-ng-show="vm.errorMsg.length">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-6">
+                                    <div class="alert alert-danger col-md-6">
+                                        <ul>
+                                            <li data-ng-repeat="item in vm.errorMsg">{{item}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/form-group-->
+                            <div class="form-group" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.taskName.$invalid }">
+                                <label class="col-sm-3 control-label">Task Name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" data-ng-model="vm.model.taskName" name="taskName" class="form-control parsley-validated" required="">
+                                </div>
+                            </div><!--/form-group-->
+                            <div class="form-group" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.description.$invalid }">
+                                <label class="col-sm-3 control-label">Task Description</label>
+                                <div class="col-sm-6">
+                                    <input type="text" data-ng-model="vm.model.description" name="description" class="form-control parsley-validated" required="">
+                                </div>
+                            </div><!--/form-group-->
+                            <div class="form-group" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.topLevelMenu.$invalid }">
+                                <label class="col-sm-3 control-label">Top Level Menu</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" data-ng-model="vm.model.topLevelMenu" data-ng-options="item.menuName as item.menuName for item in vm.topMenus" required="" name="topLevelMenu">
+                                        <option value="">Select Parent Menu</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="panel-group accordion accordion-semi" id="accordion3">
+                                <div class="basic-wizard" id="progressWizard">
+                                    <ul class="nav nav-pills nav-justified">
+                                        <li class="active"><a data-toggle="tab" href="#ptab1" data-ng-click="vm.widgetOptions('beforeRender')"><span>Server Render</span></a></li>
+                                        <li class=""><a data-toggle="tab" href="#ptab2" data-ng-click="vm.widgetOptions('client')"><span>Client Render</span></a></li>
+                                        <li class=""><a data-toggle="tab" href="#ptab3" data-ng-click="vm.widgetOptions('postAction')"><span>Server Actions</span></a></li>
+                                        <li class=""><a data-toggle="tab" href="#ptab4" data-ng-click="vm.widgetOptions('clientResult')"><span>Client Result</span> </a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="ptab1" class="tab-pane active">
+                                            <div class="list-group">
+                                                <div class="list-group-item active" href="#">
+                                                    <h4 class="list-group-item-heading">
+                                                        <span data-ng-bind="vm.model.conrolName">Sql Query</span>
+                                                        <button class="btn btn-sm btn-primary">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                        <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#collapse1">
+                                                            <span class=""><i class="fa fa-chevron-down"></i></span>
+                                                        </button>
+                                                    </h4>
+                                                    <div class="collapse" id="collapse1">
+                                                        <p class="list-group-item-text">
+                                                            this is to be collapsed
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="ptab2" class="tab-pane">
+                                            <div class="list-group">
+                                                <div class="list-group-item active" data-ng-repeat="item in vm.clientFlows">
+                                                    <h4 class="list-group-item-heading">
+                                                        <span data-ng-bind="item.conrolName">Sql Query</span>
+                                                        <button class="btn btn-sm btn-primary">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                        <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#collapse1">
+                                                            <span class=""><i class="fa fa-chevron-down"></i></span>
+                                                        </button>
+                                                    </h4>
+                                                    <div class="collapse" id="collapse1">
+                                                        <p class="list-group-item-text">
+                                                            Collapsed form controls
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="ptab3" class="tab-pane">
+
+                                            <div class="list-group-item active" data-ng-repeat="item in vm.postActionsFlows">
+                                                <h4 class="list-group-item-heading">
+                                                    <span data-ng-bind="item.conrolName">Sql Query</span>
+                                                    <button class="btn btn-sm btn-primary">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                    <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#collapse1">
+                                                        <span class=""><i class="fa fa-chevron-down"></i></span>
+                                                    </button>
+                                                </h4>
+                                                <div class="collapse" id="collapse1">
+                                                    <p class="list-group-item-text">
+                                                        Collapsed form controls
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="ptab4" class="tab-pane">
+                                            <div class="list-group">
+                                                <div class="list-group-item active" href="#">
+                                                    <h4 class="list-group-item-heading">
+                                                        Table Result
+                                                        <button class="btn btn-sm btn-primary">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </h4>
+                                                    <p class="list-group-item-text">
+                                                        <span class="">Enter Values</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /tab-content -->
+                                </div>
+                            </div>
+                            <button class="btn btn-success btn-lg pull-right">Save</button>
+                        </form>
+                    </div>
+                </section>
+
+            </div>
+            <div class="col-md-4">
+                <section class="panel default blue_title h4">
+                    <div class="panel-heading">Widgets </div>
+                    <div class="panel-body">
+                        <div class="client-widgets">
+                            <h5 class="">Client Widgets</h5>
+                            <ul class="list-group ">
+                                <li class="list-group-item ">
+                                    <button class="badge btn clientInput" data-toggle="modal" data-target="#inputFormModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Form Input Controls
+                                </li>
+                                <li class="list-group-item">
+                                    <button class="badge btn clientInput" data-toggle="modal" data-target="#validationFormatingModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Validation/Formating Script
+                                </li>
+                                <li class="list-group-item">
+                                    <button class="badge btn clientResult" data-toggle="modal" data-target="#outputTransformModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Output/Formating Script
+                                </li>
+                                <li class="list-group-item">
+                                    <button class="badge btn clientResult" data-toggle="modal" data-target="#tabularOutputModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Tabular output
+                                </li>
+                                <li class="list-group-item" data-toggle="modal" data-target="#successMessageOutputModal">
+                                    <button class="badge btn clientResult">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Success Message result
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="server-widgets">
+                            <h5>Server Widgets</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-info">
+                                    <button class="badge btn" data-toggle="modal" data-target="#sqlModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Sql Query
+                                </li>
+                                <li class="list-group-item list-group-item-info">
+                                    <button class="badge btn" data-toggle="modal" data-target="#restApiModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Rest Request
+                                </li>
+                                <li class="list-group-item list-group-item-info">
+                                    <button class="badge btn" data-toggle="modal" data-target="#dataTransformModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Data Transformation(using Js)
+                                </li>
+                                <li class="list-group-item list-group-item-info">
+                                    <button class="badge btn" data-toggle="modal" data-target="#mergetTablesModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Merge tables with lookup
+                                </li>
+                                <li class="list-group-item list-group-item-info">
+                                    <button class="badge btn" data-toggle="modal" data-target="#exportDataModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Export Data
+                                </li>
+                                <li class="list-group-item list-group-item-info">
+                                    <button class="badge btn " data-toggle="modal" data-target="#serverSideJavascriptModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Sever Side Script
+                                </li>
+                                <li class="list-group-item list-group-item-info">
+                                    <button class="badge btn" data-toggle="modal" data-target="#looperModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    Looper
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+
+        @Html.Partial("_FormInputWidget")
+        @Html.Partial("_FormatValidationWidget")
+        @Html.Partial("_OuptutTransformWidget")
+        @Html.Partial("_TabularOutputWidget")
+        @Html.Partial("_SuccessMessageOutputWidget")
+
+        @* Server Widgets *@
+        @Html.Partial("_SqlScriptWidget")
+        @Html.Partial("_RestApiWidget")
+        @Html.Partial("_DataTransformationWidget")
+        @Html.Partial("_MergeTablesWidget")
+        @Html.Partial("_ExportDataWidget")
+        @Html.Partial("_SeverSideJavascriptWidget")
+        @Html.Partial("_LooperWidget")
+    </div><!--/col-md-12-->
+</div>
+
