@@ -29,7 +29,7 @@ namespace ZenExpresso
             Logger.EnsureInitialized();
             Logger.Info(this,"App initialized");
             //InitializeDatabase();
-
+    
             SetupInitialAdmin();
             //SetupInitialDataSources();
             MemDb.Instance.Init();
