@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenExpresso", "ZenExpresso\ZenExpresso.csproj", "{DBCDBA6F-4199-4367-8995-2CF7AA6412DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrudexFoundations", "BrudexFoundations\BrudexFoundations.csproj", "{9989783C-7A35-4704-9E36-B069494E7689}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DBCDBA6F-4199-4367-8995-2CF7AA6412DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBCDBA6F-4199-4367-8995-2CF7AA6412DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBCDBA6F-4199-4367-8995-2CF7AA6412DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9989783C-7A35-4704-9E36-B069494E7689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9989783C-7A35-4704-9E36-B069494E7689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9989783C-7A35-4704-9E36-B069494E7689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9989783C-7A35-4704-9E36-B069494E7689}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
