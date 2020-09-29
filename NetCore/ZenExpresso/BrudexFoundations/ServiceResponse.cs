@@ -10,8 +10,6 @@ namespace BrudexFoundations
     {
         public string status { get; set; }
         public string message    { get; set; }
-        public string reference    { get; set; }
-
-        
+        public string reference    { get; set; } 
     }
 }

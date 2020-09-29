@@ -1,0 +1,88 @@
+﻿@model ZenExpressoCore.Models.SupportTask
+@{
+    ViewBag.Title = "Assign Groups to Task "+Model.taskName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="row" ng-app="app">
+    <div class="col-md-12" data-ng-Controller="AssignGroupsController as vm">
+        <div class="block-web" data-ng-init="vm.init(@Model.id)">
+            <div class="header">
+                <div class="actions">
+                    <a class="minimize" href="#"><i class="fa fa-chevron-down"></i></a> <a class="close-down" href="#"><i class="fa fa-times"></i></a>
+                </div>
+                <h3 class="content-header">@ViewBag.Title (@Model.topLevelMenu)</h3>
+            </div>
+            <div class="porlets-content">
+                <form name="addTaskForm" class="form-horizontal group-border-dashed" autocomplete="off" parsley-validate="" novalidate="" >
+                    <input autocomplete="false" name="hidden" type="text" style="display:none;">
+                    <div class="form-group" data-ng-show="vm.errorMsg.length">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-sm-6">
+                            <div class="alert alert-danger col-md-6">
+                                <ul>
+                                    <li data-ng-repeat="item in vm.errorMsg">{{item}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Add User Groups </label>
+                        <div class="col-sm-6">
+                            <select class="form-control" data-ng-model="vm.group.groupName" name="taskType" data-ng-options="item for item in vm.supportGroups" >
+                                <option value="">Select Dept ..</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-xs btn-primary" data-ng-click="vm.addGroup()">Add</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Add Single User </label>
+                        <div class="col-sm-6">
+                            <input type="text" data-ng-model="vm.singleUser.groupName" name="description" class="form-control parsley-validated" placeholder="Staff ID"  >
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-xs btn-primary" data-ng-click="vm.addSingleUser()">Add</button>
+                        </div>
+                    </div>
+                    <!--/form-group-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-sm-6">
+                            <label class="control-label">Groups </label>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="item in vm.model.groups">
+                                        <td data-ng-bind="item.groupName">Name</td>
+                                        <td data-ng-bind="item.groupType">Type</td>
+                                        <td>
+                                            <input type="button" class="btn btn-xs btn-danger" value="Delete" data-ng-click="vm.removeGroup($index)" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-success btn-lg" data-ng-click="vm.submitGroups()">Save</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div><!--/col-md-12-->
+</div>
+

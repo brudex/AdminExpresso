@@ -1,37 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using ZenExpresso.Models;
+﻿using System.Web.Mvc;
+using ZenExpressoCore;
 
 namespace ZenExpresso.Controllers
 {
+
+    [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public ActionResult Index()
         {
-            _logger = logger;
+            var userName = User.Identity.Name;
+            var list = DbHandler.Instance.GetRecentTasks(userName);
+            return View(list);
         }
 
-        public IActionResult Index()
+        public ActionResult About()
         {
+            ViewBag.Message = "Your application description page.";
             return View();
         }
 
-        public IActionResult Privacy()
+        public ActionResult Contact()
         {
+            ViewBag.Message = "Your contact page.";
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

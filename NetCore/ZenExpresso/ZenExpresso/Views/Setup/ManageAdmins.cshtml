@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Setup Admins";
+}
+
+<div class="row" ng-app="app">
+    <div class="col-md-12" data-ng-Controller="AdminSetupController as vm" data-ng-init="vm.init()">
+        <div class="block-web">
+            <div class="header">
+                <div class="actions">
+                </div>
+                <h3 class="content-header">@ViewBag.Title </h3>
+            </div>
+            <div class="porlets-content">
+                <form name="addAdminForm" method="POST" class="form-horizontal group-border-dashed" parsley-validate="" novalidate="" data-ng-submit="vm.addAdmin(addAdminForm.$valid)">
+                    <div class="form-group">
+                        <div class="col-sm-4" data-ng-class="{'has-error': addAdminForm.userName.$invalid }">
+                            <input type="text" data-ng-model="vm.model.userName" name="userName" class="form-control parsley-validated" required="" placeholder="User Name">
+                        </div>
+                        <div class="col-sm-4" data-ng-class="{'has-error': addAdminForm.fullName.$invalid }">
+                            <input type="text" data-ng-model="vm.model.fullName" name="fullName" class="form-control parsley-validated" required="" placeholder="Full Name">
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-success ">Add</button>
+                        </div>
+                    </div>
+                    <!--/form-group-->
+                </form>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2"></label>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-6 h4 ">List of Admins </label>
+                                <table id="example" class="display table table-condensed" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-sm-4">User Name</th>
+                                            <th class="col-sm-4">Full Name</th>
+                                            <th class="col-sm-1"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="item in vm.list">
+                                            <td data-ng-bind="item.userName"></td>
+                                            <td data-ng-bind="item.fullName"></td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-xs btn-danger action-view" data-ng-click="vm.deleteAdmin(item)"><i class="fa fa-trash"></i>Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!--/porlets-content-->
+
+        </div>
+        <!--/block-web-->
+    </div><!--/col-md-12-->
+</div>
