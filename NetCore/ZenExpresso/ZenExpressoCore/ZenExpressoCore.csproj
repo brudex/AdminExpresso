@@ -11,6 +11,9 @@
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	  <PackageReference Include="MySql.Data" Version="8.0.12" />
 	  <PackageReference Include="RestSharp" Version="106.4.2" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="2.2.5" />
+	  <PackageReference Include="Extend" Version="1.2.1" />
+	  <PackageReference Include="Jint" Version="3.0.0-beta-1828" />
   </ItemGroup>
 
 </Project>
