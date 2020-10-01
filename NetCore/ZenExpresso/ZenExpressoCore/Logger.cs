@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
+using System.Reflection;
 using log4net;
 
 namespace ZenExpressoCore
 {
     public static class Logger
     {
+
+        private static readonly string LOG_CONFIG_FILE = @"log4net.config";
         private static readonly Dictionary<Type, ILog> _loggers = new Dictionary<Type, ILog>();
         private static bool _logInitialized;
         private static readonly object _lock = new object();
@@ -175,24 +177,11 @@ namespace ZenExpressoCore
         private static void initialize()
         {
 
-            log4net.Config.XmlConfigurator.Configure();
             _logInitialized = true;
-
-        }
-
-        public static void LogRequestResponse(object source, string req, string resp)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine(source.ToString());
-                sb.AppendLine(req);
-                sb.AppendLine();
-                sb.AppendLine(resp);
-                sb.AppendLine();
-                Info(source, sb.ToString());
-            });
-
+            XmlDocument log4netConfig = new XmlDocument();
+            log4netConfig.Load(File.OpenRead(LOG_CONFIG_FILE));
+            var repo = LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
+            log4net.Config.XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
         }
 
         public static void EnsureInitialized()

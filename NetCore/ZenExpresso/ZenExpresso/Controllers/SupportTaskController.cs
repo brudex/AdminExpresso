@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ZenExpresso.Helpers;
-using ZenExpressoCore;
+ using ZenExpressoCore;
 using ZenExpressoCore.Models;
 
 namespace ZenExpresso.Controllers
 {
-    [System.Web.Mvc.Authorize]
+    
     public class SupportTaskController : Controller
     {
        // [DedicatedAdminsAllowed]
@@ -82,7 +80,7 @@ namespace ZenExpresso.Controllers
         }
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        [HttpPost]
         public ActionResult AssignGroups(int id)
         {
             var supportTask = DbHandler.Instance.GetSupportTaskById(id);
@@ -90,8 +88,8 @@ namespace ZenExpresso.Controllers
         }
 
 
-        
-        [System.Web.Mvc.HttpGet]
+
+        [HttpGet]
         public ActionResult ExecuteTask(int id)
         {
             try
@@ -100,12 +98,12 @@ namespace ZenExpresso.Controllers
                 if (supportTask == null)
                 {
                     Logger.Error(this, "Task not found>>>" + id);
-                    throw new HttpException(404, "Task Not Found");
+                    return new StatusCodeResult(404);
                 }
                 else if (!supportTask.IsAuthorizedUser(User))
                 {
                     Logger.Error(this, "Unauthorized>>" + id);
-                    throw new HttpException(403, "UnAuthorized ");
+                    return new StatusCodeResult(403);
                 }
                 return View(supportTask);
             }
@@ -120,7 +118,7 @@ namespace ZenExpresso.Controllers
 
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult ListExecutedTasks()
         { 
             var list = DbHandler.Instance.GetExecutedTasks();
