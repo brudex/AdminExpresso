@@ -45,7 +45,7 @@ namespace ZenExpresso.Controllers
         }
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult ListTasks()
         {
             var tasks = DbHandler.Instance.GetAllSupportTasks();
@@ -54,7 +54,7 @@ namespace ZenExpresso.Controllers
 
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult DeleteTask(int id)
         {
             var task = DbHandler.Instance.GetSupportTaskById(id);
@@ -66,7 +66,7 @@ namespace ZenExpresso.Controllers
         }
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpPost]
+        [HttpGet]
         public ActionResult DeleteTask([FromBody]SupportTask data)
         {
             var deleted = DbHandler.Instance.DeleteSupportTaskById(data.id);
