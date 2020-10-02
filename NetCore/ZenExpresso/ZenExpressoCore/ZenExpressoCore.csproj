@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="DapperExtensions" Version="1.6.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
 	<PackageReference Include="Sybase.AdoNet.AseClient.dll" Version="1.0.0" />

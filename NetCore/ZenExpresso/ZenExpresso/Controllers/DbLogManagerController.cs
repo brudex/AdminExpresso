@@ -1,6 +1,4 @@
-﻿using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ZenExpresso.Models;
 using ZenExpressoCore;
 using ZenExpressoCore.Models;
@@ -14,7 +12,7 @@ namespace ZenExpresso.Controllers
             return View();
         }
 
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult ListApps()
         {
             var vm = new DbLogManagerViewModel();
@@ -22,14 +20,14 @@ namespace ZenExpresso.Controllers
             return View(vm);
         }
 
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult DeleteApp(int id)
         {
             var appLog = DbHandler.Instance.GetLogManagerById(id);
             return View(appLog);
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult DeleteApp([FromBody]LogManagement data)
         {
             var deleted = DbHandler.Instance.DeleteLogAppById(data.id);
@@ -41,14 +39,14 @@ namespace ZenExpresso.Controllers
             return View(data);
         }
 
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult ClearLogs(int id)
         {
             var appLog = DbHandler.Instance.GetLogManagerById(id);
             return View(appLog);
         }
 
-        [System.Web.Mvc.HttpPost]
+        [HttpPost]
         public ActionResult ClearLogs([FromBody]LogManagement data)
         {
             var appLog = DbHandler.Instance.GetLogManagerById(data.id);
@@ -59,7 +57,7 @@ namespace ZenExpresso.Controllers
             return View(data);
         }
 
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult SearchLogs(int id)
         {
             var appLog = DbHandler.Instance.GetLogManagerById(id);

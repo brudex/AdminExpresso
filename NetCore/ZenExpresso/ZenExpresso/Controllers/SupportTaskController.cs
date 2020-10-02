@@ -39,7 +39,7 @@ namespace ZenExpresso.Controllers
             }
             else
             {
-                Session["data"] = "Task not found";
+                //Session["data"] = "Task not found";
                 return RedirectToAction("Index", "Error");
             }
         }
@@ -60,7 +60,7 @@ namespace ZenExpresso.Controllers
             var task = DbHandler.Instance.GetSupportTaskById(id);
             if (task == null)
             {
-                throw new HttpException(404, "Item Not Found");
+                return new StatusCodeResult(404);
             }
             return View(task);
         }
