@@ -13,7 +13,6 @@ namespace ZenExpressoCore
  
         public static void Initialize(Dictionary<string, string> settings)
         {
-            DefaultConnection = settings["DefaultConnection"];
             appSettings = settings;
         }
     }
