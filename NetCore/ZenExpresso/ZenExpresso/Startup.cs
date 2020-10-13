@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ZenExpresso.Data;
+using ZenExpresso.Helpers;
 using ZenExpresso.Models;
 using ZenExpressoCore;
 
@@ -125,7 +126,7 @@ namespace ZenExpresso
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             }); 
 
-            //MemDb.Instance.Init();
+           MemDb.Instance.Init();
         }
     }
 }

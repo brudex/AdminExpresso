@@ -117,7 +117,7 @@ namespace ZenExpresso.Controllers
                 Regex re = new Regex(emailRegex);
                 if (!re.IsMatch(model.Email))
                 {
-                    ModelState.AddModelError("Email", "Username is not valid");
+                    ModelState.AddModelError("", "Username or email is not valid");
                 }
             }
             if (ModelState.IsValid)
