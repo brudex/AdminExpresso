@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-
 using ZenExpressoCore;
-using ZenExpressoCore.Models;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using ZenExpresso.AccountViewModels;
+using ZenExpresso.Models;
 
 namespace ZenExpresso.Controllers
 {
@@ -19,14 +16,14 @@ namespace ZenExpresso.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
              ILogger<AccountController> logger,
             IHttpContextAccessor accessor
             )
@@ -66,7 +63,7 @@ namespace ZenExpresso.Controllers
             {
                  loginSuccess = await LoginWithEmail(model);
             }
-            else if(SettingsData.LoginMode == Constants.LoginMode.Email){
+            else if(SettingsData.LoginMode == Constants.LoginMode.ActiveDirectory){
 
             }
             if (loginSuccess)
@@ -126,7 +123,7 @@ namespace ZenExpresso.Controllers
             if (ModelState.IsValid)
             {
                 var userName = model.Email;
-                IdentityUser user;
+                ApplicationUser user;
                 if (userName.IndexOf('@') > -1)
                 {
 

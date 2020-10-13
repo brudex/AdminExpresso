@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ZenExpresso.Data;
+using ZenExpresso.Models;
 using ZenExpressoCore;
 
 namespace ZenExpresso
@@ -33,12 +34,20 @@ namespace ZenExpresso
             services.AddControllersWithViews();
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDbContext>();
- 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            //services.AddDbContext<ApplicationDbContext>();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+              options.UseSqlServer(connectionString));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.User.AllowedUserNameCharacters = null;
+            })
+             .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            services.AddAuthentication();
+            services.AddAuthentication();  
+
+
+
             services.Configure<IdentityOptions>(options =>
             {
                 //Password settings
