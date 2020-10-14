@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-
 using ZenExpressoCore;
-using ZenExpressoCore.Models;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using ZenExpresso.AccountViewModels;
+using ZenExpresso.Models;
 
 namespace ZenExpresso.Controllers
 {
@@ -19,14 +16,14 @@ namespace ZenExpresso.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
              ILogger<AccountController> logger,
             IHttpContextAccessor accessor
             )
@@ -40,6 +37,26 @@ namespace ZenExpresso.Controllers
 
 
         public string ErrorMessage { get; set; }
+
+
+
+        internal async Task<bool> CreateUser(RegisterViewModel model)
+        {
+            var user = new ApplicationUser
+            { 
+                UserName = model.Email,
+                Email = model.Email,
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("New account with password.");
+                return true; 
+            }
+            return false; 
+        } 
+
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -61,12 +78,13 @@ namespace ZenExpresso.Controllers
             {
                 return View(model);
             }
-            bool loginSuccess=false;
+            bool loginSuccess = false;
             if (SettingsData.LoginMode == Constants.LoginMode.Email)
             {
-                 loginSuccess = await LoginWithEmail(model);
+                loginSuccess = await LoginWithEmail(model);
             }
-            else if(SettingsData.LoginMode == Constants.LoginMode.Email){
+            else if (SettingsData.LoginMode == Constants.LoginMode.ActiveDirectory)
+            {
 
             }
             if (loginSuccess)
@@ -93,7 +111,7 @@ namespace ZenExpresso.Controllers
                     return false;
                 default:
                     return false;
-                    
+
             }
             return false;
 
@@ -120,13 +138,13 @@ namespace ZenExpresso.Controllers
                 Regex re = new Regex(emailRegex);
                 if (!re.IsMatch(model.Email))
                 {
-                    ModelState.AddModelError("Email", "Username is not valid");
+                    ModelState.AddModelError("", "Username or email is not valid");
                 }
             }
             if (ModelState.IsValid)
             {
                 var userName = model.Email;
-                IdentityUser user;
+                ApplicationUser user;
                 if (userName.IndexOf('@') > -1)
                 {
 

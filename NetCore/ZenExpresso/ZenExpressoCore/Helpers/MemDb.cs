@@ -56,7 +56,7 @@ namespace ZenExpresso.Helpers
             _topMenus = DbHandler.Instance.GetList<TopMenu>();
             _supportTasksList = DbHandler.Instance.GetSupportTaskWithGroupsAssigned();
             _dataSources = DbHandler.Instance.GetList<DataSource>();
-
+            SetupInitialAdmin(); 
         }
 
 
@@ -104,10 +104,22 @@ namespace ZenExpresso.Helpers
         public DataSource GetDataSourceByName(string dataSourceName)
         {
            return _dataSources.FirstOrDefault(x=>x.dataSourceName==dataSourceName);
+        } 
+         
+        public void SetupInitialAdmin()
+        {
+           
+
+            var admins = DbHandler.Instance.GetList<DedicatedAdmin>();
+            if (admins.Count == 0)
+            {
+                var admin = new DedicatedAdmin();
+                admin.userName = "brudexgh@gmail.com";
+                admin.fullName = "Nana Safo";
+                DbHandler.Instance.Save(admin);
+            }
+
         }
-
-
-
 
 
     }

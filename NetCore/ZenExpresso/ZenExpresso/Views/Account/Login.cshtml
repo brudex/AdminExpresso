@@ -27,16 +27,16 @@
         <div class="login_page">
             <div class="login_content">
                 <div class="border login_heading">
-                    <img src="~/assets/images/logo.gif" />
+                    <img src="~/assets/images/zenExpresso.gif" />
 
                 </div>
                 <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
 
                     @Html.AntiForgeryToken()
-                    @if (ViewData.ModelState["Error"] != null && ViewData.ModelState["Error"].Errors.Count() > 0)
+                    @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count() > 0)
                     {
                         <div class="alert alert-danger">
-                            @Html.ValidationMessage("Error")
+                            @Html.ValidationMessage("")
                         </div>
                     }
                     <div class="form-group">
@@ -66,9 +66,7 @@
 
                 </form>
             </div>
-        </div>
-
-
+        </div> 
     </div>
     <script src="~/assets/js/jquery-2.1.0.js"></script>
     <script src="~/assets/js/common-script.js"></script>

@@ -33,16 +33,16 @@ namespace ZenExpresso
     // Configure the application sign-in manager which is used in this application.
     public class WindowsSignInManager 
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        public WindowsSignInManager(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public WindowsSignInManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
             
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public  async Task<ClaimsPrincipal> CreateUserIdentityAsync(IdentityUser user)
+        public  async Task<ClaimsPrincipal> CreateUserIdentityAsync(ApplicationUser user)
         {
            return await _signInManager.CreateUserPrincipalAsync(user);
         }
