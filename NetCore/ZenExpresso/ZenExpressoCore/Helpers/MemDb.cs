@@ -56,8 +56,7 @@ namespace ZenExpresso.Helpers
             _topMenus = DbHandler.Instance.GetList<TopMenu>();
             _supportTasksList = DbHandler.Instance.GetSupportTaskWithGroupsAssigned();
             _dataSources = DbHandler.Instance.GetList<DataSource>();
-            SetupInitialAdmin();
-
+            SetupInitialAdmin(); 
         }
 
 
@@ -109,6 +108,7 @@ namespace ZenExpresso.Helpers
          
         public void SetupInitialAdmin()
         {
+           
 
             var admins = DbHandler.Instance.GetList<DedicatedAdmin>();
             if (admins.Count == 0)

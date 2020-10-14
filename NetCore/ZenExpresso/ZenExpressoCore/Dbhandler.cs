@@ -98,6 +98,8 @@ namespace ZenExpressoCore
             return connection;
         }
 
+        
+
         public IDbConnection CreateDbConnection(string userId, string pass,string ip = "", string dbName = "master")
         {
             if (string.IsNullOrEmpty(ip))
@@ -179,6 +181,14 @@ namespace ZenExpressoCore
             {
                 var id = connection.Insert(obj);
                 return id;
+            }
+        }
+
+        internal int GetUsersCount()
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                return connection.Query<int>("select count(*) 'int' from [AspNetUsers]").FirstOrDefault(); ;
             }
         }
 

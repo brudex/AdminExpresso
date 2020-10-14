@@ -38,6 +38,26 @@ namespace ZenExpresso.Controllers
 
         public string ErrorMessage { get; set; }
 
+
+
+        internal async Task<bool> CreateUser(RegisterViewModel model)
+        {
+            var user = new ApplicationUser
+            { 
+                UserName = model.Email,
+                Email = model.Email,
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("New account with password.");
+                return true; 
+            }
+            return false; 
+        } 
+
+
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -58,12 +78,13 @@ namespace ZenExpresso.Controllers
             {
                 return View(model);
             }
-            bool loginSuccess=false;
+            bool loginSuccess = false;
             if (SettingsData.LoginMode == Constants.LoginMode.Email)
             {
-                 loginSuccess = await LoginWithEmail(model);
+                loginSuccess = await LoginWithEmail(model);
             }
-            else if(SettingsData.LoginMode == Constants.LoginMode.ActiveDirectory){
+            else if (SettingsData.LoginMode == Constants.LoginMode.ActiveDirectory)
+            {
 
             }
             if (loginSuccess)
@@ -90,7 +111,7 @@ namespace ZenExpresso.Controllers
                     return false;
                 default:
                     return false;
-                    
+
             }
             return false;
 
