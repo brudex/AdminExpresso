@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -124,9 +125,16 @@ namespace ZenExpresso
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            }); 
+            });
 
-           MemDb.Instance.Init();
+
+
+            var context = app.ApplicationServices.GetService<ApplicationDbContext>();
+            // Getting required parameters in order to get the user manager
+            var userStore = new UserStore<ApplicationUser>(context);
+            // Finally! get the user manager!
+            var userManager = new UserManager<ApplicationUser>(userStore,);
+            MemDb.Instance.Init();
         }
     }
 }
