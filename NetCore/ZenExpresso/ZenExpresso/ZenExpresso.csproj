@@ -9,8 +9,7 @@
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
   </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
         <ProjectReference Include="..\ZenExpressoCore\ZenExpressoCore.csproj" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
 	    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="5.0.0-rc.1.20451.14" /> 

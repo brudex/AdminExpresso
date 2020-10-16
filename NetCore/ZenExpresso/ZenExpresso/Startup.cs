@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -40,7 +40,7 @@ namespace ZenExpresso
 
             services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(connectionString));
-
+            
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.User.AllowedUserNameCharacters = null;
             })
@@ -125,15 +125,23 @@ namespace ZenExpresso
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            }); 
+           
+            int noOfUsers = DbHandler.Instance.GetUsersCount();
+            if (noOfUsers == 0)
+            {
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
+                    var user = new ApplicationUser() { Email = "brudexgh@gmail.com" ,UserName = "brudexgh@gmail.com" };
+                    var result = userManager.CreateAsync(user, "Pass@1234").Result;
+                    if (result.Succeeded)
+                    {
+                        Logger.Info(this, "Initial account created.");
+                    }
+                } 
 
-
-
-            var context = app.ApplicationServices.GetService<ApplicationDbContext>();
-            // Getting required parameters in order to get the user manager
-            var userStore = new UserStore<ApplicationUser>(context);
-            // Finally! get the user manager!
-            var userManager = new UserManager<ApplicationUser>(userStore,);
+            }
             MemDb.Instance.Init();
         }
     }

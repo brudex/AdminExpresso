@@ -184,7 +184,7 @@ namespace ZenExpressoCore
             }
         }
 
-        internal int GetUsersCount()
+        public int GetUsersCount()
         {
             using (var connection = GetOpenDefaultConnection())
             {
