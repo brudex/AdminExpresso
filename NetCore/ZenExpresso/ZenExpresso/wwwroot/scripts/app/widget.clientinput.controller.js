@@ -72,10 +72,31 @@
             console.log('Saving form inputs>>>');
             var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
             obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
+            obj.htmlbind = buildHtmlBindView();
             DataHolder.saveData('client', obj);
             vm.formControls = [];
         }
-         
+
+        function buildHtmlBindView() {
+            var html = '';
+            html += '<table class="table">';
+            html += '<tr>';
+            html += '<th>FieldLabel </th>';
+            html += '<th>FieldName</th>';
+            html += '<th>FieldType</th>';
+            html += '<th>Validation</th>';
+            html += '<tr>';
+            vm.formControls.forEach(function(item) {
+                html += '<tr>';
+                html += '<td>'+item.fieldLabel+'</td>';
+                html += '<td>' + item.fieldName +'</td>';
+                html += '<td>' + item.fieldType +'</td>';
+                html += '<td>' + item.validation +'</td>';
+                html += '<tr>'; 
+            });
+            html += '<table>';
+            return html;
+        }
        
     }
 })();

@@ -17,7 +17,7 @@
                             <h4>Sql Query</h4>
                             <textarea data-ng-model="vm..model.sqlQuery" name="sqlCode" cols="10" rows="8" class="form-control"></textarea>
                             <br/>
-                            <div class="row">
+                            <div class="row" data-ng-show="vm.formControls.length">
                                 <div class="col-md-12">
                                     <h5 class="row">Available Parameters</h5>
                                     <div class="row">
@@ -31,10 +31,10 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr data-ng-repeat="item in vm.model.parameters">
-                                                    <td><span data-ng-bind="item.parameterLabel"></span></td>
-                                                    <td><span data-ng-bind="item.parameterName"></span></td>
-                                                    <td><span data-ng-bind="item.parameterType"></span></td>
+                                                <tr data-ng-repeat="item in vm.formControls">
+                                                    <td><span data-ng-bind="item.fieldLabel"></span></td>
+                                                    <td><span data-ng-bind="item.fieldName"></span></td>
+                                                    <td><span data-ng-bind="item.fieldType"></span></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

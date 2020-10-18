@@ -12,6 +12,7 @@
         vm.model = { sqlQuery: '' };
         var isEditting = false;
         vm.formControls = []; 
+      
 
         vm.saveData = function() {
             console.log('Checking validations >>>');
@@ -26,6 +27,15 @@
             vm.model = { headers: [], basicAuth: {} };
         }
 
+        vm.init = function () {
+            vm.formControls = [];
+            var currentWidgetOption = DataHolder.getValue('currentWidgetOption');
+            if (currentWidgetOption === 'postAction') {
+                var inputForm = DataHolder.getData('client');
+                vm.formControls = inputForm.data.formControls;
+                console.log('Form controls populated');
+            }
+        }
 
     }
 })();

@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('AdvancedTaskFlowController', AdvancedTaskFlowController);
-    AdvancedTaskFlowController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder'];
-    function AdvancedTaskFlowController(services, utils, $window, DataHolder) {
+    AdvancedTaskFlowController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder','$sce'];
+    function AdvancedTaskFlowController(services, utils, $window, DataHolder, $sce) {
         var vm = this;
         vm.errorMsg = [];
         vm.errorParameter = []; 
@@ -12,16 +12,19 @@
         vm.clientFlows = [];
         vm.postActionsFlows = [];
         vm.clientResultFlows = [];
-
         vm.successMsg = [];
         vm.topMenus = [];
         vm.model = {parameters:[]};
         vm.formSubmitted = false;
         vm.parameter = {};
         var isEditting = false;
-           
+
+        vm.trustAsHtml = function (html) {
+            return $sce.trustAsHtml(html);
+        }
 
         function addFlow(data) {
+            console.log(JSON.stringify(data));
             switch (data.flowGroup) {
                 case "client":
                     vm.clientFlows.push(data);
@@ -33,7 +36,7 @@
                     vm.postActionsFlows.push(data);
                     break;
                 case "clientResult":
-                    vm.postActionsFlows.push(data);
+                    vm.clientResultFlows.push(data);
                     break;
             }
         }
@@ -41,6 +44,10 @@
         vm.saveWidgetData = function (key, data) {
             console.log('Saving widget data >>>', data);
             addFlow(data); 
+        }
+
+        vm.onModalOpen = function(modalName) {
+            console.log('Tracked model opened >>' + Date.now());
         }
 
         vm.saveInputValidation = function () {
@@ -89,6 +96,7 @@
                 }
                 break;
             }
+            DataHolder.setValue('currentWidgetOption',group);
         }
 
         function buildPayload() {             

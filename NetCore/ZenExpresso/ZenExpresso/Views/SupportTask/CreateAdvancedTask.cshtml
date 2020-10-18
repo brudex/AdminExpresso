@@ -56,7 +56,7 @@
                                             <div class="list-group">
                                                 <div class="list-group-item active" href="#">
                                                     <h4 class="list-group-item-heading">
-                                                        <span data-ng-bind="vm.model.conrolName">Sql Query</span>
+                                                        <span data-ng-bind="vm.model.controlName">Sql Query</span>
                                                         <button class="btn btn-sm btn-primary">
                                                             <i class="fa fa-pencil"></i>
                                                         </button>
@@ -78,21 +78,21 @@
                                         <div id="ptab2" class="tab-pane">
                                             <div class="list-group">
                                                 <div class="list-group-item active" data-ng-repeat="item in vm.clientFlows">
-                                                    <h4 class="list-group-item-heading">
-                                                        <span data-ng-bind="item.conrolName">Sql Query</span>
+                                                    <h4 class="list-group-item-heading">    
+                                                        <span data-ng-bind="item.controlName">Client Render</span>
                                                         <button class="btn btn-sm btn-primary">
                                                             <i class="fa fa-pencil"></i>
                                                         </button>
                                                         <button class="btn btn-sm btn-danger">
                                                             <i class="fa fa-trash-o"></i>
                                                         </button>
-                                                        <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#collapse1">
+                                                        <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#collapse2">
                                                             <span class=""><i class="fa fa-chevron-down"></i></span>
                                                         </button>
                                                     </h4>
-                                                    <div class="collapse" id="collapse1">
+                                                    <div class="collapse" id="collapse2">
                                                         <p class="list-group-item-text">
-                                                            Collapsed form controls
+                                                           <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p> 
                                                         </p>
                                                     </div>
                                                 </div>
@@ -102,18 +102,18 @@
 
                                             <div class="list-group-item active" data-ng-repeat="item in vm.postActionsFlows">
                                                 <h4 class="list-group-item-heading">
-                                                    <span data-ng-bind="item.conrolName">Sql Query</span>
+                                                    <span data-ng-bind="item.controlName">Sql Query</span>
                                                     <button class="btn btn-sm btn-primary">
                                                         <i class="fa fa-pencil"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-danger">
                                                         <i class="fa fa-trash-o"></i>
                                                     </button>
-                                                    <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#collapse1">
+                                                    <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#collapse3">
                                                         <span class=""><i class="fa fa-chevron-down"></i></span>
                                                     </button>
                                                 </h4>
-                                                <div class="collapse" id="collapse1">
+                                                <div class="collapse" id="collapse3">
                                                     <p class="list-group-item-text">
                                                         Collapsed form controls
                                                     </p>
@@ -190,7 +190,7 @@
                             <h5>Server Widgets</h5>
                             <ul class="list-group">
                                 <li class="list-group-item list-group-item-info">
-                                    <button class="badge btn" data-toggle="modal" data-target="#sqlModal">
+                                    <button class="badge btn" data-toggle="modal" data-target="#sqlModal" data-ng-click="vm.onModalOpen('sqlModal')">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                     Sql Query
@@ -239,20 +239,20 @@
 
         </div>
 
-        @Html.Partial("_FormInputWidget")
-        @Html.Partial("_FormatValidationWidget")
-        @Html.Partial("_OuptutTransformWidget")
-        @Html.Partial("_TabularOutputWidget")
-        @Html.Partial("_SuccessMessageOutputWidget")
+        @await Html.PartialAsync("_FormInputWidget")
+        @await Html.PartialAsync("_FormatValidationWidget")
+        @await Html.PartialAsync("_OuptutTransformWidget")
+        @await Html.PartialAsync("_TabularOutputWidget")
+        @await Html.PartialAsync("_SuccessMessageOutputWidget")
 
         @* Server Widgets *@
-        @Html.Partial("_SqlScriptWidget")
-        @Html.Partial("_RestApiWidget")
-        @Html.Partial("_DataTransformationWidget")
-        @Html.Partial("_MergeTablesWidget")
-        @Html.Partial("_ExportDataWidget")
-        @Html.Partial("_SeverSideJavascriptWidget")
-        @Html.Partial("_LooperWidget")
+        @await Html.PartialAsync("_SqlScriptWidget")
+        @await Html.PartialAsync("_RestApiWidget")
+        @await Html.PartialAsync("_DataTransformationWidget")
+        @await Html.PartialAsync("_MergeTablesWidget")
+        @await Html.PartialAsync("_ExportDataWidget")
+        @await Html.PartialAsync("_SeverSideJavascriptWidget")
+        @await Html.PartialAsync("_LooperWidget")
     </div><!--/col-md-12-->
 </div>
 

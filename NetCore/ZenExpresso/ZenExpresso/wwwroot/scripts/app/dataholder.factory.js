@@ -6,7 +6,7 @@
     function DataHolder($http, $window) {
         var subscribedFuncs = [];
         var dataWareHouse = {
-
+            
         }
 
         function subscribeToSaveAlerts(fun) {
@@ -24,10 +24,20 @@
             return dataWareHouse[key];
         }
 
+        function setValue(key,data) {
+            dataWareHouse[key] = data;
+        }
+        function getValue(key) {
+            return dataWareHouse[key];
+        }
+
         return {
             saveData: saveData,
             getData: getData,
-            subscribeToSaveAlerts
+            subscribeToSaveAlerts,
+            setValue: setValue,
+            getValue: getValue
+
         } 
 
     }
