@@ -39,6 +39,7 @@
                                                         <option value="text">Text</option>
                                                         <option value="textarea">Text Area</option>
                                                         <option value="number">Numeric </option>
+                                                        <option value="date">Date </option>
                                                         <option value="checkbox">CheckBox Field</option>
                                                         <option value="select">Single-Select </option>
                                                         <option value="multiselect">Multi-Select </option>
@@ -135,8 +136,10 @@
                                             </td>
                                             <td data-ng-bind="item.inputFormat"></td>
                                             <td>
-                                                <button type="button" class="btn btn-xs btn-info" data-ng-click="vm.editDataSource($index)">Edit</button>
-                                                <button type="button" class="btn btn-xs btn-danger" data-ng-click="vm.removeDataSource($index)">Delete</button>
+                                                <div data-ng-hide="item.isFlowItem">
+                                                    <button type="button" class="btn btn-xs btn-info" data-ng-click="vm.editDataSource($index)">Edit</button>
+                                                    <button type="button" class="btn btn-xs btn-danger" data-ng-click="vm.removeDataSource($index)">Delete</button>
+                                                </div> 
                                             </td>
                                         </tr>
                                         </tbody>

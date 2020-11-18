@@ -74,6 +74,18 @@ namespace ZenExpressoCore
             }
         }
 
+        public List<TaskFlowItem> GetAdvancedTaskFlowItems(int supportTaskFlowId,string flowGroup)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var p1 = Predicates.Field<TaskFlowItem>(f => f.supportTaskFlowId, Operator.Eq, supportTaskFlowId);
+                var p2 = Predicates.Field<TaskFlowItem>(f => f.flowGroup, Operator.Eq, flowGroup);
+                var predicate = Predicates.Group(GroupOperator.And, p1, p2);
+                var list = connection.GetList<TaskFlowItem>(predicate);
+                return list.ToList();
+            }
+        }
+
         public void DeleteTopMenuById(int id)
         {
             using (var connection = GetOpenDefaultConnection())
@@ -146,19 +158,19 @@ namespace ZenExpressoCore
                     }
                 case "sybase":
                     {
-                        if (dataSource.useRawConnectingString)
-                        {
-                            var conString = string.Format(dataSource.connectionString, userId, pass);
-                            connection = new Sybase.Data.AseClient.AseConnection(conString);
-                            connection.Open();
-                        }
-                        else
-                        {
-                            string conString = string.Format("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4};CharSet=utf8;", dataSource.serverIp, dataSource.serverPort,
-                            dataSource.defaultDatabase, userId, pass);
-                            connection = new Sybase.Data.AseClient.AseConnection(conString);
-                            connection.Open();
-                        }
+                        // if (dataSource.useRawConnectingString)
+                        // {
+                        //     var conString = string.Format(dataSource.connectionString, userId, pass);
+                        //     connection = new Sybase.Data.AseClient.AseConnection(conString);
+                        //     connection.Open();
+                        // }
+                        // else
+                        // {
+                        //     string conString = string.Format("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4};CharSet=utf8;", dataSource.serverIp, dataSource.serverPort,
+                        //     dataSource.defaultDatabase, userId, pass);
+                        //     connection = new Sybase.Data.AseClient.AseConnection(conString);
+                        //     connection.Open();
+                        // }
                         break;
                     }
             }
@@ -235,6 +247,15 @@ namespace ZenExpressoCore
             using (var connection = GetOpenDefaultConnection())
             {
                 var affected = connection.Execute("delete from ScriptParameter where supportTaskId =@id", new { id });
+                return affected > 0;
+            }
+        }
+
+        public bool DeleteTaskFlowItemByTaskId(int id)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var affected = connection.Execute("DELETE FROM [dbo].[TaskFlowItem] supportTaskFlowId =@id", new { id });
                 return affected > 0;
             }
         }

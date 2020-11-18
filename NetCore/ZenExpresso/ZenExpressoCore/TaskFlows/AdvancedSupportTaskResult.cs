@@ -1,58 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using ZenExpressoCore.Models;
 
 namespace ZenExpressoCore.TaskFlows
 {
-    public class AdvancedSupportTaskResult : SupportTaskResult
+    public class AdvancedSupportTaskResult : ServiceResponse
     {
-       
         private List<TaskFlowItem> taskFlowItems;
-        private List<TaskFlowResult> taskFlowResults;
-
-        public AdvancedSupportTaskResult(SupportTask task) : base(task)
+        private SupportTask _supportTask;
+        public List<TaskFlowResult> taskFlowResults { get; set; }
+        public AdvancedSupportTaskResult(SupportTask supportTask, List<TaskFlowItem> taskFlowItems) 
         {
-        }
-
-        public AdvancedSupportTaskResult(SupportTask supportTask, List<TaskFlowItem> taskFlowItems) : base(supportTask)
-        {
-            taskFlowResults=new List<TaskFlowResult>();
+            _supportTask = supportTask;
+            taskFlowResults = new List<TaskFlowResult>();
             this.taskFlowItems = taskFlowItems;
         }
 
-        public new void ExecuteResult()
+        public SupportTask GetSupportTask()
         {
-            var inputFlowItem = taskFlowItems.FirstOrDefault(x => x.flowItemType == "inputForm");
-             List<ScriptParameter> inputList = new List<ScriptParameter>();
-            if (inputFlowItem != null)
+            return _supportTask;
+        }
+        public  void ExecuteResult(ClientInputTaskFlowItem clientInputTaskFlow=null)
+        {
+          
+            List<ScriptParameter> inputList = new List<ScriptParameter>();
+            if (clientInputTaskFlow != null)
             {
-                 ClientInputTaskFlowItem clientInputTaskFlow = new ClientInputTaskFlowItem(inputFlowItem);
                  inputList = clientInputTaskFlow.GetClientInputs();
             }
-            foreach (var taskFlowItem in taskFlowItems)
+            try
             {
-                TaskFlowItem flowItem = null;
-                switch (taskFlowItem.flowItemType)
+                foreach (var taskFlowItem in taskFlowItems)
                 {
-
-                    case "javascriptProcess":
-                        flowItem = new JavascriptTaskFlowItem(taskFlowItem);
-                        break;
-                    case "sqlSquery":
-                        flowItem = new SqlTaskFlowItem(taskFlowItem);
-                        break;
-                    case "restApi":
-                        flowItem = new RestApiTaskFlowItem(taskFlowItem);
-                        break;
+                   // TaskFlowItem flowItem = null;
+                    ITaskExecutor flowItem = null;
+                    switch (taskFlowItem.flowItemType)
+                    {
+                        case "javascriptProcess":
+                            flowItem = new JavascriptTaskFlowItem(taskFlowItem);
+                            break;
+                        case "sqlQuery":
+                            flowItem = new SqlTaskFlowItem(taskFlowItem);
+                            break;
+                        case "restApi":
+                            flowItem = new RestApiTaskFlowItem(taskFlowItem);
+                            break;
+                    }
+                    if (flowItem != null)
+                    {
+                        var result = flowItem.ExecuteResult(inputList, taskFlowResults);
+                        taskFlowResults.Add(result);
+                    }
                 }
-                if (flowItem != null)
-                {
-                    var result = flowItem.ExecuteResult(inputList, taskFlowResults);
-                    taskFlowResults.Add(result);
-                }
+                status = "00";
+                message = "Task Executed Successfully";
+               // data = taskFlowResults;
             }
-           
+            catch (Exception ex)
+            {
+                status = "07";
+                Logger.Error(this, ex);
+                message = ex.Message;
+            }
         }
 
        

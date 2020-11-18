@@ -107,8 +107,7 @@ namespace ZenExpresso.Helpers
         } 
          
         public void SetupInitialAdmin()
-        {
-           
+        { 
 
             var admins = DbHandler.Instance.GetList<DedicatedAdmin>();
             if (admins.Count == 0)

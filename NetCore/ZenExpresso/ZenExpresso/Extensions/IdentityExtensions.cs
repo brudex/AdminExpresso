@@ -6,7 +6,9 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using ZenExpresso.Helpers;
+using ZenExpresso.Models;
 
 namespace ZenExpresso
 {
@@ -30,14 +32,10 @@ namespace ZenExpresso
         public static async Task CustomSignInWithAdditionalClaimsAsync<TIdentityUser>(this SignInManager<TIdentityUser> signInManager, TIdentityUser user, bool isPersistent) where TIdentityUser : IdentityUser
         {
             var claimsPrincipal = await signInManager.CreateUserPrincipalAsync(user);
-            if (claimsPrincipal?.Identity is ClaimsIdentity claimsIdentity)
-            {
-                var claims = GetUserClaims(user.UserName);
-                claimsIdentity.AddClaims(claims);
-            }
             await signInManager.Context.SignInAsync(IdentityConstants.ApplicationScheme,
                 claimsPrincipal,
                 new AuthenticationProperties { IsPersistent = isPersistent });
+             
         }
 
         public static  List<Claim> GetUserClaims(string userName)
@@ -54,32 +52,28 @@ namespace ZenExpresso
 
         
          
+ 
+
+}
 
 
+    public class CustomClaimsPrincipalFactory : UserClaimsPrincipalFactory<ApplicationUser>
+    {
+        public CustomClaimsPrincipalFactory(
+            UserManager<ApplicationUser> userManager,
+            IOptions<IdentityOptions> optionsAccessor)
+            : base(userManager, optionsAccessor)
+        {
+        }
 
-//        public class CustomClaimsCookieSignInHelper<TIdentityUser> where TIdentityUser : IdentityUser
-//        {
-//            private readonly SignInManager<TIdentityUser> _signInManager;
-//
-//            public CustomClaimsCookieSignInHelper(SignInManager<TIdentityUser> signInManager)
-//            {
-//                _signInManager = signInManager;
-//            }
-//
-//            public async Task SignInUserAsync(TIdentityUser user, bool isPersistent)
-//            {
-//                var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
-//                if (claimsPrincipal?.Identity is ClaimsIdentity claimsIdentity)
-//                {
-//                    var claims = GetUserClaims(user.UserName); 
-//                    claimsIdentity.AddClaims(claims);
-//                }
-//                await _signInManager.Context.SignInAsync(IdentityConstants.ApplicationScheme,
-//                    claimsPrincipal,
-//                    new AuthenticationProperties { IsPersistent = isPersistent });
-//            }
-//
-//           
-//        }
+        protected override async Task<ClaimsIdentity> GenerateClaimsAsync(ApplicationUser user)
+        {
+            var identity = await base.GenerateClaimsAsync(user);
+            //identity.AddClaim(new Claim("ContactName", user.ContactName ?? "[Click to edit profile]"));
+            string userName = user.UserName;
+            var claims = IdentityExtensions.GetUserClaims(userName);
+            claims.ForEach(c=>identity.AddClaim(c));
+            return identity;
+        }
     }
 }

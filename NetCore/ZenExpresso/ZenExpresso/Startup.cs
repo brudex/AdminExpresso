@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,23 +32,24 @@ namespace ZenExpresso
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
+            if (_env.IsDevelopment())
+            {
+                services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
+            }
+            services.AddControllersWithViews().AddNewtonsoftJson();
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             //services.AddDbContext<ApplicationDbContext>();
-
             services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(connectionString));
-            
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.User.AllowedUserNameCharacters = null;
-            })
+            }).AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
             services.AddAuthentication();  
-
-
-
+              
             services.Configure<IdentityOptions>(options =>
             {
                 //Password settings
@@ -103,7 +103,8 @@ namespace ZenExpresso
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage(); 
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
             else
             {

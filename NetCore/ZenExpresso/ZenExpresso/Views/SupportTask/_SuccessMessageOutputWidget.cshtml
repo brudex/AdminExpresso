@@ -1,5 +1,5 @@
 ﻿<div class="modal fade  " id="successMessageOutputModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="SuccessMessageWidgetController as vm">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -8,40 +8,101 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal group-border-dashed">
-                    <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
-                    <p> 
-                        <div class="row">
-                            <div class="col-sm-11 col-sm-offset-1">
-                                <div class="form-group" >
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <label>Searchable </label>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="radio" class="form-control parsley-validated" required="" placeholder="Field Name" data-ng-model="item.fieldName">
-                                        </div> 
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="col-md-12">Status Code Field</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.model.fieldName">
                                     </div>
-                                    <br/> 
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <label>Export Buttons </label>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <input type="radio" class="form-control parsley-validated" required="" placeholder="Field Name" data-ng-model="item.fieldName">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="col-md-12">Status Code Value</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control " required="" placeholder=" Value" data-ng-model="vm.model.code">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="col-md-12">Status Message <input type="checkbox" data-ng-model="vm.model.enterMessage">Static </label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.model.messageField" data-ng-hide="vm.model.enterMessage">
+                                        <input type="text" class="form-control " required="" placeholder="Enter Message" data-ng-model="vm.model.staticMessage" data-ng-show="vm.model.enterMessage">
+                                    </div>
+                                 </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="col-md-12">Alert Type </label>
+                                    <div class="col-md-12">
+                                        <select type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.model.alertType">
+                                            <option value="success">Success</option>
+                                            <option value="error">Error</option>
+                                            <option value="warning">Warning</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="col-md-2"> 
+                                    <div class="form-group">
+                                        <label class="col-md-12">Add</label>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <button class="btn btn-sm btn-primary btn-block" type="button" data-ng-click="vm.addStatusCode()">Add</button>
+                                            </div> 
                                         </div>
                                     </div> 
-                                    <hr class="col-sm-9" style="border-bottom: 1px solid #8b0000"/>
+                            </div>  
+                        </div>
+                    </div>
+
+                    <div class="row" data-ng-show="vm.statusCodes.length">
+                        <div class="col-md-12">
+                            <h5>Status Message Configs</h5>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <table class="table table-sm table-responsive">
+                                        <thead>
+                                        <tr>
+                                            <td>Status Code Field</td>
+                                            <td>Status Code Value</td>
+                                            <td>Status Message</td>
+                                            <td>Alert Type</td>
+                                            <td>..</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="item in vm.statusCodes">
+                                            <td><span data-ng-bind="item.fieldName"></span></td>
+                                            <td><span data-ng-bind="item.code"></span></td>
+                                            <td>
+
+                                                <span data-ng-hide="item.enterMessage" data-ng-bind="item.messageField"></span>
+                                                <span data-ng-show="item.enterMessage" data-ng-bind="item.staticMessage"></span>
+
+                                            </td>
+                                            <td><span data-ng-bind="item.alertType"></span></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" type="button" data-ng-click="vm.deleteStatusCodes($index)">Delete</button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                    </p>
+                    </div>
 
-                   
                 </form>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-ng-click="vm.saveFormInputControls()">Save</button>
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

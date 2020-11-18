@@ -5,9 +5,12 @@
     DataHolder.$inject = ['$http', '$window'];
     function DataHolder($http, $window) {
         var subscribedFuncs = [];
+        var parentFunctions = {};
         var dataWareHouse = {
             
         }
+
+
 
         function subscribeToSaveAlerts(fun) {
             subscribedFuncs.push(fun);
@@ -23,7 +26,7 @@
         function getData(key) {
             return dataWareHouse[key];
         }
-
+         
         function setValue(key,data) {
             dataWareHouse[key] = data;
         }
@@ -31,13 +34,23 @@
             return dataWareHouse[key];
         }
 
+        function setParentFunctions(actions) {
+            parentFunctions = actions;
+            console.log('parent Actions set', parentFunctions);
+        }
+
+        function getParentFunctions() {
+            console.log('parent Actions set', parentFunctions);
+            return parentFunctions;
+        }
         return {
             saveData: saveData,
             getData: getData,
             subscribeToSaveAlerts,
             setValue: setValue,
-            getValue: getValue
-
+            getValue: getValue,
+            getParentFunctions: getParentFunctions,
+            setParentFunctions: setParentFunctions
         } 
 
     }

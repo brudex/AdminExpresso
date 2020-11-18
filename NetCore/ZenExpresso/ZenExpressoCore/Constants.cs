@@ -20,5 +20,12 @@ namespace ZenExpressoCore
             public static string Email = "Email";
             public static string ActiveDirectory = "ActiveDirectory";
         }
+
+        public class TaskType
+        {
+
+            public static string BasicTaskFlow = "BasicTaskFlow";
+            public static string AdvancedTaskFlow = "AdvancedTaskFlow";
+        }
     }
 }

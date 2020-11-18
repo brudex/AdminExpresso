@@ -6,7 +6,7 @@ using ZenExpressoCore.Models;
 
 namespace ZenExpressoCore.TaskFlows
 {
-    public class SqlTaskFlowItem : TaskFlowItem
+    public class SqlTaskFlowItem : TaskFlowItem, ITaskExecutor
     {
         private string _dbusername;
         private string _dbPass;
@@ -15,10 +15,10 @@ namespace ZenExpressoCore.TaskFlows
         public SqlTaskFlowItem(TaskFlowItem flowItem):base(flowItem)
         { 
             var jsonFlowData = JObject.Parse(flowItem.flowData);
-            _sqlScript = jsonFlowData["sqlScrpt"].ToStringOrEmpty();
+            _sqlScript = jsonFlowData["sqlQuery"].ToStringOrEmpty();
             _dbPass = jsonFlowData["dbPass"].ToStringOrEmpty();
             _dbusername = jsonFlowData["dbusername"].ToStringOrEmpty();
-            string dataSourceName = jsonFlowData["dataSourName"].ToStringOrEmpty();
+            string dataSourceName = jsonFlowData["dataSource"].ToStringOrEmpty();
             _dataSource = MemDb.Instance.GetDataSourceByName(dataSourceName);
 
         }
@@ -54,30 +54,31 @@ namespace ZenExpressoCore.TaskFlows
                 sql = sql.Replace("@" + parameter.parameterName, replaceVal);
                 sql = sql.Replace("${" + parameter.parameterName + "}", parameter.parameterValue);
             }
-
             return sql;
         }
 
-        public new TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
+        public TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
         {
             List<dynamic> result = null;
             var response = new TaskFlowResult();
+            response.flowItemType = flowItemType;
+            response.description = description;
+            response.controlIdentifier = controlIdentifier;
             try
             {
-                var sqlScript = flowData;
+                var sqlScript = _sqlScript;
                 if (inputList.Count > 0)
                 {
                     sqlScript = InterpolateParams(sqlScript, inputList);
                 }
-
                 if (resultSequence.Count > 0)
                 {
                     List<PlaceHolder> placeholders = TaskFlowUtilities.ExtractPlaceHolders(sqlScript);
                     sqlScript = TaskFlowUtilities.InterpolateSequenceParams(sqlScript,placeholders, resultSequence);
                 }
-                
                 result = ExecuteSql(sqlScript);
                 response.status = "00";
+                response.message = "Success";
                 response.data = result;
             }
             catch (Exception ex)

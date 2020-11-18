@@ -38,6 +38,7 @@ namespace ZenExpressoCore.Models
         {
             foreach (var taskFlowItem in flowItems)
             {
+                taskFlowItem.supportTaskFlowId = id;
                 DbHandler.Instance.Save(taskFlowItem);
             }
         }
@@ -119,6 +120,25 @@ namespace ZenExpressoCore.Models
             return 0;
         }
 
+        public int SaveAdvancedTaskFlow()
+        {
+
+            if (id == 0)
+            {
+                id = DbHandler.Instance.Save(this);
+                return id;
+            }
+            var updated = DbHandler.Instance.Update(this);
+            if (updated)
+            {
+                DbHandler.Instance.DeleteTaskFlowItemByTaskId(id);
+            }
+
+            return id;
+        }
+
+
+
         public void SetParameterValues(JObject value)
         {
             GetScriptParameters();
@@ -158,6 +178,11 @@ namespace ZenExpressoCore.Models
         public List<TaskFlowItem> GetFlowItemsForAdvancedTask()
         {
             return DbHandler.Instance.GetAdvancedTaskFlowItems(id);
+        }
+
+        public List<TaskFlowItem> GetFlowItemsForAdvancedTask(string flowGroup)
+        {
+            return DbHandler.Instance.GetAdvancedTaskFlowItems(id,flowGroup);
         }
     }
 

@@ -9,23 +9,24 @@
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
   </ItemGroup>
-	<ItemGroup>
-        <ProjectReference Include="..\ZenExpressoCore\ZenExpressoCore.csproj" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
+  <ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+		<ProjectReference Include="..\ZenExpressoCore\ZenExpressoCore.csproj" />
+	    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
 	    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="5.0.0-rc.1.20451.14" /> 
-        <PackageReference Include="Dapper" Version="1.50.5" />
-        <PackageReference Include="Extend" Version="1.2.1" />
-        <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.4"><Publish Condition="'%(PackageReference.Version)' == ''">true</Publish><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+	    <PackageReference Include="Dapper" Version="1.50.5" />
+	    <PackageReference Include="Extend" Version="1.2.1" />
+	    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.4"><Publish Condition="'%(PackageReference.Version)' == ''">true</Publish><PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
 		</PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" /> 
-
-	  <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
-	  
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
   </ItemGroup>
 
     <ItemGroup>
@@ -33,7 +34,6 @@
 		    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	    </Content>
     </ItemGroup>
-
 
 
 </Project>

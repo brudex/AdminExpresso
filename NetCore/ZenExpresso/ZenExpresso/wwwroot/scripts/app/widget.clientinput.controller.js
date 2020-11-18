@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('ClientInputWidgetController', ClientInputWidgetController);
-    ClientInputWidgetController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder'];
-    function ClientInputWidgetController(services, utils, $window, DataHolder) {
+    ClientInputWidgetController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder','$scope'];
+    function ClientInputWidgetController(services, utils, $window, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
@@ -12,9 +12,31 @@
         vm.dataSources = [];
         vm.dataSourceEditIndex = -1;
         vm.parameter = {};
+        var modalName = 'inputFormModal';
         vm.isEdittingDataSource = false;
         var isEditting = false;
         vm.formControls = [];
+
+        $scope.$on('modalOpened', onModalOpen);
+
+        function onModalOpen(event, data) {
+            console.log('The modal ame is >>>', modalName);
+            if (data === modalName) {
+                vm.init();
+            }
+        }
+
+        vm.init = function() {
+            var parentActions = DataHolder.getParentFunctions();
+            console.log('parentActions', parentActions);
+            var dataSources = parentActions.getBeforeRenderDataSources();
+            if (dataSources.length) {
+                dataSources.forEach(function(dt) {
+                    vm.dataSources.push(dt);
+                });
+            }
+        }
+
         vm.addFormControl = function () {
             vm.formControls.push({error: {} });
         }
@@ -24,6 +46,7 @@
        
         vm.addDataSource = function () {
             vm.dataSource.key = _.uniqueId();
+            vm.isFlowItem = false;
             vm.dataSources.push(vm.dataSource);
             vm.dataSource = {};
         }
@@ -73,7 +96,7 @@
             var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
             obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
             obj.htmlbind = buildHtmlBindView();
-            DataHolder.saveData('client', obj);
+            DataHolder.saveData('inputForm', obj);
             vm.formControls = [];
         }
 

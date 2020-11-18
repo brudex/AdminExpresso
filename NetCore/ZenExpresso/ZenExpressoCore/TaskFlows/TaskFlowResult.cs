@@ -9,6 +9,8 @@ namespace ZenExpressoCore.TaskFlows
     public class TaskFlowResult
     {
         public string flowItemType { get; set; }
+        public string controlIdentifier { get; set; }
+        public string description { get; set; }
         public string status { get; set; }
         public string message { get; set; }
         public dynamic data;

@@ -142,8 +142,7 @@
                     utils.alertSuccess("Connection Successful");
                 } else {
                     utils.alertError("Connection Failed");
-                }
-
+                } 
             });
         }
 

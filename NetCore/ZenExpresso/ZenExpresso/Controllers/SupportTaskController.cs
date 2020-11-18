@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using ZenExpresso.Helpers;
- using ZenExpressoCore;
+using ZenExpresso.Models;
+using ZenExpressoCore;
 using ZenExpressoCore.Models;
+using ZenExpressoCore.TaskFlows;
 
 namespace ZenExpresso.Controllers
 {
@@ -105,15 +108,29 @@ namespace ZenExpresso.Controllers
                     Logger.Error(this, "Unauthorized>>" + id);
                     return new StatusCodeResult(403);
                 }
-                return View(supportTask);
+                var viewModel = new TaskResultViewModel();
+                viewModel.supportTask = supportTask;
+                if (supportTask.taskType == Constants.TaskType.AdvancedTaskFlow)
+                {
+                    string staffId = User.Identity.Name;
+                    List<TaskFlowItem> taskFlowItems = supportTask.GetFlowItemsForAdvancedTask("beforeRender");
+                    List<TaskFlowItem> clientRenderFlowItems = supportTask.GetFlowItemsForAdvancedTask("clientRender");
+                    var taskResult = new AdvancedSupportTaskResult(supportTask, taskFlowItems);
+                    taskResult.ExecuteResult();
+                    var executedTask = new ExecutedTasks(taskFlowItems, supportTask, taskResult);
+                    executedTask.executedBy = staffId;
+                    DbHandler.Instance.Save(executedTask);
+                    viewModel.taskResult = taskResult;
+                    viewModel.clientRenderFlows = clientRenderFlowItems;
+                    return View(viewModel);
+                } 
+                return View(viewModel); 
             }
             catch (Exception ex)
             {
                 Logger.Error(this, "Unauthorized>>" , ex);
                 return RedirectToAction("Index","Home");
-            }
-             
-          
+            } 
         }
 
 

@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('AdvancedTaskFlowController', AdvancedTaskFlowController);
-    AdvancedTaskFlowController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder','$sce'];
-    function AdvancedTaskFlowController(services, utils, $window, DataHolder, $sce) {
+    AdvancedTaskFlowController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder','$sce','$scope'];
+    function AdvancedTaskFlowController(services, utils, $window, DataHolder, $sce, $scope) {
         var vm = this;
         vm.errorMsg = [];
         vm.errorParameter = []; 
@@ -18,12 +18,47 @@
         vm.formSubmitted = false;
         vm.parameter = {};
         var isEditting = false;
+        var flowsIncrementer = {
+        }
+
+        var broadcastFunctions = {
+            getFlowCounterIndex: getFlowCounterIndex,
+            getBeforeRenderDataSources: getBeforeRenderDataSources
+        };
+
 
         vm.trustAsHtml = function (html) {
             return $sce.trustAsHtml(html);
         }
 
+        function incrementFlowCounter(flowItemType) {
+            if (flowsIncrementer[flowItemType]) {
+                flowsIncrementer[flowItemType] += 1;
+            } else {
+                flowsIncrementer[flowItemType] = 1;
+            }
+            console.log('The flow item type count', flowsIncrementer);
+        }
+
+        function getFlowCounterIndex(flowItemType) {
+            if (flowsIncrementer[flowItemType]) {
+               return  flowsIncrementer[flowItemType];
+            } else {
+                flowsIncrementer[flowItemType] = 1;
+                return flowsIncrementer[flowItemType];
+            }
+        }
+
+        function getBeforeRenderDataSources() {
+            var array = [];
+            vm.beforeRenderFlows.forEach(function(item) {
+                array.push({ key: item.controlIdentifier, dataSourceName: item.controlIdentifier, inputFormat: item.flowItemType,isFlowItem:true });
+            });
+            return array;
+        }
+
         function addFlow(data) {
+            incrementFlowCounter(data.flowItemType);
             console.log(JSON.stringify(data));
             switch (data.flowGroup) {
                 case "client":
@@ -48,23 +83,9 @@
 
         vm.onModalOpen = function(modalName) {
             console.log('Tracked model opened >>' + Date.now());
+            $scope.$broadcast('modalOpened', modalName);
         }
-
-        vm.saveInputValidation = function () {
-            console.log('Validation and formatting');
-            var obj = { controlName: "Validation and formatting", flowItemType: 'validationFormatting', flowGroup: 'client' };
-            obj.data = vm.validationScript;
-            addFlow(obj);
-            vm.validationScript = '';
-        }
-
-        vm.saveSqlScript = function () {
-            var obj = { controlName: "Sql Query", flowItemType: 'sqlSquery', flowGroup: 'postAction' };
-            obj.data = vm.sqlQuery;
-            addFlow(obj);
-            vm.sqlQuery = '';
-        }
-
+         
         vm.widgetOptions = function (group) {
             switch (group) {
             case "client":
@@ -96,7 +117,7 @@
                 }
                 break;
             }
-            DataHolder.setValue('currentWidgetOption',group);
+           DataHolder.setValue('currentWidgetOption',group);
         }
 
         function buildPayload() {             
@@ -108,12 +129,17 @@
             return payload;
         }
 
+
+        vm.deleteFlowItem = function(flowArrayName,index) {
+            vm[flowArrayName].splice(index, 1);
+        }
+
         vm.submitSupportTask = function (formValid) {
             vm.formSubmitted = true;
             if (true) {
                 vm.errorMsg = [];
-                //var result = $window.validate(vm.model, modelValidateConstraints, { format: "flat" });
                 var payload = buildPayload();
+                console.log('The payload is >>', payload);
                 services.createAdvancedTask(payload, function (response) {
                     console.log(response);
                     if (response.status === "00") {
@@ -125,8 +151,7 @@
                     } else {
                         utils.alertError(response.message);
                     }
-                });
- 
+                }); 
             }
         }
 
@@ -148,93 +173,9 @@
                     });
                 }
             });
+            
         }
-
-        var parameterValidateConstraints = {
-            parameterLabel: {
-                presence: true
-            },
-            parameterName: {
-                presence: true
-            },
-            parameterType: {
-                presence: true
-            },
-            parameterRegex: function (value, attributes, attributeName, options, constraints) {
-                if (attributes.parameterType === 'regex') {
-                    return {
-                        presence: true
-                    };
-                }
-                return false;
-            }
-        }
-
-        var modelValidateConstraints = {
-            taskName: {
-                presence: true
-            },
-            description: {
-                presence: true
-            }, 
-            taskType: {
-                presence: true
-            },
-            taskResultType: {
-                presence: true
-            }, 
-            dbusername: {
-                presence: true
-            },
-            topLevelMenu: {
-                presence: true
-            }, 
-            dbPass: {
-                presence: true
-            },
-            sqlScript: {
-                presence: true
-            },
-            jsScript: function (value, attributes, attributeName, options, constraints) {
-                if (attributes.taskType === 'execJsResult') {
-                    return {
-                        presence: true
-                    };
-                }
-                return false;
-            }
-        }
-         
-        vm.addSqlParameter = function () {
-            vm.errorParameter = [];
-            var result = $window.validate(vm.parameter,parameterValidateConstraints , { format: "flat" });
-            if (result) {
-                vm.errorParameter = result;
-            } else {
-                console.log('pushing result >>', vm.parameter);
-                vm.model.parameters.push(vm.parameter);
-                vm.parameter = {};
-            }
-        }
-
-        vm.removeSqlParameter = function ($index) {
-            vm.model.parameters.splice($index, 1);
-        }
-         
-
-        vm.testConnection = function () {
-            var payload = {};
-            payload.dbusername = vm.model.dbusername;
-            payload.dbPass = vm.model.dbPass;
-            payload.taskType = vm.model.taskType;
-            services.testDbConnection(payload,function (response) {
-                if (response.status === "00") {
-                    utils.alertSuccess("Connection Successful");
-                } else {
-                    utils.alertError("Connection Failed");
-                } 
-            });
-        }
+          
 
         function loadTopMenus() {
             services.getMenuList(function(response) {
@@ -243,9 +184,13 @@
                     vm.topMenus = response.data;
                 }
             });
+
         }
        
         loadTopMenus();
         DataHolder.subscribeToSaveAlerts(vm.saveWidgetData);
+        vm.widgetOptions('beforeRender');
+        console.log('broadcastFunctions', broadcastFunctions);
+        DataHolder.setParentFunctions(broadcastFunctions);
     }
 })(window.jQuery);

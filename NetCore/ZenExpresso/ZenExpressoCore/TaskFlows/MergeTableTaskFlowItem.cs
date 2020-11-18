@@ -8,7 +8,7 @@ using ZenExpressoCore.Models;
 
 namespace ZenExpressoCore.TaskFlows
 {
-    public class MergeTableTaskFlowItem : TaskFlowItem
+    public class MergeTableTaskFlowItem : TaskFlowItem, ITaskExecutor
     {
         private string _dbusername;
         private string _dbPass;
@@ -46,7 +46,7 @@ namespace ZenExpressoCore.TaskFlows
             return new Tuple<string, string>(leftOperandProperty,rightOperandProperty);
         }
 
-        public new TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
+        public  TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
         {
             var taskFlowResult = new TaskFlowResult();
             JArray jMergingRules = JArray.Parse(flowData);

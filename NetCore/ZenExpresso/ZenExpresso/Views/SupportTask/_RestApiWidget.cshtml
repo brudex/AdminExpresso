@@ -18,57 +18,85 @@
                 </ul>
                 <div class="tab-content" style="margin-bottom:5px">
                     <div id="restbody" class="tab-pane fade in active">
-                        <form class="form-horizontal ">
-                             
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-sm-offset-1 col-sm-3">
-                                        <label>Method</label>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" data-ng-model="vm.model.method">
-                                            <option value="">..Method..</option>
-                                            <option value="GET">GET</option>
-                                            <option value="POST">POST</option>
-                                            <option value="PUT">PUT</option>
-                                            <option value="PATCH">PATCH</option>
-                                            <option value="DELETE">DELETE</option>
-                                            <option value="__specify__">__Other Method__</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3" data-ng-show="vm.model.method=='__specify__'">
-                                        <input type="text" class="form-control parsley-validated" placeholder="_Other Request Method_" data-ng-model="vm.model.otherMethod">
+                         
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                       
+                                            <div class=" col-sm-3">
+                                                <label>Method</label>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <select class="form-control" data-ng-model="vm.model.method">
+                                                    <option value="">..Method..</option>
+                                                    <option value="GET">GET</option>
+                                                    <option value="POST">POST</option>
+                                                    <option value="PUT">PUT</option>
+                                                    <option value="PATCH">PATCH</option>
+                                                    <option value="DELETE">DELETE</option>
+                                                    <option value="__specify__">__Other Method__</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" data-ng-show="vm.model.method=='__specify__'">
+                                                <input type="text" class="form-control parsley-validated" placeholder="_Other Request Method_" data-ng-model="vm.model.otherMethod">
+                                            </div>
+                                         
                                     </div>
                                 </div>
-                                </div>
-
-                            <hr style="border-bottom: 1px solid #8b0000"/>
-
-                            <div class="form-group">
-                                <div class="row">
-
-                                    <div class="col-sm-offset-1 col-sm-3">
-                                        <label>Content Type</label>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" data-ng-model="vm.model.contentType">
-                                            <option value="">..Content Type..</option>
-                                            <option value="application/json">application/json</option>
-                                            <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
-                                            <option value="application/xml">application/xml</option>
-                                            <option value="text/xml">text/xml</option>
-                                            <option value="text/html">text/html</option>
-                                            <option value="__specify__">__Other Content Type__</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3" data-ng-show="vm.model.contentType=='__specify__'">
-                                        <input type="text" class="form-control parsley-validated" placeholder="_Other Content Type_" data-ng-model="vm.model.otherContentType">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        
+                                            <div class="col-sm-3">
+                                                <label>Content Type</label>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <select class="form-control" data-ng-model="vm.model.contentType">
+                                                    <option value="">..Content Type..</option>
+                                                    <option value="application/json">application/json</option>
+                                                    <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
+                                                    <option value="application/xml">application/xml</option>
+                                                    <option value="text/xml">text/xml</option>
+                                                    <option value="text/html">text/html</option>
+                                                    <option value="__specify__">__Other Content Type__</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4" data-ng-show="vm.model.contentType=='__specify__'">
+                                                <input type="text" class="form-control parsley-validated" placeholder="_Other Content Type_" data-ng-model="vm.model.otherContentType">
+                                            </div>
+                                        
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                             
+                            <hr style="border-bottom: 1px solid #8b0000"/>  
                         <h5>Request Body</h5>
-                        <textarea cols="10" rows="10" class="form-control" data-ng-model="vm.model.body"></textarea> 
+                            <textarea cols="10" rows="10" class="form-control" data-ng-model="vm.model.body"></textarea> 
+                            <br />
+                            <div class="row" data-ng-show="vm.formControls.length">
+                                <div class="col-md-12">
+                                    <h5 class="row">Available Parameters</h5>
+                                    <div class="row">
+                                        <div class="col-md-11">
+                                            <table class="table table-sm table-responsive">
+                                                <thead>
+                                                <tr>
+                                                    <td>Parameter Label</td>
+                                                    <td>Parameter Name</td>
+                                                    <td>Parameter Type</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr data-ng-repeat="item in vm.formControls">
+                                                    <td><span data-ng-bind="item.fieldLabel"></span></td>
+                                                    <td><span data-ng-bind="item.fieldName"></span></td>
+                                                    <td><span data-ng-bind="item.fieldType"></span></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                     <div id="restheader" class="tab-pane fade">
                         <form class="form-horizontal">

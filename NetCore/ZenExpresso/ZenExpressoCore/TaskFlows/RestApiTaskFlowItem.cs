@@ -9,8 +9,8 @@ using ZenExpressoCore.Models;
 
 namespace ZenExpressoCore.TaskFlows
 {
-   public class RestApiTaskFlowItem : TaskFlowItem
-   {
+   public class RestApiTaskFlowItem : TaskFlowItem, ITaskExecutor
+    {
        
 
        public RestApiTaskFlowItem(TaskFlowItem flowItem) : base(flowItem)
@@ -20,7 +20,7 @@ namespace ZenExpressoCore.TaskFlows
 
        
 
-        public new TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
+        public  TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
         {
 
             flowData = TaskFlowUtilities.InterpolateParams(flowData, inputList);
