@@ -2488,7 +2488,7 @@ input {
 .box-info table tr th, .box-info table tr td { padding-left: 15px; padding-right: 15px;}
 input[type="radio"], input[type="checkbox"] {box-sizing: border-box; cursor: pointer; line-height: normal; margin: 4px 0 0;}
 select { background-color: #FFFFFF; background-image: none !important; border: 1px solid #E5E5E5;filter: none !important;  min-height: 28px;outline: medium none;padding: 3px; width: 220px;}
-select, input[type="file"] { height: 34px !important;line-height: 30px;}
+ input[type="file"] { height: 34px !important;line-height: 30px;}
 #work-progress1{ margin-top:5px;}
 #work-progress2{margin-top:5px;}
 #work-progress3{margin-top:5px;}

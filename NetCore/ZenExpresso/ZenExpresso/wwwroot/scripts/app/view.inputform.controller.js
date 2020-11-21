@@ -47,6 +47,9 @@
 
         function buildSelectOptions(selectOptionsDatasource) {
             var dataSource = [];
+            if (selectOptionsDatasource == null) {
+                return dataSource;
+            }
             var dt = selectOptionsDatasource;
             if (dt.inputFormat === "delimited") {
                 var arr = dt.dropDownOptions.split(/[.,\n;]/);
@@ -117,6 +120,9 @@
                 parameter.parameterType = control.fieldType;
                 if (["select", "multiselect"].indexOf(control.fieldType) > -1) {
                     parameter.optionsList = JSON.stringify(control.dataSource);
+                    if (control.fieldType === 'multiselect') {
+                        parameter.parameterValue = JSON.stringify(control.fieldValue);
+                    }
                 }
                 scriptParameters.push(parameter);
             });

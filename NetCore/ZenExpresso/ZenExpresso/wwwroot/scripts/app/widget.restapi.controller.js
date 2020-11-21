@@ -12,7 +12,7 @@
         vm.header = {};
         var isEditting = false;
         vm.formControls = [];
-        var modalName = 'restApiModal';
+        vm.modalName = 'restApiModal';
         var currentWidgetOption = '';
         $scope.$on('modalOpened', onModalOpen);
 
@@ -79,8 +79,8 @@
         }
 
         function onModalOpen(event, data) {
-            console.log('The modal ame is >>>', modalName);
-            if (data === modalName) {
+            console.log('The modal ame is >>>', vm.modalName);
+            if (data === vm.modalName) {
                 vm.init();
             }
         }

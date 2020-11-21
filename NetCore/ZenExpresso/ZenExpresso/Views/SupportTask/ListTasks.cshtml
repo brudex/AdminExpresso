@@ -33,9 +33,17 @@
                             <td>@task.createdBy</td>
                             <td>
                                 <a class="btn btn-danger btn-xs" href="@Url.Action("DeleteTask", new {id = task.id})">Delete </a>
-                                <a class="btn btn-info btn-xs" href="@Url.Action("EditSupportTask", new {id = task.id})">Edit</a>
+                                @if (task.IsAdvancedTask())
+                                {
+                                   <a class="btn btn-info btn-xs" href="@Url.Action("EditAdvancedTask", new {id = task.id})">Edit</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-info btn-xs" href="@Url.Action("EditSupportTask", new {id = task.id})">Edit</a>
+                                }
                                 <a class="btn btn-primary btn-xs" href="@Url.Action("AssignGroups", new {id = task.id})">Assign Groups</a>
                                 <a class="btn btn-success btn-xs" href="@Url.Action("ExecuteTask", new {id = task.id})">Execute</a>
+
                             </td>
                         </tr>
                     }
@@ -46,7 +54,7 @@
         </section>
     </div>
 </div>
-@section scripts
+@section MyScripts
 {
     <script>
 

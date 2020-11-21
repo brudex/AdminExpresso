@@ -64,6 +64,7 @@ namespace ZenExpresso.Controllers.Api
             task.description = value["description"].ToStringOrEmpty();
             task.topLevelMenu = value["topLevelMenu"].ToStringOrEmpty();
             task.taskType = "AdvancedTaskFlow";
+            task.id = value["id"].ToInteger();
             var beforeRenderFlows = (JArray)value["beforeRenderFlows"];
             var clientFlows = (JArray)value["clientFlows"];
             var postActionsFlows = (JArray)value["postActionsFlows"];
@@ -144,14 +145,24 @@ namespace ZenExpresso.Controllers.Api
         {
             var taskId = value["taskId"].ToInteger();
             var supportTask = DbHandler.Instance.GetSupportTaskById(taskId);
-           
             var response = new ServiceResponse();
             if (supportTask != null)
             {
-                supportTask.dbusername = supportTask.dbusername.Decrypt();
-                supportTask.dbPass = supportTask.dbPass.Decrypt();
-                response.status = "00";
-                response.data = supportTask;
+                if (supportTask.IsAdvancedTask())
+                { 
+                    dynamic data = new System.Dynamic.ExpandoObject();
+                    data.supportTask = supportTask;
+                    data.taskFlows = DbHandler.Instance.GetAdvancedTaskFlowItems(taskId);
+                    response.status = "00";
+                    response.data = data;
+                }
+                else
+                { 
+                    supportTask.dbusername = supportTask.dbusername.Decrypt();
+                    supportTask.dbPass = supportTask.dbPass.Decrypt();
+                    response.status = "00";
+                    response.data = supportTask;
+                }
             }
             else
             {
@@ -254,10 +265,8 @@ namespace ZenExpresso.Controllers.Api
                 PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "ZENITH.ZENITHBANK.COM.GH");
                 GroupPrincipal qbeGroup = new GroupPrincipal(ctx);
                 PrincipalSearcher srch = new PrincipalSearcher(qbeGroup);
-
                 foreach (var found in srch.FindAll())
-                {
-
+                { 
                     if (found.ContextType == ContextType.Domain)
                     {
                         if (found.DisplayName != null)

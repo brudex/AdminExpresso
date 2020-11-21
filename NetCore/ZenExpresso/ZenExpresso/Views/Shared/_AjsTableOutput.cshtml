@@ -46,16 +46,15 @@
                     </div>
                 </div>
                 <div data-ng-if="control.fieldType=='checkbox'" class="form-group">
-                    <label class="col-sm-6 control-label ">
-                        {{control.fieldLabel}}
-                        <input type="checkbox" data-ng-model="control.fieldValue" name="{{control.fieldName}}"  >
-                    </label>
+                    <label class="col-sm-3 col-md-3 control-label" for="{{control.fieldName}}"> {{control.fieldLabel}} </label>
+                    <div class="col-sm-6 col-md-6">
+                        <input type="checkbox" data-ng-model="control.fieldValue" name="{{control.fieldName}}">
+                    </div> 
                 </div>
                 <div data-ng-if="control.fieldType=='multiselect'" class="form-group" data-ng-class="{'has-error': vm.formSubmitted && executeTaskForm[control.fieldName].$invalid }">
                     <label class="col-sm-3 control-label">{{control.fieldLabel}}</label>
                     <div class="col-sm-6">
-                        <select class="form-control" data-ng-model="control.fieldValue" name="{{control.fieldName}}" multiple>
-                            <option value="">[Select One]</option>
+                        <select class="form-control" data-ng-model="control.fieldValue" name="{{control.fieldName}}" multiple="multiple"  size="7">
                             <option  data-ng-repeat="item in control.dataSource" value="{{item.value}}">{{item.label}}</option>
                         </select>
                     </div>

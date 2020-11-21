@@ -124,7 +124,7 @@
             for (var k = 0, len = clientRenderFlows.length; k < len; k++) {
                 var flow = clientRenderFlows[k];
                 flow.flowData = JSON.parse(flow.flowData);
-                if (flow.flowItemType === 'validationScript') {
+                if (flow.flowItemType === 'validationScript') { //todo change to output format script
                     validationScriptsQueue.enqueue(flow); //todo change to execute data transform script
                 } else {
                     flow.flowItemType = flow.flowItemType + '.html';

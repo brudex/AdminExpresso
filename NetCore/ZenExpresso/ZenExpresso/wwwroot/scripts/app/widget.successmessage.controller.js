@@ -12,9 +12,18 @@
         vm.header = {};
         var isEditting = false;
         vm.statusCodes = [];
-        var modalName = 'successMessageOutputModal';
+        vm.modalName = 'successMessageOutputModal';
         var currentWidgetOption = '';
          
+        vm.initDataModel = function (data) {
+            console.log('vm.initDataModel', data);
+            var initData = JSON.parse(data.flowData);
+            vm.model = initData;
+            var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: "clientResult", description: vm.model.description };
+            obj.data = vm.model;
+            obj.htmlbind = buildHtmlBindView();
+            return obj;
+        }
 
         vm.deleteStatusCodes = function (index) {
             console.log('The delete index >>', index);

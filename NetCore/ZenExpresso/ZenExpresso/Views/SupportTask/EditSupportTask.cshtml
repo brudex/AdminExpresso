@@ -8,7 +8,7 @@
 <div class="row" ng-app="app">
     <div class="col-md-12" data-ng-Controller="CreateSupportTaskController as vm">
         <div data-ng-init="vm.init(@Model.id)">
-            @Html.Partial("_SuppotTaskForm",Model.GetDataSources())
+            @await Html.PartialAsync("_SuppotTaskForm",Model.GetDataSources())
         </div> 
     </div><!--/col-md-12-->
 </div>

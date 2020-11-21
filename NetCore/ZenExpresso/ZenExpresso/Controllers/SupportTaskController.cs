@@ -34,15 +34,23 @@ namespace ZenExpresso.Controllers
             if (task != null)
             {
                 return View(task);
-//                if (task.createdBy != User.Identity.Name)
-//                {
-//                    Session["data"] = "Task cannot be edited by any other than the creator";
-//                    return RedirectToAction("Index", "Error");
-//                }
             }
             else
+            { 
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        [DedicatedAdminsAllowed]
+        public ActionResult EditAdvancedTask(int id)
+        {
+            var task = DbHandler.Instance.GetSupportTaskById(id);
+            if (task != null)
             {
-                //Session["data"] = "Task not found";
+                return View(task); 
+            }
+            else
+            { 
                 return RedirectToAction("Index", "Error");
             }
         }

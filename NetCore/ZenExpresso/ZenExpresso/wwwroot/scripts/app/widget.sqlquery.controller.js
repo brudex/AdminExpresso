@@ -11,11 +11,30 @@
         vm.validationScript = '';
         vm.model = { sqlQuery: ''};
         var isEditting = false;
-        var modalName = 'sqlModal';
-        
+        vm.modalName = 'sqlModal';
         vm.formControls = [];
         var currentWidgetOption = '';
         $scope.$on('modalOpened', onModalOpen);
+
+
+        vm.initDataModel = function (data) {
+            currentWidgetOption = data.flowGroup;
+            if (data.flowData && typeof data.flowData==='string') {
+                var initData = JSON.parse(data.flowData);
+                vm.model = initData;
+             } else {
+                vm.model = data.data;
+             } 
+            var obj = { controlName: 'Sql Query', flowItemType: 'sqlQuery', flowGroup: currentWidgetOption, controlIdentifier: vm.model.controlIdentifier };
+            obj.data = vm.model;
+            obj.htmlbind = buildHtmlBindView();
+            return obj;
+        }
+
+        vm.openForEditting = function (flowItem) {
+            //restApiModal, #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
+            $('#'+vm.modalName).modal('show'); 
+        }
 
         vm.saveData = function() {
             console.log('Checking validations >>>');
@@ -82,9 +101,21 @@
         }
 
         function onModalOpen(event, data) {
-            if (data === modalName) {
-                vm.init(); 
-            } 
+            console.log(typeof data);
+            if (typeof data === 'string') {
+                if (data === vm.modalName) {
+                    vm.init();
+                }
+            } else {
+                if (data.modalName === vm.modalName) {
+                    vm.init();
+                    if (data.isEditting) {
+                        isEditting = true;
+                        vm.initDataModel(data.flowItem);
+                    }
+                }
+            }
+            
         }
     }
 })(window.jQuery,window.hljs);

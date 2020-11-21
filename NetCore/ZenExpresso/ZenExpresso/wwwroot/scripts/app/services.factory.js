@@ -5,12 +5,10 @@
     DataService.$inject = ['$http', '$location', '$window'];
     function DataService($http, $location, $window) {
         var baseUrl = $("#___applicationbaseUrl").val();
-        console.log('the app base url >>', baseUrl);
-        if (baseUrl === "") {
+         if (baseUrl === "") {
             baseUrl = "/";
         }
-        console.log('the app base url >>', baseUrl);
-        var spinner = null;
+         var spinner = null;
         var spinTarget = null;
         return {
             listDatabases: postData('api/DbLogManagerApi/ConnectDbListDatabases'),
@@ -100,8 +98,7 @@
                     url =  url + "/" + arguments[0];
                     callback = arguments[1];
                 }
-                console.log('The get url>>' + url);
-                startSpiner();
+                 startSpiner();
                 doGet(url, function (err, response) {
                     stopSpinner();
                     if (err) {

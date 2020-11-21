@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ZenExpresso.Helpers;
 using ZenExpressoCore.Models;
@@ -12,23 +15,24 @@ namespace ZenExpressoCore.TaskFlows
         private string _dbPass;
         private string _sqlScript;
         private DataSource _dataSource;
-        public SqlTaskFlowItem(TaskFlowItem flowItem):base(flowItem)
-        { 
+
+        public SqlTaskFlowItem(TaskFlowItem flowItem) : base(flowItem)
+        {
             var jsonFlowData = JObject.Parse(flowItem.flowData);
             _sqlScript = jsonFlowData["sqlQuery"].ToStringOrEmpty();
             _dbPass = jsonFlowData["dbPass"].ToStringOrEmpty();
             _dbusername = jsonFlowData["dbusername"].ToStringOrEmpty();
             string dataSourceName = jsonFlowData["dataSource"].ToStringOrEmpty();
             _dataSource = MemDb.Instance.GetDataSourceByName(dataSourceName);
-
         }
 
-        protected List<dynamic> ExecuteSql (string sql)
+        protected List<dynamic> ExecuteSql(string sql)
         {
             List<dynamic> result = null;
-            result = DbHandler.Instance.ExecuteTaskScript( sql,_dataSource, _dbusername, _dbPass);
+            result = DbHandler.Instance.ExecuteTaskScript(sql, _dataSource, _dbusername, _dbPass);
             return result;
         }
+
         protected string InterpolateParams(string sql, List<ScriptParameter> parameters)
         {
             foreach (var parameter in parameters)
@@ -44,16 +48,45 @@ namespace ZenExpressoCore.TaskFlows
                         replaceVal = "'" + parameter.parameterValue + "'";
                         break;
                     case "text":
-                    case "dropdown":
-                        replaceVal = "'" + parameter.parameterValue + "'";
+                    case "textarea":
+                   
+                        replaceVal = "'" + parameter.parameterValue + "'"; 
+                        break;
+                        
+                    case "select":
+                         replaceVal = "'" + parameter.parameterValue + "'";
+                        break;
+                     case "multiselect":  
+                         List<string> selected = JsonConvert.DeserializeObject<List<string>>(parameter.parameterValue);
+                         StringBuilder sb = new StringBuilder();
+                         sb.Append($"'{selected.First()}'");
+                         for (int i = 1; i < selected.Count; i++)
+                         {
+                             sb.Append($",'{selected[i]}'");
+                         }
+                        replaceVal = sb.ToString();
+                        break;
+                    case "checkbox":
+                    {
+                        if (string.IsNullOrEmpty(parameter.parameterValue))
+                        {
+                            replaceVal = "0";
+                        }
+                        else
+                        {
+                            replaceVal = parameter.parameterValue == "true" ? "1" : "0";
+                        }
+                    }
                         break;
                     default:
                         replaceVal = "'" + parameter.parameterValue + "'";
                         break;
                 }
+
                 sql = sql.Replace("@" + parameter.parameterName, replaceVal);
                 sql = sql.Replace("${" + parameter.parameterName + "}", parameter.parameterValue);
             }
+
             return sql;
         }
 
@@ -71,11 +104,13 @@ namespace ZenExpressoCore.TaskFlows
                 {
                     sqlScript = InterpolateParams(sqlScript, inputList);
                 }
+
                 if (resultSequence.Count > 0)
                 {
                     List<PlaceHolder> placeholders = TaskFlowUtilities.ExtractPlaceHolders(sqlScript);
-                    sqlScript = TaskFlowUtilities.InterpolateSequenceParams(sqlScript,placeholders, resultSequence);
+                    sqlScript = TaskFlowUtilities.InterpolateSequenceParams(sqlScript, placeholders, resultSequence);
                 }
+
                 result = ExecuteSql(sqlScript);
                 response.status = "00";
                 response.message = "Success";
@@ -87,8 +122,8 @@ namespace ZenExpressoCore.TaskFlows
                 Logger.Error(this, ex);
                 response.message = ex.Message;
             }
+
             return response;
         }
-
     }
 }

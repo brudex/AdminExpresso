@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('ClientInputWidgetController', ClientInputWidgetController);
-    ClientInputWidgetController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder','$scope'];
-    function ClientInputWidgetController(services, utils, $window, DataHolder, $scope) {
+    ClientInputWidgetController.$inject = ['brudexutils', '$window', 'DataHolder','$scope'];
+    function ClientInputWidgetController( utils, $window, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
@@ -12,17 +12,55 @@
         vm.dataSources = [];
         vm.dataSourceEditIndex = -1;
         vm.parameter = {};
-        var modalName = 'inputFormModal';
+        vm.modalName = 'inputFormModal';
         vm.isEdittingDataSource = false;
         var isEditting = false;
         vm.formControls = [];
-
         $scope.$on('modalOpened', onModalOpen);
 
+
+        vm.initDataModel = function (data) {
+            console.log('vm.initDataModel', data); 
+
+            if (data.flowData && typeof data.flowData === 'string') {
+                var initData = JSON.parse(data.flowData);
+                vm.formControls = initData.formControls;
+                vm.dataSources = initData.dataSources;
+            } else {
+                vm.formControls = data.data.formControls;
+                vm.dataSources = data.data.dataSources;
+            } 
+            var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
+            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
+            obj.htmlbind = buildHtmlBindView();
+            return obj;
+        }
+
+        vm.openForEditting = function (flowItem) {
+            //restApiModal, #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
+            $('#' + vm.modalName).modal('show');
+            console.log('The flowItem inputs',flowItem);
+            vm.formControls = flowItem.data.formControls;
+            vm.dataSources = flowItem.data.dataSources;
+            isEditting = true;
+        }
+
         function onModalOpen(event, data) {
-            console.log('The modal ame is >>>', modalName);
-            if (data === modalName) {
-                vm.init();
+            console.log('The event data received is >>>', data);
+            if (typeof data === 'string') {
+                if (data === vm.modalName) {
+                    vm.init();
+                }
+            } else {
+                console.log('Compariing modals', data.modalName);
+                if (data.modalName === vm.modalName) {
+                    vm.init();
+                    console.log('initialized');
+                    if (data.isEditting) {
+                        isEditting = true;
+                        vm.initDataModel(data.flowItem);
+                    }
+                }
             }
         }
 

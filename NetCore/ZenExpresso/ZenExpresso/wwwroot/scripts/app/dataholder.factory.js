@@ -8,9 +8,7 @@
         var parentFunctions = {};
         var dataWareHouse = {
             
-        }
-
-
+        } 
 
         function subscribeToSaveAlerts(fun) {
             subscribedFuncs.push(fun);
@@ -52,6 +50,7 @@
             getParentFunctions: getParentFunctions,
             setParentFunctions: setParentFunctions
         } 
+
 
     }
 })(window.jQuery);

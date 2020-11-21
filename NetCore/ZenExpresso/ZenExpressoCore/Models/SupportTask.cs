@@ -100,8 +100,7 @@ namespace ZenExpressoCore.Models
             else
             {
                 dbusername = dbusername.Encrypt();
-                dbPass = dbPass.Encrypt();
-
+                dbPass = dbPass.Encrypt(); 
             }
             var updated = DbHandler.Instance.Update(this);
             if (updated)
@@ -183,6 +182,11 @@ namespace ZenExpressoCore.Models
         public List<TaskFlowItem> GetFlowItemsForAdvancedTask(string flowGroup)
         {
             return DbHandler.Instance.GetAdvancedTaskFlowItems(id,flowGroup);
+        }
+
+        public bool IsAdvancedTask()
+        {
+            return this.taskType == Constants.TaskType.AdvancedTaskFlow;
         }
     }
 

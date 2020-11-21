@@ -9,12 +9,27 @@
         var _ = utils._;
         vm.errorMsg = [];
         vm.rowAction = {};
-        vm.model = { options: {}, rowActionButtons: [], description: '' };
-
-        
+        vm.model = { options: {}, rowActionButtons: [], description: '' }; 
         var isEditting = false;
         var modalName = 'tabularOutputModal';
-        // $scope.$on('modalOpened', onModalOpen);
+        //$scope.$on('modalOpened', onModalOpen);
+
+        vm.initDataModel = function (data) {
+            console.log('vm.initDataModel', data);
+            var initData = JSON.parse(data.flowData);
+            vm.model = initData;
+            var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: "clientResult", description: vm.model.description };
+            obj.data = vm.model;
+            obj.htmlbind = buildHtmlBindView();
+            return obj;
+        }
+
+        vm.openForEditting = function(flowItem) {
+           // #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
+            $('#tabularOutputModal').modal('show');
+            vm.model = flowItem.data;
+            isEditting = true;
+        }
 
         vm.saveData = function() {
             vm.model.error = {};
