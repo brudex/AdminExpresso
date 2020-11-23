@@ -25,7 +25,6 @@
             getBeforeRenderDataSources: getBeforeRenderDataSources
         };
 
-
         vm.trustAsHtml = function (html) {
             return $sce.trustAsHtml(html);
         }
@@ -91,8 +90,31 @@
             }
         }
 
+        function editFlowAtIndex(data,index) {
+            incrementFlowCounter(data.flowItemType);
+            switch (data.flowGroup) {
+            case "clientRender":
+            case "client":
+                vm.clientFlows.splice(index,1,data);
+                break;
+            case "beforeRender":
+                    vm.beforeRenderFlows.splice(index, 1, data);
+                break;
+            case "postAction":
+                    vm.postActionsFlows.splice(index, 1, data);
+                break;
+            case "clientResult":
+                    vm.clientResultFlows.splice(index, 1, data);
+                break;
+            }
+        }
+
         vm.saveWidgetData = function (key, data) {
-            addFlow(data); 
+            if (data.isEditting) {
+                editFlowAtIndex(data, data.editIndex);
+            } else {
+                addFlow(data); 
+            } 
         }
 
         vm.onModalOpen = function(modalName) {
@@ -156,6 +178,7 @@
             var eventData = {};
             eventData.isEditting = true;
             eventData.flowItem = itemToEdit;
+            eventData.editIndex = index;
             eventData.modalName = controller.modalName;
             $scope.$broadcast('modalOpened', eventData);
         }

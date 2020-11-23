@@ -15,13 +15,13 @@
         vm.modalName = 'inputFormModal';
         vm.isEdittingDataSource = false;
         var isEditting = false;
+        var editIndex = 0;
         vm.formControls = [];
         $scope.$on('modalOpened', onModalOpen);
 
 
         vm.initDataModel = function (data) {
             console.log('vm.initDataModel', data); 
-
             if (data.flowData && typeof data.flowData === 'string') {
                 var initData = JSON.parse(data.flowData);
                 vm.formControls = initData.formControls;
@@ -39,10 +39,6 @@
         vm.openForEditting = function (flowItem) {
             //restApiModal, #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
             $('#' + vm.modalName).modal('show');
-            console.log('The flowItem inputs',flowItem);
-            vm.formControls = flowItem.data.formControls;
-            vm.dataSources = flowItem.data.dataSources;
-            isEditting = true;
         }
 
         function onModalOpen(event, data) {
@@ -58,6 +54,7 @@
                     console.log('initialized');
                     if (data.isEditting) {
                         isEditting = true;
+                        editIndex = data.editIndex;
                         vm.initDataModel(data.flowItem);
                     }
                 }
@@ -134,6 +131,8 @@
             var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
             obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
             obj.htmlbind = buildHtmlBindView();
+            obj.isEditting = isEditting;
+            obj.editIndex = ua_editor;
             DataHolder.saveData('inputForm', obj);
             vm.formControls = [];
         }

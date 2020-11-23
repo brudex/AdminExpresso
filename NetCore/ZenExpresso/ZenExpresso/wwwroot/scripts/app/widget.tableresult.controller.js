@@ -11,24 +11,47 @@
         vm.rowAction = {};
         vm.model = { options: {}, rowActionButtons: [], description: '' }; 
         var isEditting = false;
+        var editIndex = 0;
         var modalName = 'tabularOutputModal';
-        //$scope.$on('modalOpened', onModalOpen);
+         $scope.$on('modalOpened', onModalOpen);
 
         vm.initDataModel = function (data) {
-            console.log('vm.initDataModel', data);
-            var initData = JSON.parse(data.flowData);
-            vm.model = initData;
+            console.log('vm.initDataModel', data); 
+            if (data.flowData && typeof data.flowData === 'string') {
+                var initData = JSON.parse(data.flowData);
+                vm.model = initData;
+            } else {
+                vm.model = data.data; 
+            }  
             var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: "clientResult", description: vm.model.description };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
+            obj.isEditting = isEditting;
             return obj;
         }
 
         vm.openForEditting = function(flowItem) {
            // #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
-            $('#tabularOutputModal').modal('show');
-            vm.model = flowItem.data;
-            isEditting = true;
+           $('#' + vm.modalName).modal('show');
+        } 
+
+        function onModalOpen(event, data) {
+            console.log('The event data received is >>>', data);
+            if (typeof data === 'string') {
+                if (data === vm.modalName) {
+                    vm.init();
+                }
+            } else {
+                if (data.modalName === vm.modalName) {
+                    vm.init();
+                    console.log('initialized');
+                    if (data.isEditting) {
+                        isEditting = true;
+                        editIndex = data.editIndex;
+                        vm.initDataModel(data.flowItem);
+                    }
+                }
+            }
         }
 
         vm.saveData = function() {
@@ -37,6 +60,8 @@
             var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: "clientResult", description:vm.model.description };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
+            obj.isEditting = isEditting;
+            obj.editIndex = editIndex;
             DataHolder.saveData('tableResult', obj);  
             vm.model = { options: {}, rowActionButtons: [], description: '' };
         }
@@ -45,6 +70,8 @@
             vm.model.rowActionButtons.push(vm.rowAction);
             vm.rowAction = {}; 
         }
+         
+      
 
         function buildHtmlBindView() {
             var searchableChecked = '';

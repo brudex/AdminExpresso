@@ -11,6 +11,7 @@
         vm.validationScript = '';
         vm.model = { sqlQuery: ''};
         var isEditting = false;
+        var editIndex = 0;
         vm.modalName = 'sqlModal';
         vm.formControls = [];
         var currentWidgetOption = '';
@@ -53,6 +54,8 @@
             var obj = { controlName: 'Sql Query', flowItemType: 'sqlQuery', flowGroup: currentWidgetOption, controlIdentifier:vm.model.controlIdentifier};
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
+            obj.isEditting = isEditting;
+            obj.editIndex = editIndex;
             DataHolder.saveData('sqlQuery', obj);
             vm.model = { sqlQuery: '' };
         } 
@@ -111,6 +114,7 @@
                     vm.init();
                     if (data.isEditting) {
                         isEditting = true;
+                        editIndex = data.editIndex;
                         vm.initDataModel(data.flowItem);
                     }
                 }
