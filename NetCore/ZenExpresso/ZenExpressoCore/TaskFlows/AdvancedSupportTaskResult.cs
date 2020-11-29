@@ -44,6 +44,7 @@ namespace ZenExpressoCore.TaskFlows
                         case "sqlQuery":
                             flowItem = new SqlTaskFlowItem(taskFlowItem);
                             break;
+                        case "rest":
                         case "restApi":
                             flowItem = new RestApiTaskFlowItem(taskFlowItem);
                             break;

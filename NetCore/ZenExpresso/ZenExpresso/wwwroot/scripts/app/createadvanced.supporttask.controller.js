@@ -111,6 +111,7 @@
 
         vm.saveWidgetData = function (key, data) {
             if (data.isEditting) {
+                console.log('vm.saveWidget is editting>>', data);
                 editFlowAtIndex(data, data.editIndex);
             } else {
                 addFlow(data); 
@@ -188,9 +189,7 @@
             if (true) {
                 vm.errorMsg = [];
                 var payload = buildPayload();
-                console.log('The payload is >>', payload);
                 services.createAdvancedTask(payload, function (response) {
-                    console.log(response);
                     if (response.status === "00") {
                         if (!isEditting) {
                             vm.model = { parameters: [] };
@@ -205,7 +204,7 @@
         }
 
         vm.init = function (id) {
-             var payload = {};
+            var payload = {};
             payload.taskId = id;
             services.getSuppotTaskInfo(payload, function (response) {
                  if (response.status === "00") {

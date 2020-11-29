@@ -16,7 +16,7 @@ namespace ZenExpressoCore
 
         private string _apiKey;
         private Dictionary<string, string> _headers;
-        Tuple<string, string> _basicAuth;
+        private Tuple<string, string> _basicAuth;
 
         private string _result = "";
         private RestHandler()

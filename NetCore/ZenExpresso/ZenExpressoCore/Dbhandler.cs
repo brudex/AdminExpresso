@@ -255,7 +255,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                var affected = connection.Execute("DELETE FROM [dbo].[TaskFlowItem] supportTaskFlowId =@id", new { id });
+                var affected = connection.Execute("DELETE FROM [dbo].[TaskFlowItem] where supportTaskFlowId=@id", new { id });
                 return affected > 0;
             }
         }

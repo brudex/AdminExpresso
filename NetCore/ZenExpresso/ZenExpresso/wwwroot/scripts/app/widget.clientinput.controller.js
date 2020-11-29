@@ -17,8 +17,7 @@
         var isEditting = false;
         var editIndex = 0;
         vm.formControls = [];
-        $scope.$on('modalOpened', onModalOpen);
-
+        $scope.$on('modalOpened', onModalOpen); 
 
         vm.initDataModel = function (data) {
             console.log('vm.initDataModel', data); 
@@ -37,7 +36,6 @@
         }
 
         vm.openForEditting = function (flowItem) {
-            //restApiModal, #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
             $('#' + vm.modalName).modal('show');
         }
 
@@ -105,8 +103,8 @@
 
         vm.saveFormInputControls = function () {
             console.log('Checking validations >>>');
+            vm.errorMsg = [];
             vm.formControls.forEach(function (item) {
-                vm.errorMsg = [];
                 if (_.isEmpty(item.fieldName)) {
                     item.error.fieldName = true;
                     vm.errorMsg.push('fieldName');
@@ -132,7 +130,7 @@
             obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
-            obj.editIndex = ua_editor;
+            obj.editIndex = editIndex;
             DataHolder.saveData('inputForm', obj);
             vm.formControls = [];
         }

@@ -98,6 +98,7 @@ namespace ZenExpresso.Controllers.Api
             else
             {
                 response.status = "03";
+                response.message = "Data successfully updated";
                 response.message = "Error Saving Data";
             }
             return response;

@@ -16,8 +16,7 @@
                         <td>Description</td>
                         <td>TopLevelMenu Task</td>
                         <td>TaskType</td>
-                        <td>TaskResultType</td>
-                        <td>CreatedBy</td>
+                         <td>CreatedBy</td>
                         <th></th>
                     </tr>
                     </thead>
@@ -29,8 +28,7 @@
                             <td>@task.description</td>
                             <td>@task.topLevelMenu Task</td>
                             <td>@task.taskType</td>
-                            <td>@task.taskResultType</td>
-                            <td>@task.createdBy</td>
+                             <td>@task.createdBy</td>
                             <td>
                                 <a class="btn btn-danger btn-xs" href="@Url.Action("DeleteTask", new {id = task.id})">Delete </a>
                                 @if (task.IsAdvancedTask())

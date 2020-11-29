@@ -39,7 +39,7 @@ namespace ZenExpressoCore.TaskFlows
                 var replaceVal = "";
                 switch (parameter.parameterType)
                 {
-                    case "number":
+                        case "number":
                         replaceVal = parameter.parameterValue;
                         break;
                     case "regex":
@@ -47,13 +47,40 @@ namespace ZenExpressoCore.TaskFlows
                         replaceVal = "'" + parameter.parameterValue + "'";
                         break;
                     case "text":
-                    case "dropdown":
+                    case "textarea":
+                   
                         replaceVal = "'" + parameter.parameterValue + "'";
+                        break;
+                        
+                    case "select":
+                        replaceVal = "'" + parameter.parameterValue + "'";
+                        break;
+                    case "multiselect":  
+                        List<string> selected = JsonConvert.DeserializeObject<List<string>>(parameter.parameterValue);
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append($"'{selected.First()}'");
+                        for (int i = 1; i < selected.Count; i++)
+                        {
+                            sb.Append($",'{selected[i]}'");
+                        }
+                        replaceVal = sb.ToString();
+                        break;
+                    case "checkbox":
+                    {
+                        if (string.IsNullOrEmpty(parameter.parameterValue))
+                        {
+                            replaceVal = "0";
+                        }
+                        else
+                        {
+                            replaceVal = parameter.parameterValue == "true" ? "1" : "0";
+                        }
+                    }
                         break;
                     default:
                         replaceVal = "'" + parameter.parameterValue + "'";
                         break;
-                }
+            }
                 text = text.Replace("@" + parameter.parameterName, replaceVal);
                 text = text.Replace("${" + parameter.parameterName + "}", parameter.parameterValue);
             }
