@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
- 
 using Newtonsoft.Json.Linq;
 using ZenExpressoCore.Models;
 
@@ -12,8 +8,7 @@ namespace ZenExpressoCore.TaskFlows
 {
    public class RestApiTaskFlowItem : TaskFlowItem, ITaskExecutor
     {
-       
-
+        
        public RestApiTaskFlowItem(TaskFlowItem flowItem) : base(flowItem)
        { 
        }
@@ -31,16 +26,18 @@ namespace ZenExpressoCore.TaskFlows
             var jsonFlowData = JObject.Parse(flowData);
             JArray headers = (JArray)jsonFlowData["headers"];
             string restUrl = jsonFlowData["resturl"].ToStringOrEmpty();
+            string method = jsonFlowData["method"].ToStringOrEmpty();
+            string contentType = jsonFlowData["contentType"].ToStringOrEmpty();
             var restHandler = RestHandler.Instance;
             foreach (var jToken in headers)
             {
-                restHandler.AddCustomHeader(jToken["key"].ToStringOrEmpty(), jToken["value"].ToStringOrEmpty());
+                restHandler.AddCustomHeader(jToken["headerKey"].ToStringOrEmpty(), jToken["headerValue"].ToStringOrEmpty());
             }
             RestPostResponse restResponse = null;
             if (jsonFlowData["method"].ToStringOrEmpty() != "GET")
             {
                 var requestBody = jsonFlowData["body"].ToStringOrEmpty();
-                restResponse= restHandler.DoPostGetString(restUrl, requestBody);
+                restResponse= restHandler.DoPostGetString(restUrl, requestBody,method,contentType);
             }
             else
             {
@@ -73,8 +70,7 @@ namespace ZenExpressoCore.TaskFlows
                 Logger.Error(this, ex);
                 response.message = ex.Message;
             }
-            return response; 
-
+            return response;  
          }
 
         

@@ -13,12 +13,32 @@
                     </li>
                     <li>
                         <a data-toggle="tab" href="#datasource">DropDown Data Source</a>
-                    </li>
+                    </li> 
                 </ul>
                 <div class="tab-content">
                     <div id="forminputs" class="tab-pane fade in active">
                         <form class="form-horizontal group-border-dashed">
-                            <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
+                                </div>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group ">
+                                        <div class="row ">
+                                            <div class="col-sm-5">
+                                                <label> Initial Form Data</label>
+                                            </div>
+                                            <div class="col-sm-6 ">
+                                                <select class="form-control" data-ng-model="vm.controlDataSource">
+                                                    <option value="_none_">__None__</option>
+                                                    <option data-ng-repeat="item in vm.initialFormDataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <p>
                                 <div class="alert alert-info" data-ng-hide="vm.formControls.length">
                                     Add form controls for input
@@ -51,7 +71,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <br />
+                                            <br/>
                                             <div class="row">
                                                 <div class="col-sm-3" data-ng-class="{'has-error':item.error.validation}">
                                                     <select class="form-control" data-ng-model="item.validation" required="">
@@ -77,7 +97,7 @@
                                                     <input type="button" class="btn btn-sm btn-danger btn-block" value="Delete" data-ng-click="vm.removeFormControl($index)">
                                                 </div>
                                             </div>
-                                            <hr class="col-sm-9" style="border-bottom: 1px solid #8b0000" />
+                                            <hr class="col-sm-9" style="border-bottom: 1px solid #8b0000"/>
                                         </div>
                                     </div>
                                 </div>

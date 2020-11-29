@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
 using ZenExpressoCore.Models;
 
 namespace ZenExpressoCore.TaskFlows
@@ -34,8 +32,7 @@ namespace ZenExpressoCore.TaskFlows
             {
                 foreach (var taskFlowItem in taskFlowItems)
                 {
-                   // TaskFlowItem flowItem = null;
-                    ITaskExecutor flowItem = null;
+                     ITaskExecutor flowItem = null;
                     switch (taskFlowItem.flowItemType)
                     {
                         case "javascriptProcess":
@@ -57,7 +54,6 @@ namespace ZenExpressoCore.TaskFlows
                 }
                 status = "00";
                 message = "Task Executed Successfully";
-               // data = taskFlowResults;
             }
             catch (Exception ex)
             {

@@ -19,8 +19,16 @@
             console.log('The task Results>>', taskResults);
             if (taskResults.length === 1) {
                 if (taskResults[0].status === "00") {
-                    executeResult(taskResults[0].data);
+                    if (_.isArray(taskResults[0].data)) {
+                        executeResult(taskResults[0].data);
+                    } else {
+                        var arr = [];
+                        arr.push({ __RESULT__: JSON.stringify(taskResults[0].data) });
+                        executeResult(arr);
+                    }
                     return;
+                } else {
+                    utils.alertWarning(taskResults[0].message);
                 }
             }
         } 
@@ -85,13 +93,7 @@
                 });
             }
             return arr;
-        }
-
-        
-
-
-
-
+        } 
 
 
 

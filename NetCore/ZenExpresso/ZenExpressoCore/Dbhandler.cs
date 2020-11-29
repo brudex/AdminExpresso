@@ -308,7 +308,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                return connection.GetList<SupportTask>().ToList();
+                return connection.GetList<SupportTask>().OrderBy(x=>x.id).ToList();
             }
         }
         public List<SupportTaskLite> GetSupportTaskWithGroupsAssigned()

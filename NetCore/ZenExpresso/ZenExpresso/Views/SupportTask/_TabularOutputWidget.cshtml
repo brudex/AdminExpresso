@@ -14,7 +14,7 @@
                 <div class="tab-content">
                     <div id="tableOptions" class="tab-pane fade in active">
                         <form autocomplete="off">
-                            <div class="row"> 
+                            <div class="row">
                                 <div class="col-sm-11 col-sm-offset-1">
                                     <div class="form-group">
                                         <div class="row">
@@ -22,9 +22,9 @@
                                                 <label>Title/Description </label>
                                             </div>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control "  data-ng-model="vm.model.description">
+                                                <input type="text" class="form-control " data-ng-model="vm.model.description">
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-11 col-sm-offset-1">
@@ -37,8 +37,7 @@
                                                 <input type="checkbox" class=" parsley-validated" data-ng-model="vm.model.options.searchable">
                                             </div>
                                         </div>
-                                        <br/>
-
+                                        <br />
                                         <div class="row">
                                             <div class="col-sm-3">
                                                 <label>Export Buttons </label>
@@ -47,7 +46,21 @@
                                                 <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.options.exportbuttons">
                                             </div>
                                         </div>
-
+                                    </div>
+                                </div>
+                                <div class="col-sm-11 col-sm-offset-1">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label> Data Source</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" data-ng-model="vm.model.controlDataSource">
+                                                    <option value="">__Default Behaviour__</option>
+                                                    <option data-ng-repeat="item in vm.dataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

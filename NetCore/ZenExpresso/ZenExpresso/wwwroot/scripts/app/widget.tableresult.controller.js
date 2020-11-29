@@ -12,7 +12,9 @@
         vm.model = { options: {}, rowActionButtons: [], description: '' }; 
         var isEditting = false;
         var editIndex = 0;
-        var modalName = 'tabularOutputModal';
+        vm.dataSources = [];
+        var currentWidgetOption = '';
+        vm.modalName = 'tabularOutputModal';
          $scope.$on('modalOpened', onModalOpen);
 
         vm.initDataModel = function (data) {
@@ -31,12 +33,27 @@
         }
 
         vm.openForEditting = function(flowItem) {
-           // #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
            $('#' + vm.modalName).modal('show');
         } 
 
+        vm.init = function () {
+            var parentActions = DataHolder.getParentFunctions();
+            currentWidgetOption = DataHolder.getValue('currentWidgetOption');
+            var dataSources = [];
+            vm.dataSources = [];
+            if (currentWidgetOption === 'client') {
+                dataSources = parentActions.getBeforeRenderDataSources();
+            } else {
+                dataSources = parentActions.getPostActionDataSources();
+            }
+            if (dataSources.length) {
+                dataSources.forEach(function (dt) {
+                    vm.dataSources.push(dt);
+                });
+            }
+        }
+
         function onModalOpen(event, data) {
-            console.log('The event data received is >>>', data);
             if (typeof data === 'string') {
                 if (data === vm.modalName) {
                     vm.init();
@@ -44,7 +61,6 @@
             } else {
                 if (data.modalName === vm.modalName) {
                     vm.init();
-                    console.log('initialized');
                     if (data.isEditting) {
                         isEditting = true;
                         editIndex = data.editIndex;

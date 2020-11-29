@@ -3,13 +3,15 @@
     angular
         .module('app')
         .controller('ClientInputWidgetController', ClientInputWidgetController);
-    ClientInputWidgetController.$inject = ['brudexutils', '$window', 'DataHolder','$scope'];
-    function ClientInputWidgetController( utils, $window, DataHolder, $scope) {
+    ClientInputWidgetController.$inject = ['brudexutils', 'DataHolder','$scope'];
+    function ClientInputWidgetController( utils, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
         vm.dataSource = {};
+        vm.initialFormDataSources = [];
         vm.dataSources = [];
+        vm.controlDataSource = "_none_";
         vm.dataSourceEditIndex = -1;
         vm.parameter = {};
         vm.modalName = 'inputFormModal';
@@ -25,9 +27,11 @@
                 var initData = JSON.parse(data.flowData);
                 vm.formControls = initData.formControls;
                 vm.dataSources = initData.dataSources;
+                vm.controlDataSource = initData.controlDataSource;
             } else {
                 vm.formControls = data.data.formControls;
                 vm.dataSources = data.data.dataSources;
+                vm.controlDataSource = data.data.controlDataSource;
             } 
             var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
             obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
@@ -40,14 +44,12 @@
         }
 
         function onModalOpen(event, data) {
-            console.log('The event data received is >>>', data);
             if (typeof data === 'string') {
                 if (data === vm.modalName) {
                     vm.init();
                 }
             } else {
-                console.log('Compariing modals', data.modalName);
-                if (data.modalName === vm.modalName) {
+                 if (data.modalName === vm.modalName) {
                     vm.init();
                     console.log('initialized');
                     if (data.isEditting) {
@@ -61,10 +63,9 @@
 
         vm.init = function() {
             var parentActions = DataHolder.getParentFunctions();
-            console.log('parentActions', parentActions);
-            var dataSources = parentActions.getBeforeRenderDataSources();
-            if (dataSources.length) {
-                dataSources.forEach(function(dt) {
+            vm.initialFormDataSources = parentActions.getBeforeRenderDataSources();
+            if (vm.initialFormDataSources.length) {
+                vm.initialFormDataSources.forEach(function(dt) {
                     vm.dataSources.push(dt);
                 });
             }
@@ -102,7 +103,6 @@
         }
 
         vm.saveFormInputControls = function () {
-            console.log('Checking validations >>>');
             vm.errorMsg = [];
             vm.formControls.forEach(function (item) {
                 if (_.isEmpty(item.fieldName)) {
@@ -125,9 +125,8 @@
             if (vm.errorMsg.length) {
                 return;
             }
-            console.log('Saving form inputs>>>');
-            var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
-            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
+            var obj = {controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
+            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources, controlDataSource: vm.controlDataSource};
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
             obj.editIndex = editIndex;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -13,11 +14,9 @@ namespace ZenExpressoCore
     {
         private static RestHandler instance = null;
         private static readonly object padlock = new object();
-
         private string _apiKey;
         private Dictionary<string, string> _headers;
         private Tuple<string, string> _basicAuth;
-
         private string _result = "";
         private RestHandler()
         {
@@ -193,19 +192,27 @@ namespace ZenExpressoCore
             }
         }
 
-         
 
+        private RestSharp.Method GetMethod(string method)
+        {
+            var dict = new Dictionary<string,RestSharp.Method>()
+            {
+                {  "GET",RestSharp.Method.GET},
+                {  "POST",RestSharp.Method.POST},
+                {  "PUT",RestSharp.Method.PUT},
+                {  "DELETE",RestSharp.Method.DELETE},
+                {  "COPY",RestSharp.Method.PATCH},
+            };
+            var mymethod = RestSharp.Method.POST;
+            dict.TryGetValue(method, out mymethod);
+            return mymethod;
+        }
 
-        public RestPostResponse DoPostGetString(string url, string content, string endpoint="")
+        public RestPostResponse DoPostGetString(string url, string content,string method, string contentType)
         {
             var client = new RestClient(url);
             Logger.Info("Calling url >>>", url);
-            var request = new RestRequest(Method.POST);
-            if (!string.IsNullOrEmpty(endpoint))
-            {
-                request = new RestRequest(endpoint, Method.POST);
-            }
-                    
+            var request = new RestRequest(GetMethod(method));
             if (!string.IsNullOrEmpty(_apiKey))
             {
                 _headers["API-KEY"] = _apiKey;
@@ -222,13 +229,16 @@ namespace ZenExpressoCore
             }
             try
             {
-                request.AddParameter("application/json", content, ParameterType.RequestBody);
+                if (string.IsNullOrEmpty(contentType))
+                {
+                    contentType = "application/json";
+                }
+                request.AddParameter(contentType, content, ParameterType.RequestBody);
                 Logger.Info("Calling url >>>", url);
                 ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
                 var response1 = client.Execute(request);
-                Logger.Info(typeof(RestHandler),endpoint + response1.Content);
-                var resp = new RestPostResponse();
+                 var resp = new RestPostResponse();
                 resp.content = response1.Content;
                 Logger.Info(this,"Response from service>>"+content);
                 resp.Status = response1.StatusCode;

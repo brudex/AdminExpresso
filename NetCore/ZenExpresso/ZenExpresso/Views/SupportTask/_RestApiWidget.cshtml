@@ -14,18 +14,24 @@
                     </li>
                     <li>
                         <a data-toggle="tab" href="#restheader">Headers</a>
+                    </li> 
+                    <li class="pull-right">
+                        <div class="col-md-4">
+                            Control ID :
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier"/>
+                        </div>
                     </li>
                 </ul>
                 <div class="tab-content" style="margin-bottom:5px">
                     <div id="restbody" class="tab-pane fade in active"> 
-
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <div class=" col-sm-3">
                                         <label>Rest Url</label>
                                     </div>
-                                    
                                     <div class="col-sm-9"  >
                                         <input type="text" class="form-control parsley-validated" placeholder="Rest Url" data-ng-model="vm.model.resturl">
                                     </div>
@@ -42,7 +48,7 @@
                                     <div class=" col-sm-3">
                                         <label>Method</label>
                                     </div>
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-7">
                                         <select class="form-control" data-ng-model="vm.model.method">
                                             <option value="">..Method..</option>
                                             <option value="GET">GET</option>
@@ -50,12 +56,9 @@
                                             <option value="PUT">PUT</option>
                                             <option value="PATCH">PATCH</option>
                                             <option value="DELETE">DELETE</option>
-                                            <option value="__specify__">__Other Method__</option>
-                                        </select>
+                                         </select>
                                     </div>
-                                    <div class="col-sm-4" data-ng-show="vm.model.method=='__specify__'">
-                                        <input type="text" class="form-control parsley-validated" placeholder="_Other Request Method_" data-ng-model="vm.model.otherMethod">
-                                    </div>
+                                     
 
                                 </div>
                             </div>
@@ -65,19 +68,17 @@
                                     <div class="col-sm-4">
                                         <label>Content Type</label>
                                     </div>
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-8">
                                         <select class="form-control" data-ng-model="vm.model.contentType">
                                             <option value="">..Content Type..</option>
                                             <option value="application/json">application/json</option>
+                                            <option value="application/javascript">application/javascript</option>
                                             <option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option>
                                             <option value="application/xml">application/xml</option>
+                                            <option value="text/plain">text/plain</option>
                                             <option value="text/xml">text/xml</option>
                                             <option value="text/html">text/html</option>
-                                            <option value="__specify__">__Other Content Type__</option>
                                         </select>
-                                    </div>
-                                    <div class="col-sm-3" data-ng-show="vm.model.contentType=='__specify__'">
-                                        <input type="text" class="form-control parsley-validated" placeholder="_Other Content Type_" data-ng-model="vm.model.otherContentType">
                                     </div>
                                 </div>
                             </div>

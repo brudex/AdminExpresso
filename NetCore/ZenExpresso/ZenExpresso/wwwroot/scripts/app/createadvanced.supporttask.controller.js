@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('CreateAdvancedTaskController', CreateAdvancedTaskController);
-    CreateAdvancedTaskController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder', '$sce', '$scope','$controller'];
-    function CreateAdvancedTaskController(services, utils, $window, DataHolder, $sce, $scope, $controller) {
+    CreateAdvancedTaskController.$inject = ['brudexservices', 'brudexutils', 'DataHolder', '$sce', '$scope','$controller'];
+    function CreateAdvancedTaskController(services, utils, DataHolder, $sce, $scope, $controller) {
         var vm = this;
         vm.errorMsg = [];
         vm.errorParameter = []; 
@@ -22,7 +22,8 @@
 
         var broadcastFunctions = {
             getFlowCounterIndex: getFlowCounterIndex,
-            getBeforeRenderDataSources: getBeforeRenderDataSources
+            getBeforeRenderDataSources: getBeforeRenderDataSources,
+            getPostActionDataSources: getPostActionDataSources
         };
 
         vm.trustAsHtml = function (html) {
@@ -50,6 +51,14 @@
             var array = [];
             vm.beforeRenderFlows.forEach(function(item) {
                 array.push({ key: item.controlIdentifier, dataSourceName: item.controlIdentifier, inputFormat: item.flowItemType,isFlowItem:true });
+            });
+            return array;
+        }
+
+        function getPostActionDataSources() {
+            var array = [];
+            vm.postActionsFlows.forEach(function (item) {
+                array.push({ key: item.controlIdentifier, dataSourceName: item.controlIdentifier, inputFormat: item.flowItemType, isFlowItem: true });
             });
             return array;
         }
@@ -225,7 +234,6 @@
                 }
             }); 
         }
-       
         loadTopMenus();
         DataHolder.subscribeToSaveAlerts(vm.saveWidgetData);
         vm.widgetOptions('beforeRender');

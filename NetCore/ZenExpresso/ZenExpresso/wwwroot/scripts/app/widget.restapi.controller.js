@@ -10,7 +10,7 @@
         vm.errorMsg = [];
         vm.model = { headers: [], basicAuth: {} };
         vm.header = {};
-         vm.formControls = [];
+        vm.formControls = [];
         vm.modalName = 'restApiModal';
         var currentWidgetOption = '';
         var isEditting = false;
@@ -19,16 +19,21 @@
         $scope.$on('modalOpened', onModalOpen);
 
         vm.initDataModel = function (data) {
+            console.log('The initial data model for rest >>', data);
             if (data.flowData && typeof data.flowData === 'string') {
                 var initData = JSON.parse(data.flowData);
                 vm.model = initData;
             } else {
                 vm.model = data.data; 
-            } 
-            var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
-            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
+            }
+            console.log('The data model for rest >>', vm.model);
+            var obj = { controlName: "Rest Api", flowItemType: 'rest', flowGroup: data.flowGroup };
+            obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             return obj;
+        }
+        vm.openForEditting = function (flowItem) {
+            $('#' + vm.modalName).modal('show');
         }
          
         vm.addHeader = function () {
@@ -55,7 +60,10 @@
             if (vm.errorMsg.length) {
                 return;
             }
-            var obj = { controlName: "Rest Api", flowItemType: 'rest', flowGroup: currentWidgetOption };
+            if (!(['beforeRender', 'postAction'].indexOf(currentWidgetOption) > -1)) {
+                currentWidgetOption = 'postAction';
+            }
+            var obj = { controlName: "Rest Api", flowItemType: 'rest', flowGroup: currentWidgetOption, controlIdentifier: vm.model.controlIdentifier};
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
@@ -64,7 +72,11 @@
             vm.model = { headers: [], basicAuth: {} };
         }
 
-        vm.init = function () {
+        vm.init = function () { 
+            var parentActions = DataHolder.getParentFunctions();
+            console.log('parentActions', parentActions);
+            var controlIndex = parentActions.getFlowCounterIndex('rest');
+            vm.model.controlIdentifier = 'restApi' + controlIndex;
             vm.formControls = [];
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             if (currentWidgetOption === 'postAction') {

@@ -110,7 +110,7 @@
                     vm.init();
                 }
             } else {
-                if (data.modalName === vm.modalName) {
+                if(data.modalName === vm.modalName) {
                     vm.init();
                     if (data.isEditting) {
                         isEditting = true;
