@@ -85,11 +85,11 @@ namespace ZenExpresso
             // Add application services.
             if (_env.IsProduction())
             {
-                services.AddDataProtection()
-                .SetApplicationName("ZenExpresso")
-              .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/var/www/dashboard.cedix/keys"));
+                 services.AddDataProtection()
+                .SetApplicationName("ZenExpresso");
+                //.PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/var/www/dashboard.cedix/keys"));
             }
-          
+
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             var settings = Configuration.GetSection("SettingsData").GetChildren()
