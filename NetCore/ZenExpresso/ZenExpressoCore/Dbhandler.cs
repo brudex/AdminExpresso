@@ -364,6 +364,16 @@ namespace ZenExpressoCore
             }
         }
 
+
+        public List<dynamic> ExecuteOnHostDb(string sqlQuery)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var list = connection.Query(sqlQuery);
+                return list.ToList();
+            }
+        }
+
         //        public List<dynamic> ExecuteTaskScript210(SupportTask task,string sqlQuery)
         //        {
         //            using (var connection = CreateDbConnection(task.dbusername.Decrypt(), task.dbPass.Decrypt()))

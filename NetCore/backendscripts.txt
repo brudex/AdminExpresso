@@ -1,9 +1,0 @@
-EOF
-C sharp script engine for zenexpresso
-
-https://www.cs-script.net/
-
-http://scriptcs.net/
-
-https://itnext.io/hitchhikers-guide-to-the-c-scripting-13e45f753af9
-

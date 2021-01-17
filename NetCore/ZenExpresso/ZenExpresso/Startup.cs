@@ -126,8 +126,9 @@ namespace ZenExpresso
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-            }); 
-           
+            });
+
+            new InitializeDatabase();
             int noOfUsers = DbHandler.Instance.GetUsersCount();
             if (noOfUsers == 0)
             {
