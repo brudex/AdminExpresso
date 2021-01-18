@@ -47,9 +47,7 @@ namespace ZenExpresso
             }).AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            
             services.AddAuthentication();  
-              
             services.Configure<IdentityOptions>(options =>
             {
                 //Password settings
@@ -141,8 +139,7 @@ namespace ZenExpresso
                     {
                         Logger.Info(this, "Initial account created.");
                     }
-                } 
-
+                }
             }
             MemDb.Instance.Init();
         }

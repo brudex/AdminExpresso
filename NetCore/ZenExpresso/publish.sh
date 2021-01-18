@@ -1,21 +1,28 @@
-DEPLOY_FOLDER=./var/www/inbarAdmin
+DEPLOY_FOLDER=/var/www/inbarAdmin
 echo "exported source variable ${SRCDIR}"
-SRC_FOLDER=$1
-
+SRC_FOLDER=$SRCDIR
 if [ ! -d $DEPLOY_FOLDER ];then
  mkdir -p $DEPLOY_FOLDER
 fi
-
+echo "Entering source directory path ${SRC_FOLDER}"
 cd $SRC_FOLDER
-dotnet restore
-dotnet build
-
-cd $DEPLOY_FOLDER
-if [command -v pm2 ]; then
+echo "Current Working directory $(pwd)"
+if [ command -v pm2 ]; then
+ echo "Stopping Application"
  pm2 stop inbarAdmin
 fi
-
-rm -rf $DEPLOY_FOLDER -R;
+echo "Restoring Nuget packages!!"
+dotnet restore
+echo "Building app!!"
+dotnet build
+echo "Deleting old application files"
+rm -rf $DEPLOY_FOLDER/*
 dotnet publish -c Release -o $DEPLOY_FOLDER ;
-
-pm2 start "dotnet zenExpresso.dll" --name inbarAdmin
+echo "Published to ${DEPLOY_FOLDER}"
+echo "Entering deploy directory path ${DEPLOY_FOLDER}"
+cd $DEPLOY_FOLDER
+echo "Current Working directory $(pwd)"
+if [ -e ZenExpresso.dll ]; then
+ export ASPNETCORE_ENVIRONMENT=Production
+ pm2 start "dotnet zenExpresso.dll" --name inbarAdmin
+fi
