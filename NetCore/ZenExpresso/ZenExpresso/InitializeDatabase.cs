@@ -23,22 +23,19 @@ namespace ZenExpresso
             try
             {
 
-                 
                 //split the script on "GO" commands
-                string[] splitter = new string[] { "\r\nGO\r\n" };
+                string[] splitter = new string[] { "\r\nGO\r\n", "\nGO\n"};
                 string[] commandTexts = _SetupScript.Split(splitter,
                     StringSplitOptions.RemoveEmptyEntries);
                 foreach (string commandText in commandTexts)
                 {
 					DbHandler.Instance.ExecuteOnHostDb(commandText);
 				}
-				
 			}
             catch (Exception ex)
             {
                Logger.Error(typeof(InitializeDatabase),"Database intialization failed",ex);
             }
-           
         }
 
 
