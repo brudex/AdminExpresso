@@ -72,7 +72,7 @@
         }
 
         vm.addFormControl = function () {
-            vm.formControls.push({error: {} });
+            vm.formControls.push({error: {}, required:true });
         }
         vm.removeFormControl = function (index) {
             vm.formControls.splice(index, 1);
@@ -130,6 +130,7 @@
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
             obj.editIndex = editIndex;
+            obj.modalName = vm.modalName;
             DataHolder.saveData('inputForm', obj);
             vm.formControls = [];
         }

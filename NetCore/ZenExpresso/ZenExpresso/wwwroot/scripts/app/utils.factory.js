@@ -10,6 +10,11 @@
             alertInfo : createAlert('info'),
             alertWarning: createAlert('warning'),
             alertConfirm: createAlertCustomized('warning'),
+
+            toastSuccess: createToast('success'),
+            toastError: createToast('error'),
+            toastInfo: createToast('info'),
+            toastWarning: createToast('warning'),
             _ :$window._
         };
         function createAlert(alertType) {
@@ -20,6 +25,29 @@
                     title = alertType;
                 }
                 $window.swal(title, message, alertType);
+            }
+        }
+
+        function createToast(toastType) {
+            return function showToast(message) {
+                $window.toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                $window.toastr[toastType](message);
             }
         }
  
@@ -41,11 +69,11 @@
                     confirmButtonText: "Yes",
                     closeOnConfirm: true
                 },
-                    function () {
-                        if (callback) {
-                            callback();
-                        }
-                    });
+                function () {
+                    if (callback) {
+                        callback();
+                    }
+                });
 
             }
         }

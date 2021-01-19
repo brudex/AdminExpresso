@@ -74,6 +74,8 @@
             return $controller(dict[flowItemType], { $scope: $scope });
         }
 
+
+        //Called on page load when editting a task
         function addInitialFlow(data) {
             var controller = getControllerByFlowItemType(data.flowItemType);
             var dataModel = controller.initDataModel(data);
@@ -122,9 +124,13 @@
             if (data.isEditting) {
                 console.log('vm.saveWidget is editting>>', data);
                 editFlowAtIndex(data, data.editIndex);
+                utils.toastInfo("Flow Modified !!");
             } else {
                 addFlow(data); 
-            } 
+                utils.toastInfo("Flow Added !!");
+            }
+            $("#" + data.modalName).modal("hide");
+           
         }
 
         vm.onModalOpen = function(modalName) {
@@ -166,6 +172,8 @@
            DataHolder.setValue('currentWidgetOption',group);
         }
 
+
+        //build payload for final saving
         function buildPayload() {             
             var payload =  Object.assign({}, vm.model);
             payload.beforeRenderFlows = vm.beforeRenderFlows;

@@ -3,19 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>@ViewBag.Title - ZenExpresso</title>
-    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"/> 
-    <link href="~/assets/css/font-awesome.css" rel="stylesheet"/>
-    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="~/assets/css/animate.css" rel="stylesheet"/>
-    <link href="~/assets/css/admin.css" rel="stylesheet"/>
-    <link href="~/assets/css/sweetalert.css" rel="stylesheet"/> 
+    <title>@ViewBag.Title - Inbar KMS Admin</title>
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW" />
+    <link href="~/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/animate.css" rel="stylesheet" />
+    <link href="~/assets/css/admin.css" rel="stylesheet" />
+    <link href="~/assets/css/sweetalert.css" rel="stylesheet" />
     <link href="~/assets/plugins/dataTables/datatables.min.css" rel="stylesheet" />
     <link href="~/assets/plugins/dataTables/Scroller-2.0.0/css/scroller.bootstrap.min.css" rel="stylesheet" />
     <link href="~/assets/plugins/dataTables/Scroller-2.0.0/css/scroller.dataTables.min.css" rel="stylesheet" />
-    <link href="~/assets/plugins/spinjs/spin.css" rel="stylesheet"/>
+    <link href="~/assets/plugins/spinjs/spin.css" rel="stylesheet" />
     <link href="~/assets/css/datepicker.min.css" rel="stylesheet" />
-   
+    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
+
 </head> 
 <body class="light_theme  fixed_header left_nav_fixed">
     <div class="wrapper">
@@ -49,8 +50,8 @@
                 </div>
                 @if (User.IsAdmin())
                 {
-                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="add_user"> <i class="fa fa-plus-square"></i> <span>New Task</span> </a>
-                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user"> <i class="fa fa-plus-square"></i> <span>Advanced Task</span> </a>
+                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="add_user"> <i class="fa fa-plus-square"></i> <span>Basic Task</span> </a>
+                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user" style="margin-left:5px"> <i class="fa fa-plus-square"></i> <span>Advanced Task</span> </a>
                 }
                 <div class="top_right_bar">
                     <div class="top_right">
@@ -107,8 +108,8 @@
     <script src="~/assets/js/sweetalert.js"></script>
     <script src="~/assets/plugins/spinjs/spin.js"></script>
     <script src="~/assets/js/datepicker.js"></script>
-<script src="~/assets/js/datepicker.en.js"></script>
-<script src="~/scripts/buckets.min.js"></script>
+    <script src="~/assets/js/datepicker.en.js"></script>
+    <script src="~/scripts/buckets.min.js"></script>
     <script src="~/scripts/angular.js"></script>
     <script src="~/scripts/angular-animate.js"></script>
     <script src="~/scripts/app/app.module.js"></script>
@@ -118,6 +119,7 @@
     <script src="~/assets/js/validate.min.js"></script>
     <script src="~/assets/js/lodash.min.js"></script>
     <script src="~/assets/js/scroller.bootstrap.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
 
     <script src="~/assets/plugins/dataTables/datatables.min.js"></script>
     <script src="~/assets/plugins/dataTables/JSZip-2.5.0/jszip.min.js"></script>

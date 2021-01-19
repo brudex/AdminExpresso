@@ -42,6 +42,7 @@
             var obj = { controlName: "Success Message Result", flowItemType: 'successMessage', flowGroup: 'clientResult' };
             obj.data = { statusCodes: vm.statusCodes };
             obj.htmlbind = buildHtmlBindView();
+            obj.modalName = vm.modalName;
             DataHolder.saveData('successMessage', obj);
             vm.statusCodes = [];
         }

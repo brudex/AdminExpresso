@@ -56,6 +56,7 @@
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
             obj.editIndex = editIndex;
+            obj.modalName = vm.modalName;
             DataHolder.saveData('sqlQuery', obj);
             vm.model = { sqlQuery: '' };
         } 

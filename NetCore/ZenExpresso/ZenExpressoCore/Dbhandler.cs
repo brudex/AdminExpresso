@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using DapperExtensions;
+using MySql.Data.MySqlClient;
+using Npgsql;
 using ZenExpresso.Helpers;
 using ZenExpressoCore.Helpers;
 using ZenExpressoCore.Models;
@@ -156,23 +158,57 @@ namespace ZenExpressoCore
                         break;
 
                     }
-                case "sybase":
+               
+
+                case "postgres":
+                {
+                    if (dataSource.useRawConnectingString)
                     {
-                        // if (dataSource.useRawConnectingString)
-                        // {
-                        //     var conString = string.Format(dataSource.connectionString, userId, pass);
-                        //     connection = new Sybase.Data.AseClient.AseConnection(conString);
-                        //     connection.Open();
-                        // }
-                        // else
-                        // {
-                        //     string conString = string.Format("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4};CharSet=utf8;", dataSource.serverIp, dataSource.serverPort,
-                        //     dataSource.defaultDatabase, userId, pass);
-                        //     connection = new Sybase.Data.AseClient.AseConnection(conString);
-                        //     connection.Open();
-                        // }
-                        break;
+                        var conString = string.Format(dataSource.connectionString, userId, pass);
+                        connection = new NpgsqlConnection(conString);
+                        connection.Open();
                     }
+                    else
+                    {
+                        string conString = $"User ID={userId};Password={pass};Host={dataSource.serverIp};Port={dataSource.serverPort};Database={dataSource.defaultDatabase};Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;";
+                        connection = new NpgsqlConnection(conString);
+                        connection.Open();
+                    }
+                    break;
+                }
+                case "mysql":
+                {
+                    if (dataSource.useRawConnectingString)
+                    {
+                        var conString = string.Format(dataSource.connectionString, userId, pass);
+                        connection = new MySqlConnection(conString);
+                        connection.Open();
+                    }
+                    else
+                    {
+                        string conString = $"Server={dataSource.serverIp};Port={dataSource.serverPort};Database={dataSource.defaultDatabase};Uid={userId};Pwd={pass}";
+                        connection = new MySqlConnection(conString);
+                        connection.Open();
+                    }
+                    break;
+                }
+                case "sybase":
+                {
+                    // if (dataSource.useRawConnectingString)
+                    // {
+                    //     var conString = string.Format(dataSource.connectionString, userId, pass);
+                    //     connection = new Sybase.Data.AseClient.AseConnection(conString);
+                    //     connection.Open();
+                    // }
+                    // else
+                    // {
+                    //     string conString = string.Format("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4};CharSet=utf8;", dataSource.serverIp, dataSource.serverPort,
+                    //     dataSource.defaultDatabase, userId, pass);
+                    //     connection = new Sybase.Data.AseClient.AseConnection(conString);
+                    //     connection.Open();
+                    // }
+                    break;
+                }
             }
             return connection;
         }
