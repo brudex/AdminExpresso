@@ -10,6 +10,7 @@ echo "Current Working directory $(pwd)"
 if [ command -v pm2 ]; then
  echo "Stopping Application"
  pm2 stop inbarAdmin
+ pm2 delete inbarAdmin
 fi
 echo "Restoring Nuget packages!!"
 dotnet restore
@@ -24,5 +25,5 @@ cd $DEPLOY_FOLDER
 echo "Current Working directory $(pwd)"
 if [ -e ZenExpresso.dll ]; then
  export ASPNETCORE_ENVIRONMENT=Production
- pm2 start "dotnet zenExpresso.dll" --name inbarAdmin
+ pm2 start "dotnet ZenExpresso.dll" --name inbarAdmin
 fi

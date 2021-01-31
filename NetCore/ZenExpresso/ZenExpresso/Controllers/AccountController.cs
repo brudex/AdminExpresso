@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using ZenExpressoCore;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using ZenExpresso.AccountViewModels;
 using ZenExpresso.Models;
 
 namespace ZenExpresso.Controllers
@@ -43,7 +42,7 @@ namespace ZenExpresso.Controllers
         internal async Task<bool> CreateUser(RegisterViewModel model)
         {
             var user = new ApplicationUser
-            { 
+            {
                 UserName = model.Email,
                 Email = model.Email,
             };
@@ -54,7 +53,7 @@ namespace ZenExpresso.Controllers
                 return true; 
             }
             return false; 
-        } 
+        }
 
 
 
@@ -99,7 +98,6 @@ namespace ZenExpresso.Controllers
         {
 
             var windowsLoginManager = new WindowsSignInManager(_userManager, _signInManager);
-
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await windowsLoginManager.WindowsLoginAsync(model.Email, model.Password, model.RememberMe);
@@ -114,7 +112,6 @@ namespace ZenExpresso.Controllers
 
             }
             return false;
-
         }
 
         private async Task<bool> LoginWithEmail(LoginViewModel model)
@@ -176,7 +173,6 @@ namespace ZenExpresso.Controllers
                     //                        _logger.LogInformation("User logged in.");
                     //                        return RedirectToAction("Index", "Home");
                     //                    }
-
                     _logger.LogInformation("User logged in.");
                     return true;
                 }

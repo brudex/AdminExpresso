@@ -7,8 +7,7 @@
         var subscribedFuncs = [];
         var parentFunctions = {};
         var dataWareHouse = {
-            
-        } 
+        }
 
         function subscribeToSaveAlerts(fun) {
             subscribedFuncs.push(fun);
