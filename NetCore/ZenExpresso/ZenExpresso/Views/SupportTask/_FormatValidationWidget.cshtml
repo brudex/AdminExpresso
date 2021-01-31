@@ -1,5 +1,5 @@
 ﻿<div class="modal fade  " id="validationFormatingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="ValidationFormattingWidgetController as vm">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -8,19 +8,39 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal group-border-dashed">
-                      <pre style="padding: 0"><code data-language="javascript">
-                        //Your code will be embedded in a function with the following arguemnents
-                        //flowArray,utils.alertSuccess, utils.alertError, utils.sweetAlert, utils.alertConfirm, utils.toastr, utils._
-                        //flowArray=Array of outputs results from client widgets
-                        function(flowArray,utils)
-                        {  //put your code in the box below
-                      </code></pre>
-                      <textarea data-ng-model="vm.validationScript" name="validationCode" cols="7" rows="15" class="form-control"></textarea> 
+                    <div class="row">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-sm-5">
+                                        <label> Run Script when : </label>
+                                    </div>
+                                    <div class="col-sm-6 ">
+                                        <select class="form-control" data-ng-model="vm.model.runMode">
+                                            <option value="onRender">Page is  loaded</option>
+                                            <option value="onSubmit">Form is submitted</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <pre style="padding: 0"><code data-language="javascript">
+    //Your code will be embedded in a function with the following arguemnents
+    //utils=utils.alertSuccess, utils.alertError,utils.alertConfirm, utils.sweetAlert, utils.toastr, utils._
+    //flowArray=Array of outputs results from client widgets
+    function(flowArray,utils)
+    {  //put your code in the box below
+</code></pre>
+                    <textarea data-ng-model="vm.model.jsScript" name="validationCode" cols="7" rows="15" class="form-control"></textarea>
                 </form>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-ng-click="vm.saveInputValidation()">Save</button>
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

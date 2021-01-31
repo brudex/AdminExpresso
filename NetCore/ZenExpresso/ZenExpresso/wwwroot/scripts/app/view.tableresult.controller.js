@@ -10,7 +10,8 @@
         var dataTable = null; 
         vm.model = { viewName: "Table Result View" }
         vm.viewSettings = {exportButtons:true,searchable:true,actionRows:false}; //todo check datatable doc and implement
-        vm.taskInfo = null; 
+        vm.taskInfo = null;
+        vm.tableId = 'dynamic-table';
         vm.init = function (data) {
             vm.taskInfo = data;
             var parentActions = DataHolder.getParentFunctions();
@@ -29,6 +30,26 @@
                     return;
                 } else {
                     utils.alertWarning(taskResults[0].message);
+                }
+            } else {
+                var controlDataSource = vm.taskInfo.flowData.controlDataSource;
+                var taskResult = _.find(taskResults, function (o) { return o.controlIdentifier === controlDataSource; });
+                if (taskResult) {
+                    vm.tableId = vm.tableId + "-" + controlDataSource;
+                    if (taskResult.status === "00") {
+                        if (_.isArray(taskResult.data)) {
+                            executeResult(taskResult.data);
+                        } else {
+                            var arr = [];
+                            arr.push({ __RESULT__: JSON.stringify(taskResult.data) });
+                            executeResult(arr);
+                        }
+                        return;
+                    } else {
+                        utils.alertWarning(taskResult.message);
+                    }
+                } else {
+                    utils.alertWarning("No matching data source for identifier "+controlDataSource);
                 }
             }
         } 
@@ -49,7 +70,7 @@
                 if (dataTable) {
                     dataTable.destroy();
                 }
-                dataTable = $('#dynamic-table').DataTable({
+                dataTable = $('#'+vm.tableId).DataTable({
                     data: rows,
                     columns: cols,
                     dom: 'Bfrtip',
@@ -93,9 +114,7 @@
                 });
             }
             return arr;
-        } 
-
-
+        }  
 
     }
     })(window.jQuery,window.hljs);

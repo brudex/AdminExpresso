@@ -14,7 +14,7 @@
         vm.clientResultFlows = [];
         vm.successMsg = [];
         vm.topMenus = [];
-        vm.model = {parameters:[]};
+        vm.model = {parameters:[],inputFormPresent:false};
         vm.formSubmitted = false;
         vm.parameter = {};
         var isEditting = false;
@@ -23,7 +23,8 @@
         var broadcastFunctions = {
             getFlowCounterIndex: getFlowCounterIndex,
             getBeforeRenderDataSources: getBeforeRenderDataSources,
-            getPostActionDataSources: getPostActionDataSources
+            getPostActionDataSources: getPostActionDataSources,
+            inputFormAdded: function () {return vm.model.inputFormPresent}
         };
 
         vm.trustAsHtml = function (html) {
@@ -69,7 +70,8 @@
                 'sqlQuery': 'SqlQueryWidgetController',
                 'successMessage': 'SuccessMessageWidgetController',
                 'tableResult': 'TableResultWidgetController',
-                'rest': 'RestApiWidgetController'
+                'rest': 'RestApiWidgetController',
+                'javascript': 'ValidationFormattingWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }
@@ -86,7 +88,10 @@
             incrementFlowCounter(data.flowItemType);
              switch (data.flowGroup) {
                 case "clientRender":
-                case "client":
+                 case "client":
+                     if (data.flowItemType === 'inputForm') {
+                         vm.model.inputFormPresent = true;
+                     }
                     vm.clientFlows.push(data);
                     break;
                 case "beforeRender":
@@ -184,7 +189,13 @@
         }
 
 
-        vm.deleteFlowItem = function(flowArrayName,index) {
+        vm.deleteFlowItem = function (flowArrayName, index) {
+            if (flowArrayName === 'clientFlows') {
+                var flow = vm[flowArrayName][index];
+                if (flow.flowItemType === 'inputForm') {
+                    vm.model.inputFormPresent = false;
+                }
+            }
             vm[flowArrayName].splice(index, 1);
         }
 

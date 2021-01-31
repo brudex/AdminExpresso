@@ -1,9 +1,14 @@
 ﻿<script type="text/ng-template" id="tableResult.html">
     <div data-ng-Controller="TableViewResultController as vm">
         <div data-ng-init="vm.init(task)"></div>
-        <div style="overflow-x:scroll">
-            <table class="display table table-bordered table-striped" id="dynamic-table"></table>
+        <div data-ng-if="vm.taskInfo.description!=='' || vm.taskInfo.description=='0'">
+            <h2 class="title" data-ng-bind="vm.taskInfo.description"></h2>
+            <hr />
         </div>
+        <div style="overflow-x:scroll">
+            <table class="display table table-bordered table-striped" data-ng-attr-id="{{ vm.tableId }}"></table>
+        </div>
+        <br />
     </div>
 </script>
 

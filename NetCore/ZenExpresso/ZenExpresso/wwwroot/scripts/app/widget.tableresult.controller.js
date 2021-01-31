@@ -18,6 +18,7 @@
          $scope.$on('modalOpened', onModalOpen);
 
         vm.initDataModel = function (data) {
+            currentWidgetOption = data.flowGroup;
             console.log('vm.initDataModel', data); 
             if (data.flowData && typeof data.flowData === 'string') {
                 var initData = JSON.parse(data.flowData);
@@ -25,7 +26,7 @@
             } else {
                 vm.model = data.data; 
             }  
-            var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: "clientResult", description: vm.model.description };
+            var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: currentWidgetOption, description: vm.model.description };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
@@ -56,8 +57,10 @@
         function onModalOpen(event, data) {
             if (typeof data === 'string') {
                 if (data === vm.modalName) {
+                    isEditting = false;
                     vm.init();
                 }
+                
             } else {
                 if (data.modalName === vm.modalName) {
                     vm.init();
@@ -65,6 +68,8 @@
                         isEditting = true;
                         editIndex = data.editIndex;
                         vm.initDataModel(data.flowItem);
+                    } else {
+                        isEditting = false;
                     }
                 }
             }
@@ -73,7 +78,7 @@
         vm.saveData = function() {
             vm.model.error = {};
             vm.errorMsg = [];
-            var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: "clientResult", description:vm.model.description };
+            var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: currentWidgetOption, description:vm.model.description };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
@@ -102,7 +107,7 @@
             var html = '<div class="row">';
             html += '<div class="col-md-10">';
             html += '<label><input type="checkbox" disabled="disabled"' + searchableChecked+'/> Searchable </label><br/>';
-            html += '<label> <input type="checkbox" disabled="disabled"' + exportChecked +' /> Export Buttons </label>'; 
+            html += '<label><input type="checkbox" disabled="disabled"' + exportChecked +' /> Export Buttons </label>'; 
             html += '</div>';
             html += '</div>';
             if (vm.model.rowActionButtons.length) {

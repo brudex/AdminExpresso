@@ -81,6 +81,7 @@
             for(var k = 0, len = clientRenderFlows.length; k < len; k++) {
                 var flow = clientRenderFlows[k]; 
                 flow.flowData = JSON.parse(flow.flowData);
+                console.log("ctrl : The flow is >>", flow);
                 if(flow.flowItemType === 'validationScript'){
                     validationScriptsQueue.enqueue(flow);
                 } else {

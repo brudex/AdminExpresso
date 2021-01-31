@@ -14,17 +14,30 @@
         vm.formControls = [];
         vm.formSubmitted = false;
         var parentActions = null;
-        vm.init = function(data) {
+        vm.init = function (data) {
             vm.taskInfo = data;
+            console.log("The taskinfo is >>", vm.taskInfo);
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
+            console.log("The taskResults >>", vm.taskResults);
             executeResult();
         };
-
 
         function executeResult() {
             if (vm.taskInfo) {
                 var flowData = vm.taskInfo.flowData;
+                var initialData = null;
+                if (flowData.controlDataSource) {
+                    var controlDataSource = flowData.controlDataSource;
+                    var taskResult = _.find(vm.taskResults, function (o) { return o.controlIdentifier === controlDataSource; });
+                    if (taskResult && taskResult.status === "00") {
+                        if (_.isArray(taskResult.data)) {
+                            initialData = taskResult.data.length ? taskResult.data[0] : null;
+                        } else {
+                            initialData = taskResult.data;
+                        } 
+                    } 
+                }
                 for (var k = 0, len = flowData.formControls.length; k < len; k++) {
                     var item = flowData.formControls[k];
                     var control = {};
@@ -32,6 +45,9 @@
                     control.fieldName = item.fieldName;
                     control.fieldType = item.fieldType;
                     control.required = true;
+                    if (initialData) {
+                        control.fieldValue = initialData[item.fieldName];
+                    }
                     control.validation = item.validation;
                     if (item.require != null) {
                         control.require = item.required;
@@ -102,7 +118,6 @@
                             dataSource.push({ label: obj[labelfield], value: obj[keyfield] });
                         });
                     }
-
                 } catch (e) {
                     console.log("Error in ", e);
                 }
@@ -143,8 +158,7 @@
                 taskInfo.taskResult = payload;
                 parentActions.submitTaskResult(taskInfo);
             }
-         };
-
+         }; 
 
         function validateEmail(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
