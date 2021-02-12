@@ -24,7 +24,8 @@
             getFlowCounterIndex: getFlowCounterIndex,
             getBeforeRenderDataSources: getBeforeRenderDataSources,
             getPostActionDataSources: getPostActionDataSources,
-            inputFormAdded: function () {return vm.model.inputFormPresent}
+            inputFormAdded: function () { return vm.model.inputFormPresent },
+            getParentModel: function () { return vm; }
         };
 
         vm.trustAsHtml = function (html) {
@@ -71,7 +72,7 @@
                 'successMessage': 'SuccessMessageWidgetController',
                 'tableResult': 'TableResultWidgetController',
                 'rest': 'RestApiWidgetController',
-                'javascript': 'ValidationFormattingWidgetController'
+                'javascript': 'JavascriptWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }
@@ -125,6 +126,24 @@
             }
         }
 
+        vm.getFlowsByFlowGroup = function (flowGroup) {
+            switch (flowGroup) {
+                case "clientRender":
+                case "client":
+                    return vm.clientFlows;
+                    break;
+                case "beforeRender":
+                    return vm.beforeRenderFlows;
+                    break;
+                case "postAction":
+                    return vm.postActionsFlows;
+                    break;
+                case "clientResult":
+                   return vm.clientResultFlows;
+                    break;
+            }
+        }
+
         vm.saveWidgetData = function (key, data) {
             if (data.isEditting) {
                 console.log('vm.saveWidget is editting>>', data);
@@ -147,8 +166,9 @@
             case "client":
             case "clientRender":
                 {
-                    $('.clientInput').removeClass('disabled');
-                    $('.clientResult').addClass('disabled');
+                     
+                     $('.clientInput').prop('disabled', false);
+                     $('.clientResult').prop('disabled', true);
                     $('.server-widgets').hide();
                     $('.client-widgets').slideDown();
                 }
@@ -167,8 +187,9 @@
                 break;
             case "clientResult":
                 {
-                    $('.clientInput').addClass('disabled');
-                    $('.clientResult').removeClass('disabled');
+                     
+                     $('.clientInput').prop('disabled', true);
+                     $('.clientResult').prop('disabled', false);
                     $('.server-widgets').hide();
                     $('.client-widgets').slideDown();
                 }
@@ -218,6 +239,7 @@
                 vm.errorMsg = [];
                 var payload = buildPayload();
                 services.createAdvancedTask(payload, function (response) {
+                    console.log('Response from createAdvancedTask', response);
                     if (response.status === "00") {
                         if (!isEditting) {
                             vm.model = { parameters: [] };

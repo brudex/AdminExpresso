@@ -1,124 +1,141 @@
-﻿<div class="modal fade  " id="inputFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document" data-ng-controller="ClientInputWidgetController as vm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Input Form Design</h4>
+﻿<div class="modal fade" id="inputFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" data-ng-controller="ClientInputWidgetController as vm">
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8"> <h5 class="modal-title" id="myModalLabel">Input Form Design</h5></div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
             </div>
             <div class="modal-body">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a data-toggle="tab" href="#forminputs">Form Inputs </a>
-                    </li>
-                    <li>
-                        <a data-toggle="tab" href="#datasource">DropDown Data Source</a>
-                    </li> 
-                </ul>
-                <div class="tab-content">
-                    <div id="forminputs" class="tab-pane fade in active">
-                        <form class="form-horizontal group-border-dashed">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
-                                </div>
-                                <div class="col-md-4"></div>
-                                <div class="col-md-5">
-                                    <div class="form-group ">
-                                        <div class="row ">
-                                            <div class="col-sm-5">
-                                                <label> Initial Form Data</label>
-                                            </div>
-                                            <div class="col-sm-6 ">
-                                                <select class="form-control" data-ng-model="vm.controlDataSource">
-                                                    <option value="_none_">__None__</option>
-                                                    <option data-ng-repeat="item in vm.initialFormDataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p>
-                                <div class="alert alert-info" data-ng-hide="vm.formControls.length">
-                                    Add form controls for input
-                                </div>
+                
+                <div class="card p-relative o-hidden mb-0">
+                    <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                        <a href="#forminputs" class="active" data-toggle="tab" role="tab"  >Form Inputs</a>
+                        <a href="#datasource" data-toggle="tab" role="tab"  class="">DropDown Data Source</a>
+                     </div>
+                    <div class="card-body tab-content text-70">
+                        <div id="forminputs" class="tab-pane active">
+                            <form class="form-horizontal group-border-dashed">
                                 <div class="row">
-                                    <div class="col-sm-11 col-sm-offset-1">
-                                        <div class="form-group" data-ng-repeat="item in vm.formControls">
-                                            <div class="row">
-                                                <div class="col-sm-3" data-ng-class="{'has-error':item.error.fieldLabel}">
-                                                    <input type="text" class="form-control parsley-validated" required="" placeholder="Field Label" data-ng-model="item.fieldLabel">
+                                    <div class="col-md-3">
+                                        <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-5">
+                                        <div class="form-group ">
+                                            <div class="row ">
+                                                <div class="col-sm-5">
+                                                    <label> Initial Form Data</label>
                                                 </div>
-                                                <div class="col-sm-3" data-ng-class="{'has-error':item.error.fieldName}">
-                                                    <input type="text" class="form-control parsley-validated" required="" placeholder="Field Name" data-ng-model="item.fieldName">
-                                                </div>
-                                                <div class="col-sm-2" data-ng-class="{'has-error':item.error.fieldType}">
-                                                    <select class="form-control" data-ng-model="item.fieldType" required="">
-                                                        <option value="">..Field Type..</option>
-                                                        <option value="text">Text</option>
-                                                        <option value="textarea">Text Area</option>
-                                                        <option value="number">Numeric </option>
-                                                        <option value="date">Date </option>
-                                                        <option value="checkbox">CheckBox Field</option>
-                                                        <option value="select">Single-Select </option>
-                                                        <option value="multiselect">Multi-Select </option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3" data-ng-class="{'has-error':item.error.selectOptionsDatasource}" >
-                                                    <select class="form-control"  data-ng-model="item.selectOptionsDatasource" data-ng-options="source as source.dataSourceName for source in vm.dataSources track by source.key" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect')">
-                                                        <option value="">..Data Source..</option>
+                                                <div class="col-sm-6 ">
+                                                    <select class="form-control" data-ng-model="vm.controlDataSource">
+                                                        <option value="_none_">__None__</option>
+                                                        <option data-ng-repeat="item in vm.initialFormDataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <br/>
-                                            <div class="row">
-                                                <div class="col-sm-3" data-ng-class="{'has-error':item.error.validation}">
-                                                    <select class="form-control" data-ng-model="item.validation" required="">
-                                                        <option value="">..Select Validation..</option>
-                                                        <option value="_none_">No Validation</option>
-                                                        <option value="text">Text</option>
-                                                        <option value="number">Number </option>
-                                                        <option value="email">Email </option>
-                                                        <option value="phone">Mobile Phone </option>
-                                                        <option value="date">Date </option>
-                                                        <option value="regex">Enter Regex </option>
-                                                        <option value="account">Account Number </option>
-                                                        <option value="accountOrEmail">Account or Email </option>
-                                                        <option value="accountOrPhone">Account or Phone </option>
-                                                        <option value="phoneOrEmail">Phone or Email</option>
-                                                        <option value="accountOrPhoneOrEmail">Account or Phone or Email</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3" data-ng-class="{'has-error':item.error.validation}">
-                                                    <input type="text" data-ng-disabled="item.validation!=='regex'" class="form-control " placeholder="Enter Regex " data-ng-model="item.regex">
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <label><input type="checkbox" ng-model="item.required"> Required</label>  
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <input type="button" class="btn btn-sm btn-danger btn-block" value="Delete" data-ng-click="vm.removeFormControl($index)">
-                                                </div>
-                                            </div>
-                                            <hr class="col-sm-9" style="border-bottom: 1px solid #8b0000"/>
                                         </div>
                                     </div>
                                 </div>
-                            </p>
-                        </form> 
-                    </div>
-                    <div id="datasource" class="tab-pane fade">
-                        <form class="form-horizontal">
-                            <div class="row">
-                                <div class="col-sm-8 col-sm-offset-1">
-
+                                <p>
+                                    <div class="alert alert-info" data-ng-hide="vm.formControls.length">
+                                        Add form controls for input
+                                    </div>
                                     <div class="row">
-                                        <div class="form-group">
-                                            <div class="col-sm-6">
+                                        <div class="col-sm-11 col-sm-offset-1">
+                                            <div class="form-group" data-ng-repeat="item in vm.formControls">
+                                                <div class="row">
+                                                    <div class="col-sm-3" data-ng-class="{'has-error':item.error.fieldLabel}">
+                                                        <input type="text" class="form-control parsley-validated" required="" placeholder="Field Label" data-ng-model="item.fieldLabel">
+                                                    </div>
+                                                    <div class="col-sm-3" data-ng-class="{'has-error':item.error.fieldName}">
+                                                        <input type="text" class="form-control parsley-validated" required="" placeholder="Field Name" data-ng-model="item.fieldName">
+                                                    </div>
+                                                    <div class="col-sm-2" data-ng-class="{'has-error':item.error.fieldType}">
+                                                        <select class="form-control" data-ng-model="item.fieldType" required="">
+                                                            <option value="">..Field Type..</option>
+                                                            <option value="text">Text</option>
+                                                            <option value="textarea">Text Area</option>
+                                                            <option value="fileupload">File Upload</option>
+                                                            <option value="richtext">Rich Text</option>
+                                                            <option value="number">Numeric </option>
+                                                            <option value="date">Date </option>
+                                                            <option value="checkbox">CheckBox Field</option>
+                                                            <option value="select">Single-Select </option>
+                                                            <option value="multiselect">Multi-Select </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-3" data-ng-class="{'has-error':item.error.selectOptionsDatasource}">
+                                                        <select class="form-control" data-ng-model="item.selectOptionsDatasource" data-ng-options="source as source.dataSourceName for source in vm.dataSources track by source.key" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect')">
+                                                            <option value="">..Data Source..</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-sm-3" data-ng-class="{'has-error':item.error.validation}">
+                                                        <select class="form-control" data-ng-model="item.validation" required="">
+                                                            <option value="">..Select Validation..</option>
+                                                            <option value="_none_">No Validation</option>
+                                                            <option value="text">Text</option>
+                                                            <option value="number">Number </option>
+                                                            <option value="email">Email </option>
+                                                            <option value="phone">Mobile Phone </option>
+                                                            <option value="date">Date </option>
+                                                            <option value="regex">Enter Regex </option>
+                                                            <option value="account">Account Number </option>
+                                                            <option value="accountOrEmail">Account or Email </option>
+                                                            <option value="accountOrPhone">Account or Phone </option>
+                                                            <option value="phoneOrEmail">Phone or Email</option>
+                                                            <option value="accountOrPhoneOrEmail">Account or Phone or Email</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-3" data-ng-class="{'has-error':item.error.validation}">
+                                                        <input type="text" data-ng-disabled="item.validation!=='regex'" class="form-control " placeholder="Enter Regex " data-ng-model="item.regex">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <label><input type="checkbox" ng-model="item.required"> Required</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="button" class="btn btn-sm btn-danger btn-block" value="Delete" data-ng-click="vm.removeFormControl($index)">
+                                                    </div>
+                                                </div>
+                                                <hr class="col-sm-9" style="border-bottom: 1px solid #8b0000" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p>
+                            </form>
+                        </div>
+                        <div id="datasource" class="tab-pane">
+                            <form >
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            
+                                            <div class="col">
                                                 <label>Data Source Name</label>
                                                 <input type="text" class="form-control parsley-validated" required="" placeholder="Data Source Name" data-ng-model="vm.dataSource.dataSourceName">
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col">
                                                 <label>Data Format</label>
                                                 <select class="form-control" data-ng-model="vm.dataSource.inputFormat" required="">
                                                     <option value="">..Drop Down Format..</option>
@@ -127,63 +144,66 @@
                                                     <option value="csv">CSV</option>
                                                 </select>
                                             </div>
+                                            
                                         </div>
+                                        <br />
+                                        <div class="row">
+                                            
+                                                <div class="col-12">
+                                                    <label>Data Source Input </label>
+                                                    <textarea data-ng-model="vm.dataSource.dropDownOptions" name="dropDownOptions" cols="7" rows="5" class="form-control"></textarea>
+                                                </div>
+                                                
+                                             
+                                                <div class="col-12">
+                                                    <br />
+                                                    <div class="float-right">
+                                                        <button class="btn btn-sm btn-primary" data-ng-click="vm.addDataSource()" data-ng-hide="vm.isEdittingDataSource">Add Data Source</button>
+                                                        <button class="btn btn-sm btn-info" data-ng-click="vm.saveDataSource()" data-ng-show="vm.isEdittingDataSource">Save Data Source</button>
+
+                                                    </div>
+                                                </div>
+                                             
+                                        </div>
+                                        <hr style="border-bottom: 1px solid #8b0000" />
+                                        <table class="table table-bordered">
+                                            <caption>Available Data Sources</caption>
+                                            <thead>
+                                                <tr>
+                                                    <td>Data Source Name</td>
+                                                    <td>Data Source Format</td>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="item in vm.dataSources">
+                                                    <td data-ng-bind="item.dataSourceName">
+                                                    </td>
+                                                    <td data-ng-bind="item.inputFormat"></td>
+                                                    <td>
+                                                        <div data-ng-hide="item.isFlowItem">
+                                                            <button type="button" class="btn btn-sm btn-info" data-ng-click="vm.editDataSource($index)">Edit</button>
+                                                            <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.removeDataSource($index)">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <label>Data Source Options </label>
-                                                <textarea data-ng-model="vm.dataSource.dropDownOptions" name="dropDownOptions" cols="7" rows="5" class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group pull-right">
-                                            <div class="col-sm-12">
-                                            <button class="btn btn-primary" data-ng-click="vm.addDataSource()" data-ng-hide="vm.isEdittingDataSource">Add Data Source</button>
-                                            <button class="btn btn-info" data-ng-click="vm.saveDataSource()" data-ng-show="vm.isEdittingDataSource">Save Data Source</button>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <hr style="border-bottom: 1px solid #8b0000" /> 
-                                    <table class="table table-bordered">
-                                        <caption>Available Data Sources</caption>
-                                        <thead>
-                                        <tr>
-                                            <td>Data Source Name</td>
-                                            <td>Data Source Format</td>
-                                            <td></td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr data-ng-repeat="item in vm.dataSources">
-                                            <td data-ng-bind="item.dataSourceName">
-                                            </td>
-                                            <td data-ng-bind="item.inputFormat"></td>
-                                            <td>
-                                                <div data-ng-hide="item.isFlowItem">
-                                                    <button type="button" class="btn btn-xs btn-info" data-ng-click="vm.editDataSource($index)">Edit</button>
-                                                    <button type="button" class="btn btn-xs btn-danger" data-ng-click="vm.removeDataSource($index)">Delete</button>
-                                                </div> 
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
 
-                            </div>
-
-                        </form>
+                            </form>
+                        </div> 
                     </div>
-
-                </div> 
-
-              
-
+                </div>
+                 
+                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-ng-click="vm.saveFormInputControls()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-ng-click="vm.saveFormInputControls()">Save </button>
             </div>
         </div>
     </div>
 </div>
-
+ 

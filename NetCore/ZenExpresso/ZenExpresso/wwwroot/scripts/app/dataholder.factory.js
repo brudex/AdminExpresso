@@ -40,6 +40,8 @@
             console.log('parent Actions set', parentFunctions);
             return parentFunctions;
         }
+
+
         return {
             saveData: saveData,
             getData: getData,

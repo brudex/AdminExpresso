@@ -1,0 +1,93 @@
+﻿@using ZenExpresso
+
+@if (User.IsAdmin())
+{
+    <div class="sidebar-heading">Support Tasks</div>
+    <ul class="sidebar-menu"> 
+        <li class="sidebar-menu-item active">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("CreateAdvancedTask", "SupportTask")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                <span class="sidebar-menu-text">Create Advanced Task</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item ">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("CreateSupportTask", "SupportTask")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                <span class="sidebar-menu-text">Create Task</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item ">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("ListTasks", "SupportTask")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                <span class="sidebar-menu-text">List Tasks</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item ">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("ListExecutedTasks", "SupportTask")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">home</span>
+                <span class="sidebar-menu-text">List Executed Tasks</span>
+            </a>
+        </li> 
+    </ul>
+
+    <div class="sidebar-heading">Setup</div>
+    <ul class="sidebar-menu">
+
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("ManageTopMenus", "Setup")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="sidebar-menu-text">Manage Menus</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("ManageDataSources", "Setup")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="sidebar-menu-text">Manage DataSources</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("ManageAdmins", "Setup")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="sidebar-menu-text">Manage Admins</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("ReloadMemory", "Setup")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="sidebar-menu-text">Reload Memory</span>
+            </a>
+        </li>
+    </ul> 
+
+    <div class="sidebar-heading">DbLog Management</div>
+    <ul class="sidebar-menu">
+
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("Index", "DbLogManager")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="sidebar-menu-text">Register Log</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button"
+               href="@Url.Action("ListApps", "DbLogManager")">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="sidebar-menu-text">List Apps</span>
+            </a>
+        </li>
+    </ul>
+
+}
+
+@await Component.InvokeAsync("SupportMenus")
+
+ 

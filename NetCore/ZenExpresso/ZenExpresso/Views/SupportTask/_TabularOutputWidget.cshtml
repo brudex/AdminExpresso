@@ -1,143 +1,164 @@
-﻿<div class="modal fade  " id="tabularOutputModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+﻿<div class="modal fade  " id="tabularOutputModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
     <div class="modal-dialog modal-lg" role="document" data-ng-controller="TableResultWidgetController as vm">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tabular Output Design</h4>
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8"> <h5 class="modal-title" id="myModalLabel">Tabular Output Design</h5></div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
             </div>
             <div class="modal-body">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tableOptions">Options </a></li>
-                    <li><a data-toggle="tab" href="#actionButtons">Row Actions</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div id="tableOptions" class="tab-pane fade in active">
-                        <form autocomplete="off">
-                            <div class="row">
-                                <div class="col-sm-11 col-sm-offset-1">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <label>Title/Description </label>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control " data-ng-model="vm.model.description">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-11 col-sm-offset-1">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <label>Searchable </label>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <input type="checkbox" class=" parsley-validated" data-ng-model="vm.model.options.searchable">
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <label>Export Buttons </label>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.options.exportbuttons">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-11 col-sm-offset-1">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <label> Data Source</label>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <select class="form-control" data-ng-model="vm.model.controlDataSource">
-                                                    <option value="">__Default Behaviour__</option>
-                                                    <option data-ng-repeat="item in vm.dataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+
+                <div class="card p-relative o-hidden mb-0">
+                    <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                        <a href="#tableOptions" class="active" data-toggle="tab" role="tab">Options </a>
+                        <a href="#actionButtons" data-toggle="tab" role="tab" class="">Row Actions </a>
                     </div>
-                    <div id="actionButtons" class="tab-pane fade">
-                        <form autocomplete="off">
-                            <input type="hidden" value="" autocomplete="off" /> 
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=" control-label">Button Label</label>
-                                        <input type="text" class="form-control" data-ng-model="vm.rowAction.buttonLabel" required="">
-                                    </div> 
-                                    <div class="form-group">
-                                        <label class=" control-label">Payload Mode</label>
-                                        <select type="text" class="form-control" data-ng-model="vm.rowAction.payloadSelection" required="" >
-                                            <option value=""></option>  
-                                            <option value="fullrow">Full Row As Json</option>  
-                                            <option value="selectfields">Select Columns</option>  
-                                            <option value="javascript">Javascript </option>  
-                                        </select>
+                    <div class="card-body tab-content text-70">
+                        <div id="tableOptions" class="tab-pane active">
+                            <form autocomplete="off">
+                                <div class="row">
+                                    <div class="col-sm-11 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Title/Description </label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control " data-ng-model="vm.model.description">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label">Executing Task</label>
-                                        <input class="form-control" data-ng-model="vm.rowAction.executingTask" required="" /> 
+                                    <div class="col-sm-11 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Searchable </label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" class=" parsley-validated" data-ng-model="vm.model.options.searchable">
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Export Buttons </label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.options.exportbuttons">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-11 col-sm-offset-1">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label> Data Source</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" data-ng-model="vm.model.controlDataSource">
+                                                        <option value="">__Default Behaviour__</option>
+                                                        <option data-ng-repeat="item in vm.dataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-7">
-                                    <div class="form-group">
-                                        <label class="control-label">Build Payload</label>
-                                        <textarea class="form-control" rows="7" data-ng-model="vm.rowAction.payload" ></textarea> 
+                            </form>
+                        </div>
+                        <div id="actionButtons" class="tab-pane fade">
+                            <form autocomplete="off">
+                                <input type="hidden" value="" autocomplete="off" />
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label class=" control-label">Button Label</label>
+                                            <input type="text" class="form-control" data-ng-model="vm.rowAction.buttonLabel" required="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class=" control-label">Payload Mode</label>
+                                            <select type="text" class="form-control" data-ng-model="vm.rowAction.payloadSelection" required="">
+                                                <option value=""></option>
+                                                <option value="fullrow">Full Row As Json</option>
+                                                <option value="selectfields">Select Columns</option>
+                                                <option value="javascript">Javascript </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Executing Task ID</label>
+                                            <input class="form-control" data-ng-model="vm.rowAction.executingTask" required="" />
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-primary btn-block" data-ng-click="vm.addRowAction()">Add</button>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label class="control-label">Build Payload</label>
+                                            <textarea class="form-control" rows="7" data-ng-model="vm.rowAction.payload"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary btn-block" data-ng-click="vm.addRowAction()">Add</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <br/>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        Button Label
-                                    </th>
-                                    <th>
-                                        Payload Selection
-                                    </th>
-                                    <th>
-                                        Executing Task
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr data-ng-repeat="item in vm.model.rowActionButtons">
-                                    <td data-ng-bind="item.buttonLabel">
-                                        Button Label
-                                    </td>
-                                    <td data-ng-bind="item.payloadSelection">
-                                        Payload Mode
-                                    </td>
-                                    <td data-ng-bind="item.executingTask">
-                                        Executing Task
-                                    </td>
-                                </tr>
-                                </tbody> 
-                            </table> 
-                        </form> 
+                                <br />
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Button Label
+                                            </th>
+                                            <th>
+                                                Payload Selection
+                                            </th>
+                                            <th>
+                                                Executing Task
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="item in vm.model.rowActionButtons">
+                                            <td data-ng-bind="item.buttonLabel">
+                                                Button Label
+                                            </td>
+                                            <td data-ng-bind="item.payloadSelection">
+                                                Payload Mode
+                                            </td>
+                                            <td data-ng-bind="item.executingTask">
+                                                Executing Task 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+
                     </div>
                 </div> 
-                 
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
 
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewBag.Title - Inbar KMS Admin</title>
+
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots" content="noindex" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
+          rel="stylesheet" />
+    <!-- Preloader -->
+    <link type="text/css" href="~/vendor/spinkit.css" rel="stylesheet" />
+    <!-- Perfect Scrollbar -->
+    <link type="text/css" href="~/vendor/perfect-scrollbar.css" rel="stylesheet" />
+    <!-- Material Design Icons -->
+    <link type="text/css" href="~/css/material-icons.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="~/css/fontawesome.css" rel="stylesheet" />
+    <!-- Preloader -->
+    <link type="text/css" href="~/css/preloader.css" rel="stylesheet" />
+    <!-- App CSS -->
+    <link type="text/css" href="~/css/app.css" rel="stylesheet" />
+    <!-- Toastr -->
+    <link type="text/css" href="~/vendor/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/sweetalert.css">
+    <link href="~/css/toastr.css" rel="stylesheet" />
+</head>
+
+<body class="layout-app ">
+
+    <div class="preloader">
+        <div class="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+        </div>
+    </div>
+
+    <!-- Drawer Layout -->
+
+    <div class="mdk-drawer-layout js-mdk-drawer-layout"
+         data-push=data-push
+         data-responsive-width="992px">
+        <div class="mdk-drawer-layout__content page-content">
+
+            <!-- Header -->
+            <!-- Navbar -->
+
+            <div class="navbar navbar-expand pr-0 navbar-light border-bottom-2" id="default-navbar" data-primary=data-primary>
+                <!-- Navbar Toggler -->
+                <button class="navbar-toggler w-auto mr-16pt d-block d-lg-none rounded-0"
+                        type="button"
+                        data-toggle="sidebar">
+                    <span class="material-icons">short_text</span>
+                </button>
+
+                <!-- // END Navbar Toggler -->
+                <!-- Navbar Brand -->
+
+                <a href="/"
+                   class="navbar-brand mr-16pt d-lg-none">
+
+                    <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
+
+                        <span class="avatar-title rounded bg-primary">
+                            <img src="~/assets/images/inbarLogo.png" alt="s-logo" />
+                        </span>
+
+                    </span>
+
+                    <span class="d-none d-lg-block">INBAR</span>
+                </a>
+
+                <!-- // END Navbar Brand -->
+
+                <span class="d-none d-md-flex align-items-center mr-16pt">
+                </span>
+
+                @if (User.IsAdmin())
+                {
+    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="btn btn-outline-dark"> <i class="fa fa-plus-square"></i> <span>Basic Task</span> </a>
+                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user btn btn-outline-dark" style="margin-left:5px"> <i class="fa fa-plus-square"></i> <span>Advanced Task</span> </a>}
+
+                <div class="flex"></div>
+
+                <!-- Navbar Menu -->
+
+                <div class="nav navbar-nav flex-nowrap d-flex mr-16pt">
+
+
+                    <div class="nav-item dropdown">
+                        <a href="#"
+                           class="nav-link d-flex align-items-center dropdown-toggle"
+                           data-toggle="dropdown"
+                           data-caret="false">
+
+                            <span class="avatar avatar-sm mr-8pt2">
+                                <span class="avatar-title rounded-circle bg-primary"><i class="material-icons">account_box</i></span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="dropdown-header"><strong>@User.Identity.Name</strong></div>
+                            <div class="dropdown-item">
+                                <form method="POST" action="@Url.Action("Logout", "Account")">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-power-off"></i> Logout</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- // END Navbar Menu -->
+            </div>
+
+            <!-- // END Navbar -->
+            <!-- // END Header -->
+            <!-- BEFORE Page Content -->
+            <!-- // END BEFORE Page Content -->
+            <!-- Page Content -->
+            <!-- Replace this with your page content -->
+
+            <div class=" page__container flex my-32pt">
+                @RenderBody()
+            </div>
+
+            <!-- // END Replace this with your page content -->
+            <!-- // END Page Content -->
+            <!-- Footer -->
+
+            <div class="bg-white border-top-2 mt-auto">
+                <div class="container page__container page-section d-flex flex-column">
+                    <p class="text-70 brand mb-24pt">
+                        <img class="brand-icon"
+                             src="~/images/logo/black-70@2x.png"
+                             width="30"
+                             alt="Luma" /> Luma
+                    </p>
+                    <p class="measure-lead-max text-50 small mr-8pt">Luma is a beautifully crafted user interface for modern Education Platforms, including Courses & Tutorials, Video Lessons, Student and Teacher Dashboard, Curriculum Management, Earnings and Reporting, ERP, HR, CMS, Tasks, Projects, eCommerce and more.</p>
+                    <p class="mb-8pt d-flex">
+                        <a href=""
+                           class="text-70 text-underline mr-8pt small">Terms</a>
+                        <a href=""
+                           class="text-70 text-underline small">Privacy policy</a>
+                    </p>
+                    <p class="text-50 small mt-n1 mb-0">Copyright 2019 &copy; All rights reserved.</p>
+                </div>
+            </div>
+
+            <!-- // END Footer -->
+
+        </div>
+
+        <!-- // END drawer-layout__content -->
+        <!-- Drawer -->
+
+        <div class="mdk-drawer js-mdk-drawer"
+             id="default-drawer">
+            <div class="mdk-drawer__content">
+                <div class="sidebar sidebar-dark-pickled-bluewood sidebar-left"
+                     data-perfect-scrollbar=data-perfect-scrollbar>
+
+                    <!-- Sidebar Content -->
+
+
+                    <a href="/"
+                       class="sidebar-brand ">
+                        <!-- <img class="sidebar-brand-icon" src="~/images/illustration/student/128/white.svg" alt="Luma"> -->
+                        <span class="avatar avatar-xl sidebar-brand-icon h-auto">
+
+                            <span class="avatar-title rounded ">
+                                <img src="~/assets/images/inbarLogo.png"
+                                     class="img-fluid"
+                                     alt="logo" />
+
+                            </span>
+
+                        </span>
+
+                        <span>INBAR KMS Admin</span>
+                    </a>
+
+                    @await Html.PartialAsync("_MenuPartial2")
+                </div>
+            </div>
+        </div>
+
+        <!-- // END Drawer -->
+
+    </div>
+
+    <!-- // END Drawer Layout -->
+    <!-- jQuery -->
+    <script src="~/vendor/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/vendor/popper.min.js"></script>
+    <script src="~/vendor/bootstrap.min.js"></script>
+
+    <!-- Perfect Scrollbar -->
+    <script src="~/vendor/perfect-scrollbar.min.js"></script>
+
+    <!-- DOM Factory -->
+    <script src="~/vendor/dom-factory.js"></script>
+    <!-- MDK -->
+    <script src="~/vendor/material-design-kit.js"></script>
+    <!-- App JS -->
+    <script src="~/js/app.js"></script>
+    <!-- Preloader -->
+    <script src="~/js/preloader.js"></script>
+
+    <input type="hidden" value="@Url.Content("~")" id="___applicationbaseUrl" />
+    <script src="~/assets/js/jquery.slimscroll.min.js"></script>
+    <script src="~/assets/js/jPushMenu.js"></script>
+    <script src="~/assets/js/sweetalert.js"></script>
+    <script src="~/assets/plugins/spinjs/spin.js"></script>
+    <script src="~/assets/js/datepicker.js"></script>
+    <script src="~/assets/js/datepicker.en.js"></script>
+    <script src="~/scripts/buckets.min.js"></script>
+    <script src="~/scripts/angular.js"></script>
+    <script src="~/scripts/angular-animate.js"></script>
+    <script src="~/scripts/app/app.module.js"></script>
+    <script src="~/scripts/app/services.factory.js"></script>
+    <script src="~/scripts/app/dataholder.factory.js"></script>
+    <script src="~/scripts/app/utils.factory.js"></script>
+    <script src="~/assets/js/validate.min.js"></script>
+    <script src="~/assets/js/lodash.min.js"></script>
+    <script src="~/assets/js/toastr.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/assets/plugins/dataTables/datatables.min.js"></script>
+    <script src="~/assets/plugins/dataTables/JSZip-2.5.0/jszip.min.js"></script>
+    <script src="~/assets/plugins/dataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
+    @RenderSection("MyScripts", required: false)
+    <script src="~/scripts/app/dblog.controller.js"></script>
+    <script src="~/scripts/app/searchlog.controller.js"></script>
+    <script src="~/scripts/app/createsupporttask.controller.js"></script>
+    <script src="~/scripts/app/menu.setup.controller.js"></script>
+    <script src="~/scripts/app/datasource.setup.controller.js"></script>
+    <script src="~/scripts/app/executetask.controller.js"></script>
+    <script src="~/scripts/app/execute.advanced.task.controller.js"></script>
+    <script src="~/scripts/app/assigngroups.controller.js"></script>
+    <script src="~/scripts/app/admin.setup.controller.js"></script>
+    <script src="~/scripts/app/createadvanced.supporttask.controller.js"></script>
+    <script src="~/scripts/app/widget.clientinput.controller.js"></script>
+    <script src="~/scripts/app/widget.restapi.controller.js"></script>
+    <script src="~/scripts/app/widget.sqlquery.controller.js"></script>
+    <script src="~/scripts/app/widget.javascript.controller.js"></script>
+    <script src="~/scripts/app/widget.tableresult.controller.js"></script>
+    <script src="~/scripts/app/widget.carddesign.controller.js"></script>
+    <script src="~/scripts/app/widget.successmessage.controller.js"></script>
+    <script src="~/scripts/app/view.tableresult.controller.js"></script>
+    <script src="~/scripts/app/view.cardresult.controller.js"></script>
+    <script src="~/scripts/app/view.inputform.controller.js"></script>
+    <script src="~/scripts/app/vexecute.script.controller.js"></script>
+    <script src="~/js/toastr.js"></script>
+
+    <script>
+        $('.mdatepicker').datepicker({
+            language: 'en',
+            dateFormat: 'yyyy-mm-dd',
+            todayButton: new Date(),
+            autoClose: true
+        });
+    </script>
+
+
+</body>
+
+</html>

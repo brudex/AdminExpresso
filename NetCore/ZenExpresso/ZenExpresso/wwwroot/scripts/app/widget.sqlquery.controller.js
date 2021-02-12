@@ -68,10 +68,11 @@
             payload.dbPass = vm.model.dbPass;
             payload.taskType = vm.model.dataSource;
             services.testDbConnection(payload, function (response) {
+                console.log("Connection Test Response >>", response);
                 if (response.status === "00") {
-                    utils.alertSuccess("Connection Successful");
+                    utils.toastSuccess("Connection Successful");
                 } else {
-                    utils.alertError("Connection Failed");
+                    utils.toastError("Connection Failed");
                 }
             });
         }

@@ -113,6 +113,7 @@
             console.log('The event data received is >>>', data);
             if (typeof data === 'string') {
                 if (data === vm.modalName) {
+                    isEditting = false;
                     vm.init();
                 }
             } else {

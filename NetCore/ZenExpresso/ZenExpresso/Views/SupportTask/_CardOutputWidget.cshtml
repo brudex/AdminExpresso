@@ -1,0 +1,379 @@
+﻿<div class="modal fade  " id="cardOutputModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="CardWidgetController as vm">
+        <div class="modal-content">
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8"> <h5 class="modal-title" id="myModalLabel">Card Output Design</h5></div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="card p-relative o-hidden mb-0">
+                    <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                        <a href="#cardOptions" class="active" data-toggle="tab" role="tab">Card Options </a>
+                        <a href="#cardType" data-toggle="tab" role="tab">Card Designs </a>
+                        <a href="#cardActions" data-toggle="tab" role="tab" class="">Card Actions </a>
+                    </div>
+                    <div class="card-body tab-content text-70">
+                        <div id="cardOptions" class="tab-pane active">
+                            <form autocomplete="off">
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="cardImageCheck" data-ng-model="vm.model.cardImageCheck">
+                                            <label class="form-check-label" for="cardImageCheck">
+                                                Card Image
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control mb-2"  placeholder="CardImage FieldName" data-ng-model="vm.model.cardImageFieldName">
+                                    </div>
+                                </div>
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="cardTitleCheck" data-ng-model="vm.model.cardTitleCheck">
+                                            <label class="form-check-label" for="cardTitleCheck" >
+                                                Card Title
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control mb-2"  placeholder="CardTitle FieldName" data-ng-model="vm.model.cardTitleFieldName">
+                                    </div>
+                                </div>
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="cardBodyCheck" data-ng-model="vm.model.cardBodyCheck">
+                                            <label class="form-check-label" for="cardBodyCheck">
+                                                Card Body
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control mb-2" placeholder=" FieldName" data-ng-model="vm.model.cardBodyFieldName">
+                                    </div>
+                                </div>
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="cardFooterCheck" data-ng-model="vm.model.cardFooterCheck">
+                                            <label class="form-check-label" for="cardFooterCheck">
+                                                Card Footer
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control mb-2" placeholder="CardFooter FieldName" data-ng-model="vm.model.cardFooterFieldName">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label"> Row Items Count</label>
+                                    <div class="col-sm-3">
+                                        <input type="number" min="1" data-ng-model="vm.model.rowCount" max="4" class="form-control mb-2" placeholder="No. of Cols Per Row">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label claCardBodyss="col-sm-2  col-form-label"> Data Source</label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" data-ng-model="vm.model.controlDataSource">
+                                            <option value="">__Default Behaviour__</option>
+                                            <option data-ng-repeat="item in vm.dataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    <div id="cardType" class="tab-pane " >
+                        <h5>Select Card Design Option</h5>
+                        <form>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="cardDesignOption" id="cardDesignOption1" data-ng-model="vm.model.cardDesignOption" value="verticalWithButtons" checked>
+                                        <label class="form-check-label" for="cardDesignOption1">
+                                            Vertical with Action Buttons
+                                        </label>
+
+                                        <div class="col-md-12 col-xl-12 card-group-row__col">
+                                            <div class="card card-group-row__card">
+                                                <img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1778e0e218a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1778e0e218a%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2299.421875%22%20y%3D%2296.3%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+                                                <div class="card-body flex d-flex flex-column   justify-content-center">
+                                                    <div class="flex">
+                                                        <a class="card-title" >Card Title</a>
+                                                    </div>
+                                                    <p class="card-text">
+                                                        Card body Text. Card body Text. Card body Text. Card body Text Card body Text
+                                                    </p>
+                                                </div>
+                                                <div class="card-footer flex-0">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex mr-2">
+                                                            <a href="#" class="btn btn-light btn-sm">
+                                                                Action 1
+                                                            </a>
+                                                            <a href="#" class="btn btn-light btn-sm">
+                                                                Action 2
+                                                            </a>
+                                                            <a href="#" class="btn btn-light btn-sm">
+                                                                Action 3
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="cardDesignOption" id="cardDesignOption2" data-ng-model="vm.model.cardDesignOption" value="verticalWithDropDown">
+                                        <label class="form-check-label" for="cardDesignOption2">
+                                            Vertical with Action Dropdown
+                                        </label>
+
+                                        <div class="col-md-12 col-xl-12 card-group-row__col">
+
+                                            <div class="card card-group-row__card">
+                                                <img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1778e0e218a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1778e0e218a%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2299.421875%22%20y%3D%2296.3%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+
+                                                <div class="card-body flex d-flex flex-column   justify-content-center">
+                                                    <div class="flex">
+                                                        <a class="card-title" href="#">Card Title</a>
+                                                    </div>
+                                                    <p class="card-text">
+                                                        Card body Text. Card body Text. Card body Text. Card body Text Card body Text
+                                                    </p>
+                                                </div>
+                                                <div class="card-footer flex-0">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex mr-2 footer_text">
+                                                            Footer Text
+                                                        </div>
+                                                        <div class="dropdown">
+                                                            <a data-toggle="dropdown" data-caret="false" class="text-muted" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
+                                                            <div class="dropdown-menu dropdown-menu-right" style="">
+                                                                <a href="#" class="dropdown-item">Action 1</a>
+                                                                <a href="" class="dropdown-item">Action 2</a>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="cardDesignOption" id="cardDesignOption3" data-ng-model="vm.model.cardDesignOption" value="horizontalWithButtons">
+                                        <label class="form-check-label" for="cardDesignOption3">
+                                            Horizontal with Action Buttons
+                                        </label>
+
+                                        <div class="card card-group-row__card card-sm">
+                                            <div class="card-body d-flex align-items-center">
+                                                <a href="#" class="avatar overlay overlay--primary avatar-4by3 mr-12pt">
+                                                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1778e0e218a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1778e0e218a%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2299.421875%22%20y%3D%2296.3%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Introduction to TypeScript" class="avatar-img rounded">
+                                                    <span class="overlay__content"></span>
+                                                </a>
+                                                <div class="flex mr-12pt">
+                                                    <a class="card-title" href="#">Card Title </a>
+                                                    <div class="card-subtitle text-50">Card Footer</div>
+                                                </div>
+
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex mr-2">
+                                                        <a href="#" class="btn btn-light btn-sm">
+                                                            Action 1
+                                                        </a>
+                                                        <a href="#" class="btn btn-light btn-sm">
+                                                            Action 2
+                                                        </a>
+                                                        <a href="#" class="btn btn-light btn-sm">
+                                                            Action 3
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="cardDesignOption" id="cardDesignOption4" data-ng-model="vm.model.cardDesignOption" value="horizontalWithDropDown">
+                                        <label class="form-check-label" for="cardDesignOption4">
+                                            Horizontal with Action Dropdown
+                                        </label>
+                                        <div class="card card-group-row__card card-sm">
+                                            <div class="card-body d-flex align-items-center">
+                                                <a href="#" class="avatar overlay overlay--primary avatar-4by3 mr-12pt">
+                                                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1778e0e218a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1778e0e218a%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2299.421875%22%20y%3D%2296.3%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Introduction to TypeScript" class="avatar-img rounded">
+                                                    <span class="overlay__content"></span>
+                                                </a>
+                                                <div class="flex mr-12pt">
+                                                    <a class="card-title" href="#">Card Title </a>
+                                                    <div class="card-subtitle text-50">Card Footer</div>
+                                                </div>
+
+                                                <div class="dropdown">
+                                                    <a data-toggle="dropdown" data-caret="false" class="text-muted"><i class="material-icons">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" style="">
+                                                        <a href="#" class="dropdown-item">Action 1</a>
+                                                        <a href="" class="dropdown-item">Action 2</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            
+                           
+                          
+                        </form>
+                        
+
+                    </div>
+                        <div id="cardActions" class="tab-pane  ">
+                            <form autocomplete="off">
+                                <input type="hidden" value="" autocomplete="off" />
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5 col-form-label">Action Executed when:</label>
+                                            <div class="col-sm-7">
+                                                <select type="text" class="form-control form-control-sm" data-ng-model="vm.rowAction.actionMode" required="">
+                                                    <option value="">[Select One]</option>
+                                                    <option value="cardHeaderClicked">Card Header Clicked</option>
+                                                    <option value="cardImageClicked">Card Image Clicked</option>
+                                                    <option value="actionButton">Action Button Clicked</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row " data-ng-if="vm.rowAction.actionMode=='actionButton'">
+                                            <label class="col-sm-5 col-form-label">Button Label</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control form-control-sm" data-ng-model="vm.rowAction.buttonLabel" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-5 col-form-label">Payload Mode</label>
+                                            <div class="col-sm-7">
+                                                <select type="text" class="form-control form-control-sm" data-ng-model="vm.rowAction.payloadSelection" required="">
+                                                    <option value=""></option>
+                                                    <option value="fullrow">Full Row As Json</option>
+                                                    <option value="selectfields">Select Columns</option>
+                                                    <option value="javascript">Javascript </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-5 col-form-label">Executing Task ID</label>
+                                            <div class="col-sm-7">
+                                                <input class="form-control form-control-sm" data-ng-model="vm.rowAction.executingTask" required="" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group" data-ng-hide="vm.rowAction.payloadSelection=='fulrow'">
+                                            <label class="control-label" data-ng-show="vm.rowAction.payloadSelection=='selectfields'">Enter Field Separated by NewLine</label>
+                                            <label class="control-label" data-ng-show="vm.rowAction.payloadSelection=='javascript'">Enter Javascript Code<small>Will be wrapped function</small></label>
+                                            <pre style="padding: 0" data-ng-show="vm.rowAction.payloadSelection=='javascript'"><code data-language="javascript">
+                                                /**Your code will be embedded in a function with the following arguments **/
+                                                //rowData=Current row data in json
+                                                //utils=utils.alertSuccess, utils.alertError,utils.alertConfirm, utils.sweetAlert, utils.toastr, utils._ (lodash)
+                                                //IMPORTANT : You function must return a json object
+                                                function(rowData, utils, next)
+                                                { //put your code in the box below
+                                            </code></pre>
+                                            <textarea class="form-control" rows="7" data-ng-model="vm.rowAction.payload"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary btn-block" data-ng-click="vm.addRowAction()">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Executed When..
+                                            </th>
+                                            <th>
+                                                Button Label
+                                            </th>
+                                            <th>
+                                                Payload Selection
+                                            </th>
+                                            <th>
+                                                Executing Task
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="item in vm.model.rowActionButtons">
+                                            <td data-ng-bind="item.actionMode">
+                                                Executed When
+                                            </td>
+                                            <td data-ng-bind="item.buttonLabel">
+                                                Button Label
+                                            </td>
+                                            <td data-ng-bind="item.payloadSelection">
+                                                Payload Mode
+                                            </td>
+                                            <td data-ng-bind="item.executingTask">
+                                                Executing Task 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+
+                    </div>
+                </div> 
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

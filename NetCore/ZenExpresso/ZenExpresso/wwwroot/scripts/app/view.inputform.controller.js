@@ -4,7 +4,6 @@
         .module("app")
         .controller("InputFormViewController", InputFormViewController);
     InputFormViewController.$inject = ["brudexservices", "brudexutils", "$window", "DataHolder", "$scope"];
-
     function InputFormViewController(services, utils, $window, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
@@ -59,8 +58,7 @@
                 }
             }
         }
-
-
+        
         function buildSelectOptions(selectOptionsDatasource) {
             var dataSource = [];
             if (selectOptionsDatasource == null) {
@@ -144,6 +142,26 @@
             return scriptParameters;
         }
 
+        function buildFormDataJson() {
+            var formData = {};
+            vm.formControls.forEach(function (control) {
+                formData[control.fieldName] = control.fieldValue;
+                if (["select", "multiselect"].indexOf(control.fieldType) > -1) {
+                     if (control.fieldType === 'multiselect') {
+                        formData[control.fieldName]  = JSON.stringify(control.fieldValue);
+                    }
+                }
+            });
+            return formData;
+        }
+
+        function updateFormData(scriptParameters,formData) {
+            scriptParameters.forEach(function (parameter) {
+                parameter.parameterValue = formData[parameter.parameterName];
+            });
+        }
+
+
         vm.executeSupportTask = function(valid) {
             vm.formSubmitted = true;
             if (validateForm()) {
@@ -156,6 +174,8 @@
                 taskInfo.controlIdentifier = vm.taskInfo.controlIdentifier;
                 taskInfo.flowGroup = vm.taskInfo.flowGroup;
                 taskInfo.taskResult = payload;
+                taskInfo.formData = buildFormDataJson();
+                taskInfo.updateFormData = updateFormData;
                 parentActions.submitTaskResult(taskInfo);
             }
          }; 

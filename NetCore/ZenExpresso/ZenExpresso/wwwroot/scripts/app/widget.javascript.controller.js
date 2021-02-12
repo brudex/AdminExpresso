@@ -2,9 +2,9 @@
     'use strict';
     angular
         .module('app')
-        .controller('ValidationFormattingWidgetController', ValidationFormattingWidgetController);
-    ValidationFormattingWidgetController.$inject = ['brudexutils', 'DataHolder','$scope'];
-    function ValidationFormattingWidgetController(utils, DataHolder, $scope) {
+        .controller('JavascriptWidgetController', JavascriptWidgetController);
+    JavascriptWidgetController.$inject = ['brudexutils', 'DataHolder','$scope'];
+    function JavascriptWidgetController(utils, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
@@ -57,7 +57,7 @@
             obj.editIndex = editIndex;
             obj.modalName = vm.modalName;
             DataHolder.saveData('javascript', obj);
-            vm.model = { jsScript: '' };
+            vm.model = { jsScript: '', runMode: 'onRender' };
         }
 
  
@@ -75,19 +75,20 @@
         }
 
         vm.init = function () {
+            vm.model = { jsScript: '', runMode: 'onRender' };
             var parentActions = DataHolder.getParentFunctions();
             console.log('parentActions', parentActions);
             var controlIndex = parentActions.getFlowCounterIndex('javascript');
             vm.model.controlIdentifier = 'jsScript' + controlIndex;
-            vm.formControls = [];
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
-            
-                var inputForm = DataHolder.getData('inputForm'); //there can be only one input form
-                if (inputForm) {
-                    vm.formControls = inputForm.data.formControls;
-                    console.log('Form controls populated');
-                }
-            
+            var flowsLength = parentActions.getParentModel().getFlowsByFlowGroup(currentWidgetOption).length;
+            if (parentActions.inputFormAdded()) {
+                vm.model.runMode = 'onSubmit';
+            } else if (flowsLength === 0) {
+                vm.model.runMode = 'onRender';
+            } else {
+                vm.model.runMode = 'followFlow';
+            }
         }
 
         function onModalOpen(event, data) {
@@ -103,8 +104,10 @@
                         isEditting = true;
                         editIndex = data.editIndex;
                         vm.initDataModel(data.flowItem);
+                    } else {
+                        isEditting = false;
                     }
-                }
+                }  
             }
 
         }

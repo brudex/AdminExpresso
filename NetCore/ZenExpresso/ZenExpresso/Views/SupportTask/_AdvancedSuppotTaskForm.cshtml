@@ -1,235 +1,309 @@
-﻿<div>
-    <div class="col-md-8">
-        <section class="panel default blue_title h2">
-            <div class="panel-heading">@ViewBag.Title</div>
-            <div class="panel-body">
-                <form name="addTaskForm" class="form-horizontal group-border-dashed" autocomplete="off" parsley-validate="" novalidate="" data-ng-submit="vm.submitSupportTask(addLogForm.$valid)">
-                    <input autocomplete="false" name="hidden" type="text" style="display:none;">
-                    <div class="form-group" data-ng-show="vm.errorMsg.length">
-                        <label class="col-sm-3 control-label"></label>
-                        <div class="col-sm-6">
-                            <div class="alert alert-danger col-md-6">
-                                <ul>
-                                    <li data-ng-repeat="item in vm.errorMsg">{{item}}</li>
-                                </ul>
+﻿<div class="row">
+
+<div class="col-8">
+    <section class="card default blue_title ">
+        <div class="card-header h2">@ViewBag.Title</div>
+        <div class="card-body">
+            <form name="addTaskForm" class="" autocomplete="off" parsley-validate="" novalidate="" data-ng-submit="vm.submitSupportTask(addLogForm.$valid)">
+                <input autocomplete="false" name="hidden" type="text" style="display: none;">
+                <div class="form-group" data-ng-show="vm.errorMsg.length">
+                    <label class="col-sm-3 form-label"></label>
+                    <div class="col-sm-6">
+                        <div class="alert alert-danger col-md-6">
+                            <ul>
+                                <li data-ng-repeat="item in vm.errorMsg">{{item}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--/form-group-->
+                <div class="mb-3 row" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.taskName.$invalid}">
+                    <label class="col-sm-3 form-label  col-form-label">Task Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" data-ng-model="vm.model.taskName" name="taskName" class="form-control parsley-validated" required="">
+                    </div>
+                </div>
+
+                <div class="mb-3 row" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.description.$invalid }">
+                    <label class="col-sm-3 form-label  col-form-label">Task Description</label>
+                    <div class="col-sm-9">
+                        <input type="text" data-ng-model="vm.model.description" name="description" class="form-control parsley-validated" required="">
+                    </div>
+                </div>
+                <div class="mb-3 row" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.topLevelMenu.$invalid }">
+                    <label class="col-sm-3 form-label col-form-label">Top Level Menu</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" data-ng-model="vm.model.topLevelMenu" data-ng-options="item.menuName as item.menuName for item in vm.topMenus" required="" name="topLevelMenu">
+                            <option value="">Select Parent Menu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card  o-hidden mb-0">
+                    <div class="card-header p-0 nav">
+                        <div class="row no-gutters" role="tablist">
+                            <div class="col-auto">
+                                <a href="#ptab1" data-ng-click="vm.widgetOptions('beforeRender')" data-toggle="tab" role="tab" aria-selected="true" class="dashboard-area-tabs__tab card-body d-flex flex-row align-items-center justify-content-start">
+                                    <span class="h4 mb-0 mr-3">1</span>
+                                    <span class="flex d-flex flex-column">
+                                        <strong class="card-title">Server Render</strong>
+                                        <small class="card-subtitle text-50">Executed on Server </small>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-auto border-left border-right">
+                                <a href="#ptab2" data-ng-click="vm.widgetOptions('client')" data-toggle="tab" role="tab" aria-selected="true" class="dashboard-area-tabs__tab card-body d-flex flex-row align-items-center justify-content-start">
+                                    <span class="h4 mb-0 mr-3">2</span>
+                                    <span class="flex d-flex flex-column">
+                                        <strong class="card-title">Client Render</strong>
+                                        <small class="card-subtitle text-50">Executed on Client</small>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-auto border-left border-right">
+                                <a href="#ptab3" data-ng-click="vm.widgetOptions('postAction')" data-toggle="tab" role="tab" aria-selected="true" class="dashboard-area-tabs__tab card-body d-flex flex-row align-items-center justify-content-start ">
+                                    <span class="h4 mb-0 mr-3">3</span>
+                                    <span class="flex d-flex flex-column">
+                                        <strong class="card-title">Server Actions</strong>
+                                        <small class="card-subtitle text-50 text-sm-center">Executed on Server</small>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-auto border-left ">
+                                <a href="#ptab4" data-ng-click="vm.widgetOptions('clientResult')" data-toggle="tab" role="tab" aria-selected="true" class="dashboard-area-tabs__tab card-body d-flex flex-row align-items-center justify-content-end ">
+                                    <span class="h4 mb-0 mr-2">4</span>
+                                    <span class="flex d-flex flex-column">
+                                        <strong class="card-title">Client Result</strong>
+                                        <small class="card-subtitle text-50">Executed on Client</small>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <!--/form-group-->
-                    <div class="form-group" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.taskName.$invalid }">
-                        <label class="col-sm-3 control-label">Task Name</label>
-                        <div class="col-sm-6">
-                            <input type="text" data-ng-model="vm.model.taskName" name="taskName" class="form-control parsley-validated" required="">
-                        </div>
-                    </div><!--/form-group-->
-                    <div class="form-group" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.description.$invalid }">
-                        <label class="col-sm-3 control-label">Task Description</label>
-                        <div class="col-sm-6">
-                            <input type="text" data-ng-model="vm.model.description" name="description" class="form-control parsley-validated" required="">
-                        </div>
-                    </div><!--/form-group-->
-                    <div class="form-group" data-ng-class="{'has-error':vm.formSubmitted && addTaskForm.topLevelMenu.$invalid }">
-                        <label class="col-sm-3 control-label">Top Level Menu</label>
-                        <div class="col-sm-6">
-                            <select class="form-control" data-ng-model="vm.model.topLevelMenu" data-ng-options="item.menuName as item.menuName for item in vm.topMenus" required="" name="topLevelMenu">
-                                <option value="">Select Parent Menu</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="panel-group accordion accordion-semi" id="accordion3">
-                        <div class="basic-wizard" id="progressWizard">
-                            <ul class="nav nav-pills nav-justified">
-                                <li class="active"><a data-toggle="tab" href="#ptab1" data-ng-click="vm.widgetOptions('beforeRender')"><span>Server Render</span></a></li>
-                                <li class=""><a data-toggle="tab" href="#ptab2" data-ng-click="vm.widgetOptions('client')"><span>Client Render</span></a></li>
-                                <li class=""><a data-toggle="tab" href="#ptab3" data-ng-click="vm.widgetOptions('postAction')"><span>Server Actions</span></a></li>
-                                <li class=""><a data-toggle="tab" href="#ptab4" data-ng-click="vm.widgetOptions('clientResult')"><span>Client Result</span> </a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div id="ptab1" class="tab-pane active">
-                                    <div class="list-group">
-                                        <div class="list-group-item active" href="#" data-ng-repeat="item in vm.beforeRenderFlows">
-                                            <h4 class="list-group-item-heading">
-                                                <span data-ng-bind="item.controlName">Sql Query</span>
-                                                <button type="button" class="btn btn-sm btn-primary" data-ng-click="vm.editFlowItem('beforeRenderFlows',$index)">
-                                                    <i class="fa fa-pencil"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.deleteFlowItem('beforeRenderFlows',$index)">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                                <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#{{'beforeRenderFlow-'+$index}}">
-                                                    <span class=""><i class="fa fa-chevron-down"></i></span>
-                                                </button>
-                                            </h4>
-                                            <div class="collapse" data-ng-attr-id="{{'beforeRenderFlow-'+$index}}">
-                                                <p class="list-group-item-text">
-                                                <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
-                                                </p>
-                                            </div>
+                    <div class="card-body tab-content">
+                        <div id="ptab1" class="tab-pane active">
+                             
+                            <div class="card card-group-row__card card-sm"  data-ng-repeat="item in vm.beforeRenderFlows">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="flex">
+                                        <div class="card-title mb-2" data-ng-bind="item.controlName"></div>
+                                        <div class="card-subtitle text-50">
+                                            <button type="button" class="btn btn-sm btn-primary" data-ng-click="vm.editFlowItem('beforeRenderFlows',$index)">
+                                                <i class="material-icons">mode_edit</i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.deleteFlowItem('beforeRenderFlows',$index)">
+                                                <i class="material-icons">delete_forever</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown">
+                                            <a  data-target="#{{'beforeRenderFlow-'+$index}}" data-toggle="collapse"  aria-expanded="false"><i class="material-icons">keyboard_arrow_down</i></a>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="ptab2" class="tab-pane">
-                                    <div class="list-group">
-                                        <div class="list-group-item active" data-ng-repeat="item in vm.clientFlows">
-                                            <h4 class="list-group-item-heading">
-                                                <span data-ng-bind="item.controlName">Client Render</span>
-                                                <button type="button" class="btn btn-sm btn-primary" data-ng-click="vm.editFlowItem('clientFlows',$index)">
-                                                    <i class="fa fa-pencil"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.deleteFlowItem('clientFlows',$index)">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                                <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#{{'clientFlow-'+$index}}">
-                                                    <span class=""><i class="fa fa-chevron-down"></i></span>
-                                                </button>
-                                            </h4>
-                                            <div class="collapse" data-ng-attr-id="{{'clientFlow-'+$index}}">
-                                                <p class="list-group-item-text">
-                                                <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
-                                                </p>
-                                            </div>
+                                <div class="collapse card-footer" data-ng-attr-id="{{'beforeRenderFlow-'+$index}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex mr-2">
+                                            <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
+                                        </div> 
+
+                                    </div>
+                                </div>
+                            </div>
+                             
+                        </div>
+                        <div id="ptab2" class="tab-pane"> 
+                            
+                            <div class="card card-group-row__card card-sm" data-ng-repeat="item in vm.clientFlows">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="flex">
+                                        <div class="card-title mb-2" data-ng-bind="item.controlName"></div>
+                                        <div class="card-subtitle text-50">
+                                            <button type="button" class="btn btn-sm btn-primary" data-ng-click="vm.editFlowItem('clientFlows',$index)">
+                                                <i class="material-icons">mode_edit</i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.deleteFlowItem('clientFlows',$index)">
+                                                <i class="material-icons">delete_forever</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown">
+                                            <a data-target="#{{'clientFlow-'+$index}}" data-toggle="collapse" aria-expanded="false"><i class="material-icons">keyboard_arrow_down</i></a>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="ptab3" class="tab-pane">
-                                    <div class="list-group-item active" data-ng-repeat="item in vm.postActionsFlows">
-                                        <h4 class="list-group-item-heading">
-                                            <span data-ng-bind="item.controlName">Sql Query</span>
+                                <div class="collapse card-footer" data-ng-attr-id="{{'clientFlow-'+$index}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex mr-2">
+                                            <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                        </div>
+                        <div id="ptab3" class="tab-pane">
+
+                            <div class="card card-group-row__card card-sm" data-ng-repeat="item in vm.postActionsFlows">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="flex">
+                                        <div class="card-title mb-2" data-ng-bind="item.controlName"></div>
+                                        <div class="card-subtitle text-50">
                                             <button type="button" class="btn btn-sm btn-primary" data-ng-click="vm.editFlowItem('postActionsFlows',$index)">
-                                                <i class="fa fa-pencil"></i>
+                                                <i class="material-icons">mode_edit</i>
                                             </button>
                                             <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.deleteFlowItem('postActionsFlows',$index)">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="material-icons">delete_forever</i>
                                             </button>
-                                            <button class="btn btn-link btn-sm pull-right" type="button" n data-toggle="collapse" data-target="#{{'postActionsFlow-'+$index}}">
-                                                <span class=""><i class="fa fa-chevron-down"></i></span>
-                                            </button>
-                                        </h4>
-                                        <div class="collapse" data-ng-attr-id="{{'postActionsFlow-'+$index}}">
-                                            <p class="list-group-item-text">
-                                            <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
-                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown">
+                                            <a data-target="#{{'postActionsFlow-'+$index}}" data-toggle="collapse" aria-expanded="false"><i class="material-icons">keyboard_arrow_down</i></a>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="ptab4" class="tab-pane">
-                                    <div class="list-group-item active" data-ng-repeat="item in vm.clientResultFlows">
-                                        <h4 class="list-group-item-heading">
-                                            <span data-ng-bind="item.controlName">Table Result</span>
+                                <div class="collapse card-footer" data-ng-attr-id="{{'postActionsFlow-'+$index}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex mr-2">
+                                            <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ptab4" class="tab-pane">
+
+                            <div class="card card-group-row__card card-sm" data-ng-repeat="item in vm.clientResultFlows">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="flex">
+                                        <div class="card-title mb-2" data-ng-bind="item.controlName"></div>
+                                        <div class="card-subtitle text-50">
                                             <button type="button" class="btn btn-sm btn-primary" data-ng-click="vm.editFlowItem('clientResultFlows',$index)">
-                                                <i class="fa fa-pencil"></i>
+                                                <i class="material-icons">mode_edit</i>
                                             </button>
                                             <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.deleteFlowItem('clientResultFlows',$index)">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="material-icons">delete_forever</i>
                                             </button>
-                                            <button class="btn btn-link btn-sm pull-right" type="button" data-toggle="collapse" data-target="#{{'clientResultFlow-'+$index}}">
-                                                <span class=""><i class="fa fa-chevron-down"></i></span>
-                                            </button>
-                                        </h4>
-                                        <div class="collapse" data-ng-attr-id="{{'clientResultFlow-'+$index}}">
-                                            <p class="list-group-item-text">
-                                              <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
-                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown">
+                                            <a data-target="#{{'clientResultFlow-'+$index}}" data-toggle="collapse" aria-expanded="false"><i class="material-icons">keyboard_arrow_down</i></a>
                                         </div>
                                     </div>
                                 </div>
-                            </div><!-- /tab-content -->
+                                <div class="collapse card-footer" data-ng-attr-id="{{'clientResultFlow-'+$index}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex mr-2">
+                                            <p ng-bind-html="vm.trustAsHtml(item.htmlbind)"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <button class="btn btn-success btn-lg pull-right">Save</button>
-                </form>
-            </div>
-        </section>
 
-    </div>
-    <div class="col-md-4">
-        <section class="panel default blue_title h4">
-            <div class="panel-heading">Widgets </div>
-            <div class="panel-body">
-                <div class="client-widgets">
-                    <h5 class="">Client Widgets</h5>
-                    <ul class="list-group ">
-                        <li class="list-group-item ">
-                            <button class="badge btn clientInput" data-toggle="modal" data-target="#inputFormModal" data-ng-click="vm.onModalOpen('inputFormModal')">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Form Input Controls
-                        </li>
-                        <li class="list-group-item">
-                            <button class="badge btn clientInput" data-toggle="modal" data-target="#validationFormatingModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Validation/Formating Script
-                        </li>
-                        <li class="list-group-item">
-                            <button class="badge btn clientResult" data-toggle="modal" data-target="#outputTransformModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Output/Formating Script
-                        </li>
-                        <li class="list-group-item">
-                            <button class="badge btn " data-toggle="modal" data-target="#tabularOutputModal" data-ng-click="vm.onModalOpen('tabularOutputModal')">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Tabular output
-                        </li>
-                        <li class="list-group-item">
-                            <button class="badge btn clientResult" data-toggle="modal" data-target="#successMessageOutputModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Success Message Result
-                        </li>
-                    </ul>  
+
+                    </div>
                 </div>
-                <div class="server-widgets">
-                    <h5>Server Widgets</h5>
-                    <ul class="list-group">
-                        <li class="list-group-item list-group-item-info">
-                            <button class="badge btn" data-toggle="modal" data-target="#sqlModal" data-ng-click="vm.onModalOpen('sqlModal')">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Sql Query
-                        </li>
-                        <li class="list-group-item list-group-item-info">
-                            <button class="badge btn" data-toggle="modal" data-target="#restApiModal" data-ng-click="vm.onModalOpen('restApiModal')">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Rest Request
-                        </li>
-                        <li class="list-group-item list-group-item-info">
-                            <button class="badge btn" data-toggle="modal" data-target="#dataTransformModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Data Transformation(using Js)
-                        </li>
-                        <li class="list-group-item list-group-item-info">
-                            <button class="badge btn" data-toggle="modal" data-target="#mergetTablesModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Merge tables with lookup
-                        </li>
-                        <li class="list-group-item list-group-item-info">
-                            <button class="badge btn" data-toggle="modal" data-target="#exportDataModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Export Data
-                        </li>
-                        <li class="list-group-item list-group-item-info">
-                            <button class="badge btn " data-toggle="modal" data-target="#serverSideJavascriptModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Sever Side Script
-                        </li>
-                        <li class="list-group-item list-group-item-info">
-                            <button class="badge btn" data-toggle="modal" data-target="#looperModal">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            Looper
-                        </li>
-                    </ul>
-                </div>
+                <br/>
+                <button class="btn btn-success btn-lg float-right">Save</button>
+            </form>
+        </div>
+    </section>
+
+</div>
+<div class="col-4">
+    <section class="panel default blue_title h4">
+        <div class="panel-heading">Widgets </div>
+        <div class="panel-body">
+            <div class="client-widgets">
+                <h5 class="">Client Widgets</h5>
+    
+                <ul class="list-group ">
+                    <li class="list-group-item ">
+                        <button class="badge btn badge-primary clientInput" data-toggle="modal" data-target="#inputFormModal" data-ng-click="vm.onModalOpen('inputFormModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Form Input Controls
+                    </li>
+                    <li class="list-group-item">
+                        <button class="badge badge-primary btn clientInput" data-toggle="modal" data-target="#validationFormatingModal" data-ng-click="vm.onModalOpen('validationFormatingModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Js Script
+                    </li>
+                    <li class="list-group-item">
+                        <button class="badge badge-primary btn " data-toggle="modal" data-target="#tabularOutputModal" data-ng-click="vm.onModalOpen('tabularOutputModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Tabular output
+                    </li>
+                    <li class="list-group-item">
+                        <button class="badge badge-primary btn " data-toggle="modal" data-target="#cardOutputModal" data-ng-click="vm.onModalOpen('cardOutputModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Card output
+                    </li>
+                    <li class="list-group-item">
+                        <button class="badge badge-primary btn clientResult" data-toggle="modal" data-target="#successMessageOutputModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Success Message Result
+                    </li>
+                </ul>
             </div>
-        </section>
-    </div>
+            <div class="server-widgets">
+                <h5>Server Widgets</h5>
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-info">
+                        <button class="badge badge-success btn" data-toggle="modal" data-target="#sqlModal" data-ng-click="vm.onModalOpen('sqlModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Sql Query
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <button class="badge badge-success btn" data-toggle="modal" data-target="#restApiModal" data-ng-click="vm.onModalOpen('restApiModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Rest Request
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <button class="badge badge-success btn" data-toggle="modal" data-target="#dataTransformModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Data Transformation(using Js)
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <button class="badge badge-success btn" data-toggle="modal" data-target="#mergetTablesModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Merge tables with lookup
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <button class="badge badge-success btn" data-toggle="modal" data-target="#exportDataModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Export Data
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <button class="badge badge-success btn " data-toggle="modal" data-target="#serverSideJavascriptModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Sever Side Script
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <button class="badge badge-success btn" data-toggle="modal" data-target="#looperModal">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Looper
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
 
 </div>
