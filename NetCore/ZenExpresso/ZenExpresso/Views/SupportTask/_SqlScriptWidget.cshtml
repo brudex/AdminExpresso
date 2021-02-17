@@ -43,27 +43,28 @@
                                     <br />
                                     <div class="row" data-ng-show="vm.formControls.length">
                                         <div class="col-md-12">
-                                            <h5 class="row">Available Parameters</h5>
-                                            <div class="row">
-                                                <div class="col-md-11">
-                                                    <table class="table table-sm table-responsive">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>Parameter Label</td>
-                                                                <td>Parameter Name</td>
-                                                                <td>Parameter Type</td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr data-ng-repeat="item in vm.formControls">
-                                                                <td><span data-ng-bind="item.fieldLabel"></span></td>
-                                                                <td><span data-ng-bind="item.fieldName"></span></td>
-                                                                <td><span data-ng-bind="item.fieldType"></span></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+
+
+                                            <h5>Available Input FieldNames</h5> 
+                                            <table class="table ">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Parameter Label</th>
+                                                        <th>Parameter Name</th>
+                                                        <th>Parameter Type</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr data-ng-repeat="item in vm.formControls">
+                                                        <td><span data-ng-bind="item.fieldLabel"></span></td>
+                                                        <td><span class="font-weight-bold" data-ng-bind="item.fieldName"></span></td>
+                                                        <td><span data-ng-bind="item.fieldType"></span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
                                         </div>
                                     </div>
                                 </form>

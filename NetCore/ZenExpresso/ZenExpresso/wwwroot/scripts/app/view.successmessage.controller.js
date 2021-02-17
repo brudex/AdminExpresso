@@ -23,28 +23,10 @@
         };
 
 
-//        {
-//            "statusCodes": [
-//                {
-//                    "fieldName": "status",
-//                    "code": "9",
-//                    "alertType": "success",
-//                    "enterMessage": true,
-//                    "staticMessage": "This message is success"
-//                },
-//                {
-//                    "fieldName": "status",
-//                    "code": "1",
-//                    "enterMessage": true,
-//                    "staticMessage": "This message failed",
-//                    "alertType": "error"
-//                }
-//            ]
-//        }
-
+ 
         function showAlertMessage(statusMessage) {
             var flowData = vm.taskInfo.flowData;
-            for (var k = 0, len = flowData.statusCodes.length; k < len; k++) {
+             for (var k = 0, len = flowData.statusCodes.length; k < len; k++) {
                 var statusConfig = flowData.statusCodes[k];
                 if (statusMessage[statusConfig.fieldName] === statusConfig.code) {
                     var message = '';
@@ -59,7 +41,7 @@
         }
 
         function showAlertDialog(alertType, message) {
-            switch (alertType) {
+             switch (alertType) {
                 case 'success': utils.alertSuccess(message); break;
                 case 'error': utils.alertError(message); break;
                 case 'warning': utils.alertWarning(message); break;
@@ -74,7 +56,7 @@
         function executeResult() {
             if (vm.taskResults.length) {
                 var result = vm.taskResults[0];
-                if (result.status === "00") {
+                 if (result.status === "00") {
                     var data = result.data;
                     if (_.isArray(data)) {
                         if (data.length === 1) {
@@ -82,10 +64,16 @@
                         } else {
                             showErrorResult();
                         }
-                      
+
                     } else {
                         showAlertMessage(data);
                     }
+                } else if (result.message) {
+                    console.clear();
+                    console.error(result.message);
+                    showAlertDialog("error", result.message);
+                } else {
+                    utils.alertError("No result for status message");
                 }
             }
              

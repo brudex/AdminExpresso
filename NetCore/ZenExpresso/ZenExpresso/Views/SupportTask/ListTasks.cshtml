@@ -1,66 +1,115 @@
 ﻿@model List<ZenExpressoCore.Models.SupportTask>
 @{
     ViewBag.Title = "Manage Tasks";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
 <div class="row">
-    <div class="col-lg-12">
-        <section class="panel default blue_title h2">
-            <div class="panel-heading">@ViewBag.Title </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="taskListTable">
-                    <thead>
-                    <tr>
-                        <td>Task</td>
-                        <td>Description</td>
-                        <td>TopLevelMenu Task</td>
-                        <td>TaskType</td>
-                         <td>CreatedBy</td>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var task in Model)
-                    {
-                        <tr>
-                            <td>@task.taskName</td>
-                            <td>@task.description</td>
-                            <td>@task.topLevelMenu Task</td>
-                            <td>@task.taskType</td>
-                             <td>@task.createdBy</td>
-                            <td>
-                                <a class="btn btn-danger btn-xs" href="@Url.Action("DeleteTask", new {id = task.id})">Delete </a>
-                                @if (task.IsAdvancedTask())
-                                {
-                                   <a class="btn btn-info btn-xs" href="@Url.Action("EditAdvancedTask", new {id = task.id})">Edit</a>
-                                }
-                                else
-                                {
-                                    <a class="btn btn-info btn-xs" href="@Url.Action("EditSupportTask", new {id = task.id})">Edit</a>
-                                }
-                                <a class="btn btn-primary btn-xs" href="@Url.Action("AssignGroups", new {id = task.id})">Assign Groups</a>
-                                <a class="btn btn-success btn-xs" href="@Url.Action("ExecuteTask", new {id = task.id})">Execute</a>
+    <div class="col-lg-12 card">
 
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
+        <div class="card-header pb-0">
+            <h3>@ViewBag.Title</h3>
+        </div>
+         
+
+        <div class="col-lg-8 d-flex align-items-center card-body m-0">
+
+            <div class="flex">
+
+                <div class="table-responsive" id="tasksTable"
+                     data-toggle="lists"
+                     data-lists-sort-by='js-lists-values-tasks'
+                     data-lists-values='["js-lists-values-tasks", "js-lists-values-description", "js-lists-values-toplevelmenu"]'>
+
+                     
+                    <div class="card-header">
+                        <form class="form-inline">
+                            <label class="mr-sm-2 form-label" for="inlineFormFilterBy">Filter by:</label>
+                            <input type="text" class="form-control search mb-2 mr-sm-2 mb-sm-0" id="inlineFormFilterBy" placeholder="Search ...">
+
+                             
+                        </form>
+                    </div>
+
+                    <table class="table mb-0 thead-border-top-0 table-nowrap" id="taskListTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a href="javascript:void(0)"
+                                       class="sort"
+                                       data-sort="js-lists-values-tasks">Tasks</a>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0)"
+                                       class="sort"
+                                       data-sort="js-lists-values-description">Description</a>
+                                </th>
+                                <th>
+
+                                    <a href="javascript:void(0)"
+                                       class="sort"
+                                       data-sort="js-lists-values-toplevelmenu">TopLevelMenu Task</a>
+
+
+                                </th>
+                                <th>
+
+                                    <a href="javascript:void(0)"
+                                       class="sort"
+                                       data-sort="js-lists-values-tasktype">TaskType</a>
+
+
+
+                                </th>
+                                <th>
+
+                                    <a href="javascript:void(0)"
+                                       class="sort"
+                                       data-sort="js-lists-values-createdby">CreatedBy</a>
+
+
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="list"
+                               id="search">
+                            @foreach (var task in Model)
+                            {
+                                <tr>
+                                    <td class="js-lists-values-tasks">@task.taskName</td>
+                                    <td class="js-lists-values-description">@task.description</td>
+                                    <td class="js-lists-values-toplevelmenu">@task.topLevelMenu Task</td>
+                                    <td class="js-lists-values-tasktype">@task.taskType</td>
+                                    <td class="js-lists-values-createdby">@task.createdBy</td>
+                                    <td>
+                                        <a class="btn btn-danger btn-sm" href="@Url.Action("DeleteTask", new {id = task.id})">Delete </a>
+                                        @if (task.IsAdvancedTask())
+                                        {
+                                            <a class="btn btn-info btn-sm" href="@Url.Action("EditAdvancedTask", new {id = task.id})">Edit</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-info btn-sm" href="@Url.Action("EditSupportTask", new {id = task.id})">Edit</a>
+                                        }
+                                        <a class="btn btn-secondary btn-sm" href="@Url.Action("MakeCopy", new {id = task.id})">Make Copy</a>
+                                        <a class="btn btn-primary btn-sm" href="@Url.Action("AssignGroups", new {id = task.id})">Assign Groups</a>
+                                        <a class="btn btn-success btn-sm" href="@Url.Action("ExecuteTask", new {id = task.id})">Execute</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div></div>
-        </section>
+
+
+        </div> 
     </div>
 </div>
+
 @section MyScripts
 {
-    <script>
-
-        $(document).ready(function () {
-            $('#taskListTable').DataTable({
-                "paging": false
-            });
-        });
-
-  </script>
+    <script src="~/vendor/list.min.js"></script>
+    <script src="~/js/list.js"></script>
 }

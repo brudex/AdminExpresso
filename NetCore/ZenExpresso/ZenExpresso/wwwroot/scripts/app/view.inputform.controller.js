@@ -18,7 +18,7 @@
             console.log("The taskinfo is >>", vm.taskInfo);
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
-            console.log("The taskResults >>", vm.taskResults);
+            console.log("The taskResults from parent>>", vm.taskResults);
             executeResult();
         };
 
@@ -37,6 +37,7 @@
                         } 
                     } 
                 }
+                var hasDateField = false;
                 for (var k = 0, len = flowData.formControls.length; k < len; k++) {
                     var item = flowData.formControls[k];
                     var control = {};
@@ -54,12 +55,20 @@
                     if (["select", "multiselect"].indexOf(control.fieldType) > -1) {
                         control.dataSource = buildSelectOptions(item.selectOptionsDatasource);
                     }
+                    if (["date"].indexOf(control.fieldType) > -1) {
+                        hasDateField = true;
+                    }
                     vm.formControls.push(control);
+                }
+                if (hasDateField) {
+                    console.log("initializaing date control>>");
+                    initFlatPickrDateControl();
                 }
             }
         }
         
         function buildSelectOptions(selectOptionsDatasource) {
+            console.log('Select options datasource', selectOptionsDatasource);
             var dataSource = [];
             if (selectOptionsDatasource == null) {
                 return dataSource;
@@ -68,12 +77,12 @@
             if (dt.inputFormat === "delimited") {
                 var arr = dt.dropDownOptions.split(/[.,\n;]/);
                 console.log("delimited >>", arr);
-                arr.forEach(function(txt) {
+                arr.forEach(function (txt) {
                     dataSource.push({ label: txt, value: txt });
                 });
             } else if (dt.inputFormat === "csv") {
                 var rows = dt.dropDownOptions.split(/[\n]+/);
-                rows.forEach(function(txt) {
+                rows.forEach(function (txt) {
                     var arr = txt.split(/[ ;,.]+/);
                     if (arr.length > 1) {
                         dataSource.push({ label: arr[0], value: arr[1] });
@@ -85,42 +94,60 @@
                 try {
                     var json = JSON.parse(dt.dropDownOptions);
                     if (json.length) {
-                        json.forEach(function(obj) {
-                            var props = Object.keys(obj);
-                            var keyprops = ["value", "id"];
-                            var labelprops = ["label", "key"];
-                            var keyfield = "";
-                            var labelfield = "";
-                            props.forEach(function(p) {
-                                if (keyprops.indexOf(p) > -1) {
-                                    keyfield = p;
-                                } else if (p.indexOf("id") > 0) {
-                                    keyfield = p;
-                                }
-                                if (labelprops.indexOf(p) > -1) {
-                                    labelfield = p;
-                                } else if (p.indexOf("id") > 0) {
-                                    labelfield = p;
-                                }
-                            });
-                            if (labelfield === "") {
-                                labelfield = props[0];
-                            }
-                            if (keyfield === "") {
-                                if (props.length > 1) {
-                                    keyfield = props[1];
-                                } else {
-                                    keyfield = props[0];
-                                }
-                            }
-                            dataSource.push({ label: obj[labelfield], value: obj[keyfield] });
-                        });
+                        buildDropSelectOptions(json);
                     }
                 } catch (e) {
                     console.log("Error in ", e);
                 }
+            } else if (dt.inputFormat === "rest") {
+                var task = utils._.filter(vm.taskResults, function (item) { return item.controlIdentifier === dt.dataSourceName });
+                console.log('the filter task', task);
+                if (task.length) {
+                    buildDropSelectOptions(task[0].data);
+                }
+
             }
             return dataSource;
+
+            function buildDropSelectOptions(array) {
+                array.forEach(function (obj) {
+                    if (typeof obj === 'string') {
+                        dataSource.push({ label: obj, value: obj });
+                        return;
+                    }
+                    var props = Object.keys(obj);
+                    var keyprops = ["value", "id"];
+                    var labelprops = ["label", "key"];
+                    var keyfield = "";
+                    var labelfield = "";
+                    props.forEach(function(p) {
+                        if (keyprops.indexOf(p) > -1) {
+                            keyfield = p;
+                        }
+                        else if (p.indexOf("id") > 0) {
+                            keyfield = p;
+                        }
+                        if (labelprops.indexOf(p) > -1) {
+                            labelfield = p;
+                        }
+                        else if (p.indexOf("id") > 0) {
+                            labelfield = p;
+                        }
+                    });
+                    if (labelfield === "") {
+                        labelfield = props[0];
+                    }
+                    if (keyfield === "") {
+                        if (props.length > 1) {
+                            keyfield = props[1];
+                        }
+                        else {
+                            keyfield = props[0];
+                        }
+                    }
+                    dataSource.push({ label: obj[labelfield], value: obj[keyfield] });
+                });
+            }
         }
 
         function buildPayload() {
@@ -409,7 +436,12 @@
             return validationResult.valid;
         }
 
-
+        function initFlatPickrDateControl() {
+            $(document).ready(function () {
+                $(".flatpickr-input").flatpickr({ dateFormat: "Y-m-d"});
+            })
+        }
+        
     }
 
 

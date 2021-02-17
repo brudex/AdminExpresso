@@ -105,14 +105,13 @@ namespace ZenExpressoCore
                 var list = connection.Delete<DedicatedAdmin>(p1);
             }
         }
+
         public IDbConnection GetOpenDefaultConnection()
         {
             var connection = new SqlConnection(DefaultConnection);
             connection.Open();
             return connection;
         }
-
-        
 
         public IDbConnection CreateDbConnection(string userId, string pass,string ip = "", string dbName = "master")
         {
@@ -335,8 +334,8 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                var predicte = Predicates.Field<SupportTask>(f => f.id, Operator.Eq, id);
-                return connection.GetList<SupportTask>(predicte).FirstOrDefault();
+                var predicate = Predicates.Field<SupportTask>(f => f.id, Operator.Eq, id);
+                return connection.GetList<SupportTask>(predicate).FirstOrDefault();
             }
         }
 

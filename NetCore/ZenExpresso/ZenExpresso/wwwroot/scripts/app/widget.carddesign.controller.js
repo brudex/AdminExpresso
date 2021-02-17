@@ -44,7 +44,9 @@
             vm.dataSources = [];
             if (currentWidgetOption === 'client') {
                 dataSources = parentActions.getBeforeRenderDataSources();
+                console.log('Card Datasource>>', dataSources);
             } else {
+                console.log('Card widget option >>' + currentWidgetOption, dataSources);
                 dataSources = parentActions.getPostActionDataSources();
             }
             if (dataSources.length) {
@@ -87,10 +89,15 @@
             vm.model = { options: {}, rowActionButtons: [], description: '' };
         }
 
-        vm.addRowAction = function() {
+        vm.addRowAction = function () {
+            console.log('Called add row action')
             vm.model.rowActionButtons.push(vm.rowAction);
             vm.rowAction = {}; 
         }
+
+        vm.deleteRowAction = function (index) {
+            vm.model.rowActionButtons.splice(index,1);
+         }
          
       
 
@@ -136,7 +143,7 @@
                 html += '<tbody>';
                 vm.model.rowActionButtons.forEach(function(item) {
                     html += '<tr><td>' + item.actionMode + '</td>';
-                    html += '<tr><td>'+item.buttonLabel + '</td>';
+                    html += '<td>'+item.buttonLabel + '</td>';
                     html += '<td>' + item.payloadSelection + '</td>';
                     html += '<td>'+ item.executingTask + '</td></tr>'; 
                 });

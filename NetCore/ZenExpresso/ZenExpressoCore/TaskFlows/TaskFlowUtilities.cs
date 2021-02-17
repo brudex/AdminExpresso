@@ -32,7 +32,7 @@ namespace ZenExpressoCore.TaskFlows
         }
 
 
-        public static String InterpolateParams(string text, List<ScriptParameter> parameters)
+        public static String InterpolateParams(string text, List<ScriptParameter> parameters,string quotes="'")
         {
             foreach (var parameter in parameters)
             {
@@ -44,16 +44,16 @@ namespace ZenExpressoCore.TaskFlows
                         break;
                     case "regex":
                     case "date":
-                        replaceVal = "'" + parameter.parameterValue + "'";
+                        replaceVal = quotes + parameter.parameterValue + quotes;
                         break;
                     case "text":
                     case "textarea":
                    
-                        replaceVal = "'" + parameter.parameterValue + "'";
+                        replaceVal = quotes + parameter.parameterValue + quotes;
                         break;
                         
                     case "select":
-                        replaceVal = "'" + parameter.parameterValue + "'";
+                        replaceVal = quotes + parameter.parameterValue + quotes;
                         break;
                     case "multiselect":  
                         List<string> selected = JsonConvert.DeserializeObject<List<string>>(parameter.parameterValue);
@@ -78,7 +78,7 @@ namespace ZenExpressoCore.TaskFlows
                     }
                         break;
                     default:
-                        replaceVal = "'" + parameter.parameterValue + "'";
+                        replaceVal = quotes + parameter.parameterValue + quotes;
                         break;
             }
                 text = text.Replace("@" + parameter.parameterName, replaceVal);

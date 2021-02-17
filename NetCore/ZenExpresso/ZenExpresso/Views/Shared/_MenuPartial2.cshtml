@@ -40,28 +40,41 @@
         <li class="sidebar-menu-item">
             <a class="sidebar-menu-button"
                href="@Url.Action("ManageTopMenus", "Setup")">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class=" sidebar-menu-icon sidebar-menu-icon--left">
+                    <i class="fa fa-tasks"></i>
+                </span>
                 <span class="sidebar-menu-text">Manage Menus</span>
             </a>
         </li>
         <li class="sidebar-menu-item">
             <a class="sidebar-menu-button"
                href="@Url.Action("ManageDataSources", "Setup")">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class=" sidebar-menu-icon sidebar-menu-icon--left">
+                    <i class="fa fa-database"></i>
+                </span>
                 <span class="sidebar-menu-text">Manage DataSources</span>
             </a>
         </li>
         <li class="sidebar-menu-item">
             <a class="sidebar-menu-button"
+               href="@Url.Action("CreateUser", "Account")">
+                <span class="sidebar-menu-icon sidebar-menu-icon--left">
+                    <i class="fa fa-user-plus "></i>
+                </span>
+                <span class="sidebar-menu-text">Add User</span>
+            </a>
+        </li>
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button"
                href="@Url.Action("ManageAdmins", "Setup")">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="fa fa-user-cog sidebar-menu-icon sidebar-menu-icon--left"></span>
                 <span class="sidebar-menu-text">Manage Admins</span>
             </a>
         </li>
         <li class="sidebar-menu-item">
             <a class="sidebar-menu-button"
                href="@Url.Action("ReloadMemory", "Setup")">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">school</span>
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">refresh</span>
                 <span class="sidebar-menu-text">Reload Memory</span>
             </a>
         </li>

@@ -38,8 +38,18 @@ namespace ZenExpresso.Controllers
         public string ErrorMessage { get; set; }
 
 
+        [HttpGet]
+        [DedicatedAdminsAllowed]
+        public async Task<IActionResult> CreateUser(string returnUrl = null)
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
 
-        internal async Task<bool> CreateUser(RegisterViewModel model)
+        [DedicatedAdminsAllowed]
+        internal async Task<IActionResult> CreateUser(RegisterViewModel model)
         {
             var user = new ApplicationUser
             {
@@ -50,9 +60,14 @@ namespace ZenExpresso.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("New account with password.");
-                return true; 
+                ViewBag.Created = true;
+                return View();
             }
-            return false; 
+            else
+            {
+                ViewBag.Created = false;
+            }
+            return  View(); ;
         }
 
 

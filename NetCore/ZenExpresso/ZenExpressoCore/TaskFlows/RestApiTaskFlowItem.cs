@@ -16,8 +16,12 @@ namespace ZenExpressoCore.TaskFlows
 
         public  TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
         {
+            var response = new TaskFlowResult();
+            response.flowItemType = flowItemType;
+            response.description = description;
+            response.controlIdentifier = controlIdentifier;
 
-            flowData = TaskFlowUtilities.InterpolateParams(flowData, inputList);
+            flowData = TaskFlowUtilities.InterpolateParams(flowData, inputList,"\\\"");
             if (resultSequence.Any())
             {
                 List<PlaceHolder> placeHolders = TaskFlowUtilities.ExtractPlaceHolders(flowData);
@@ -43,9 +47,10 @@ namespace ZenExpressoCore.TaskFlows
             {
                 restResponse = restHandler.DoGetString(restUrl);
             }
-            var response = new TaskFlowResult();
+            
             try
             {
+                 
                 if (restResponse.IsSuccessStatus())
                 {
                     response.status = "00";

@@ -33,24 +33,24 @@
                                 <div class="form-group">
                                     <label class="col-md-12">Status Code Field</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.model.fieldName">
+                                        <input type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.statusAction.fieldName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="col-md-12">Status Value</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control " required="" placeholder=" Value" data-ng-model="vm.statusAction.code">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label class="col-md-12">Status Code Value</label>
+                                    <label class="col-md-12">Status Message <input type="checkbox" data-ng-model="vm.statusAction.enterMessage">Static </label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control " required="" placeholder=" Value" data-ng-model="vm.model.code">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="col-md-12">Status Message <input type="checkbox" data-ng-model="vm.model.enterMessage">Static </label>
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.model.messageField" data-ng-hide="vm.model.enterMessage">
-                                        <input type="text" class="form-control " required="" placeholder="Enter Message" data-ng-model="vm.model.staticMessage" data-ng-show="vm.model.enterMessage">
+                                        <input type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.statusAction.messageField" data-ng-hide="vm.statusAction.enterMessage">
+                                        <input type="text" class="form-control " required="" placeholder="Enter Message" data-ng-model="vm.statusAction.staticMessage" data-ng-show="vm.statusAction.enterMessage">
                                     </div>
                                  </div>
                             </div>
@@ -58,7 +58,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12">Alert Type </label>
                                     <div class="col-md-12">
-                                        <select type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.model.alertType">
+                                        <select type="text" class="form-control " required="" placeholder="Field Name" data-ng-model="vm.statusAction.alertType">
                                             <option value="success">Success</option>
                                             <option value="error">Error</option>
                                             <option value="warning">Warning</option>
@@ -79,23 +79,23 @@
                          
                     </div>
 
-                    <div class="row" data-ng-show="vm.statusCodes.length">
+                    <div class="row" data-ng-show="vm.model.statusCodes.length">
                         <div class="col-md-12">
-                            <h5>Status Message Confis</h5>
+                            <h5>Status Message Config</h5>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-light">
+                                    <table class="table">
+                                        <thead>
                                         <tr>
-                                            <td>Status Code Field</td>
-                                            <td>Status Code Value</td>
-                                            <td>Status Message</td>
-                                            <td>Alert Type</td>
-                                            <td>..</td>
+                                            <th>Status Code Field</th>
+                                            <th>Status Code Value</th>
+                                            <th>Status Message</th>
+                                            <th>Alert Type</th>
+                                            <th>..</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr data-ng-repeat="item in vm.statusCodes">
+                                        <tr data-ng-repeat="item in vm.model.statusCodes">
                                             <td><span data-ng-bind="item.fieldName"></span></td>
                                             <td><span data-ng-bind="item.code"></span></td>
                                             <td>

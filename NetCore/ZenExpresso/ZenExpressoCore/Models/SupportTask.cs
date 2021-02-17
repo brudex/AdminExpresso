@@ -43,6 +43,34 @@ namespace ZenExpressoCore.Models
             }
         }
 
+        public int CreateCopy(string createdBy)
+        {
+            string sql = string.Format(@"declare @taskToDuplicate int;
+                declare @newTaskId int;
+                            declare @createdByUser varchar(100);
+                set @taskToDuplicate = {0};
+                            set @createdByUser = '{1}';
+                            INSERT INTO[dbo].[SupportTask] ([taskName],[description],[taskType],[taskResultType],[dbusername],[topLevelMenu],[dbPass]
+                               ,[sqlScript],[jsScript],[createdBy],[createdAt])
+                      SELECT[taskName],[description],[taskType],[taskResultType],[dbusername],[topLevelMenu]
+                      ,[dbPass],[sqlScript],[jsScript],@createdByUser,GETDATE() FROM[dbo].[SupportTask]
+                WHERE id = @taskToDuplicate;
+                            select @newTaskId =@@IDENTITY;
+                            INSERT INTO[dbo].[TaskFlowItem] ([supportTaskFlowId],[controlName],[description],[flowItemType]
+                               ,[flowData],[flowGroup],[controlIdentifier])
+                SELECT @newTaskId,[controlName],[description],[flowItemType],[flowData]
+                      ,[flowGroup],[controlIdentifier] FROM[dbo].[TaskFlowItem]
+                WHERE supportTaskFlowId = @taskToDuplicate;
+                            select @newTaskId 'retVal'; ",id,createdBy);
+             var list= DbHandler.Instance.ExecuteOnHostDb(sql);
+            if (list.Any())
+            {
+                dynamic row = list.First();
+                return row.retVal;
+            }
+            return 0;
+        }
+
         public List<ScriptParameter> GetScriptParameters()
         {
             if (_parameters == null || _parameters.Count == 0)

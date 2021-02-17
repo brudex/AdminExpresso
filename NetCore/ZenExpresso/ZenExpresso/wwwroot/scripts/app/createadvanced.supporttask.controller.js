@@ -51,7 +51,8 @@
 
         function getBeforeRenderDataSources() {
             var array = [];
-            vm.beforeRenderFlows.forEach(function(item) {
+            vm.beforeRenderFlows.forEach(function (item) {
+                console.log('getBeforeRenderDataSources Befor render flow item', item);
                 array.push({ key: item.controlIdentifier, dataSourceName: item.controlIdentifier, inputFormat: item.flowItemType,isFlowItem:true });
             });
             return array;
@@ -66,11 +67,13 @@
         }
 
         function getControllerByFlowItemType(flowItemType) {
+            console.log('the flowItemType ,', flowItemType);
             var dict = {
                 'inputForm': 'ClientInputWidgetController',
                 'sqlQuery': 'SqlQueryWidgetController',
                 'successMessage': 'SuccessMessageWidgetController',
                 'tableResult': 'TableResultWidgetController',
+                'cardResult': 'CardWidgetController',
                 'rest': 'RestApiWidgetController',
                 'javascript': 'JavascriptWidgetController'
             }
@@ -81,6 +84,7 @@
         //Called on page load when editting a task
         function addInitialFlow(data) {
             var controller = getControllerByFlowItemType(data.flowItemType);
+            console.log('The controller', controller);
             var dataModel = controller.initDataModel(data);
             addFlow(dataModel);
         }
@@ -154,7 +158,6 @@
                 utils.toastInfo("Flow Added !!");
             }
             $("#" + data.modalName).modal("hide");
-           
         }
 
         vm.onModalOpen = function(modalName) {
@@ -218,6 +221,15 @@
                 }
             }
             vm[flowArrayName].splice(index, 1);
+        }
+
+        vm.getInputFields= function (flowArrayName, index) {
+            var inputFlows = utils._.filter(vm.clientFlows, function (item) { return item.flowItemType; });
+            var inputFields = [];
+            for (var k = 0, len = inputFlows.length; k < len; k++) {
+                inputFields.push.apply(inputFields,inputFlows[k].data.formControls)
+            }
+            return inputFields;
         }
 
         vm.editFlowItem = function (flowArrayName, index) {

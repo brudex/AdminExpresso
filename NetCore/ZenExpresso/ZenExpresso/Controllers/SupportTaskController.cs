@@ -42,6 +42,26 @@ namespace ZenExpresso.Controllers
         }
 
         [DedicatedAdminsAllowed]
+        public ActionResult MakeCopy(int id)
+        {
+            var task = DbHandler.Instance.GetSupportTaskById(id);
+            if (task != null)
+            {
+               int newTaskId = task.CreateCopy(User.Identity.Name);
+                if(newTaskId > 0)
+                {
+                    return RedirectToAction("EditAdvancedTask", "SupportTask",new { id = newTaskId});
+                }
+                return RedirectToAction("Index", "Error");
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        [DedicatedAdminsAllowed]
         public ActionResult EditAdvancedTask(int id)
         {
             var task = DbHandler.Instance.GetSupportTaskById(id);
@@ -77,8 +97,8 @@ namespace ZenExpresso.Controllers
         }
 
         [DedicatedAdminsAllowed]
-        [HttpGet]
-        public ActionResult DeleteTask([FromBody]SupportTask data)
+        [HttpPost]
+        public ActionResult DeleteTask([FromForm]SupportTask data)
         {
             var deleted = DbHandler.Instance.DeleteSupportTaskById(data.id);
             if (deleted)
@@ -91,7 +111,7 @@ namespace ZenExpresso.Controllers
         }
 
         [DedicatedAdminsAllowed]
-        [HttpPost]
+        [HttpGet]
         public ActionResult AssignGroups(int id)
         {
             var supportTask = DbHandler.Instance.GetSupportTaskById(id);

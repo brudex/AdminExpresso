@@ -1,7 +1,7 @@
 ﻿@model ZenExpressoCore.Models.SupportTask
 @{
     ViewBag.Title = "Edit "+ Model.taskName ;
-     Layout = "~/Views/Shared/_Layout.cshtml";
+     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 <link rel="stylesheet" href="~/css/atom-one-dark.css">
 <script src="~/scripts/highlight.pack.js"></script>
@@ -16,6 +16,7 @@
         @await Html.PartialAsync("_FormatValidationWidget")
         @await Html.PartialAsync("_OuptutTransformWidget")
         @await Html.PartialAsync("_TabularOutputWidget")
+        @await Html.PartialAsync("_CardOutputWidget")
         @await Html.PartialAsync("_SuccessMessageOutputWidget")
 
         @* Server Widgets *@

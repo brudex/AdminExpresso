@@ -6,20 +6,17 @@
     ExecuteAdvancedTaskController.$inject = ['brudexservices', 'brudexutils', 'BeforeRenderDataStore', 'DataHolder', '$sce', '$scope', '$controller'];
     function ExecuteAdvancedTaskController(services, utils, BeforeRenderDataStore, DataHolder, $sce, $scope, $controller) {
         var vm = this;
-        vm.errorMsg = [];
-        vm.successMsg = [];
-        vm.formSubmitted = false;
         vm.formData = null;
-        vm.model = {searchFields:[]};
         var supportTaskId = $("#__supportTaskId").val();
         var supportTaskInfo = {};
         vm.taskFlowItems = [];
         var taskResults = [];
-        vm.outputFormatingScripts = [];
         var clientResults = [];
         vm.scriptExecutiongStage = 'beforeRender';
         var validationScriptsQueue = new buckets.Queue();
         var currentValidationScript = null;
+        var currentTaskResult = null;
+        var formSubmitSuccessCallbacks = [];
         var broadcastFunctions = {
             getTaskResults: function() {
                 return taskResults;
@@ -51,9 +48,9 @@
         }
         //recursive function to run thru queued submit scripts synchronously
         function executeOnFormSubmitScripts() {
-            var taskInfo = getNextValidationScriptInfo();
-            if (taskInfo) {
-                executeScriptWithResult(taskInfo,
+            var validationScripInfo = getNextValidationScriptInfo();
+            if (validationScripInfo) {
+                executeScriptWithResult(validationScripInfo,
                     function (status) {
                         if (status === "00") {
                             currentValidationScript = null;
@@ -63,8 +60,9 @@
                         }
                     });
             } else {
-                taskResult.updateFormData(taskResult.payload, vm.formData);  //update the form data modified by the script
-                clientResults.push(taskResult);
+                //taskResult.updateFormData(taskResult.payload, vm.formData);  update the form data modified by the script
+                delete currentTaskResult.formData;
+                clientResults.push(currentTaskResult);
                 submitData();
             }
         }
@@ -76,9 +74,13 @@
             executeFormPost(payload);
         }
 
-        function submitTaskResult(taskResult) {
+        function submitTaskResult(taskResult, successCallback) {
+            if (successCallback) {
+               formSubmitSuccessCallbacks.push(successCallback);
+            }
             console.log('The Task Result has been submitted>>', JSON.stringify(taskResult));
             if (taskResult.flowItemType === 'inputForm.html') {
+                currentTaskResult = taskResult;
                 vm.formData = taskResult.formData;
                 executeOnFormSubmitScripts(); 
             } else {
@@ -123,7 +125,7 @@
             clientRenderFlows = clientRenderFlows.map(function(item) {
                 item.flowData = JSON.parse(item.flowData);
                 if (item.flowItemType === 'javascript' && item.flowData.runMode === 'onRender') {
-                    validationScriptsQueue.enqueue(o); //caching on Render scripts for executing
+                    validationScriptsQueue.enqueue(item); //caching on Render scripts for executing
                 }
                 return item; 
             });
@@ -156,12 +158,13 @@
                     var flow = clientRenderFlows[indexIterator];
                     if (flow.flowItemType === 'javascript') {
                         if (flow.flowData.runMode === 'followFlow') {  //todo use callback to continue executing
-                            executeJsScriptController(flow);
-                            executeScriptWithResult(flow,
+                             executeScriptWithResult(flow,
                                 function (status) {
                                     if (status === "00") {
-                                        indexIterator +=1;
-                                        recursiveIterator();
+                                        indexIterator += 1;
+                                        if (indexIterator < clientRenderFlows.length) {
+                                            recursiveIterator();
+                                        } 
                                     } else {
                                         recursiveIterator();
                                     }
@@ -184,6 +187,7 @@
 
         function executeFormPost(data) {
             services.executeAdvancedTask(data, function (response) {
+                clientResults = [];
                 if (response.status === "00") {
                     executeOnFormResult(response);
                 } else {
@@ -193,15 +197,14 @@
         }
 
         function executeOnFormResult(response) {
-            console.log('The task flow response ', JSON.stringify(response));
-           // return;
+              
+            taskResults = response.taskFlowResults;
             var renderResults = response.taskFlowResults;
-            taskResults = renderResults;
             var clientRenderFlows = response.taskFlowItems;
-            vm.taskFlowItems = [];
             if (clientRenderFlows.length === 0) {
                 console.log('Before Render results length>>>', renderResults.length);
                 if (renderResults.length) {
+                    vm.taskFlowItems = [];
                     var obj = {};
                     obj.supportTaskFlowId = supportTaskInfo.id;
                     obj.controlName = '';
@@ -211,17 +214,53 @@
                     obj.flowGroup = '';
                     vm.taskFlowItems.push(obj);
                 }
-            }
-            for (var k = 0, len = clientRenderFlows.length; k < len; k++) {
-                var flow = clientRenderFlows[k];
-                flow.flowData = JSON.parse(flow.flowData);
-                if (flow.flowItemType === 'validationScript') { //todo change to output format script
-                    validationScriptsQueue.enqueue(flow); //todo change to execute data transform script
+            } else {
+                if (clientRenderFlows.length == 1) {
+                    if (['javascript', 'successMessage'].indexOf(clientRenderFlows[0].flowItemType) == -1) { //don't clear screen if its js or successMessage result
+                        console.log("Screen is cleard")
+                        vm.taskFlowItems = [];
+                    }
                 } else {
+                    vm.taskFlowItems = []; //clears screen
+                }
+            }
+            clientRenderFlows = clientRenderFlows.map(function (item) {
+                item.flowData = JSON.parse(item.flowData);
+                if (item.flowItemType === 'javascript' && item.flowData.runMode === 'onRender') {
+                    validationScriptsQueue.enqueue(item); //caching on Render scripts for executing
+                }
+                return item;
+            });
+            if (validationScriptsQueue.length) {
+                 executeOnFormRenderScripts(); //run scripts the should be executed on page load
+            } else {
+                runRenderFlows();
+            }
+            function executeOnFormRenderScripts() {
+                var taskInfo = getNextValidationScriptInfo();
+                if (taskInfo) {
+                    executeScriptWithResult(taskInfo,
+                        function (status) {
+                            if (status === "00") {
+                                currentValidationScript = null;
+                                executeOnFormRenderScripts();
+                            } else {
+                                executeOnFormRenderScripts();
+                            }
+                        });
+                } else {
+                    runRenderFlows();
+                }
+            }
+
+            function runRenderFlows() {
+                console.log('RENDERING FLOWS FROM RESULT');
+                for (var k = 0, len = clientRenderFlows.length; k < len; k++) {
+                    var flow = clientRenderFlows[k];
                     flow.flowItemType = flow.flowItemType + '.html';
                     vm.taskFlowItems.push(flow);
                 }
-            }
+            }  
         } 
 
     }

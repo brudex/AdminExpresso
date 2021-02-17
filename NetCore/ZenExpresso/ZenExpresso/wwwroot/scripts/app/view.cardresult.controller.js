@@ -74,7 +74,7 @@
                 case 'selectfields':
                 {
                         var splitFields = actionInfo.payload.split(/[.,\n;]/);
-                        var selectFields = util._.pick(rowData, splitFields); 
+                        var selectFields = utils._.pick(rowData, splitFields); 
                         data = encodeURIComponent(JSON.stringify(selectFields));
                         break;
                 }

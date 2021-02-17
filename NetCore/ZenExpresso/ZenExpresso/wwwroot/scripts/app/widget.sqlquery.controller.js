@@ -33,8 +33,7 @@
         }
 
         vm.openForEditting = function (flowItem) {
-            //restApiModal, #outputTransformModal, tabularOutputModal, inputFormModal, validationFormatingModal, successMessageOutputModal
-            $('#'+vm.modalName).modal('show'); 
+             $('#'+vm.modalName).modal('show'); 
         }
 
         vm.saveData = function() {
@@ -96,12 +95,8 @@
             vm.model.controlIdentifier = 'sqlQuery'+controlIndex;
             vm.formControls = [];
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
-            if(currentWidgetOption === 'postAction') {
-                var inputForm = DataHolder.getData('inputForm'); //there can be only one input form
-                if (inputForm) {
-                    vm.formControls = inputForm.data.formControls;
-                    console.log('Form controls populated');
-                } 
+            if (currentWidgetOption === 'postAction') {
+                vm.formControls = parentActions.getParentModel().getInputFields();
             }
         }
 

@@ -27,7 +27,7 @@
                 vm.model = data.data; 
             }
             console.log('The data model for rest >>', vm.model);
-            var obj = { controlName: "Rest Api", flowItemType: 'rest', flowGroup: data.flowGroup };
+            var obj = { controlName: "Rest Api", flowItemType: 'rest', flowGroup: data.flowGroup, controlIdentifier: vm.model.controlIdentifier};
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             return obj;
@@ -80,10 +80,9 @@
             vm.formControls = [];
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             if (currentWidgetOption === 'postAction') {
-                var inputForm = DataHolder.getData('inputForm'); //there can be only one input form
-                if (inputForm) {
-                    vm.formControls = inputForm.data.formControls;
-                }
+                 
+                vm.formControls = parentActions.getParentModel().getInputFields();  
+                 
             }
         }
 

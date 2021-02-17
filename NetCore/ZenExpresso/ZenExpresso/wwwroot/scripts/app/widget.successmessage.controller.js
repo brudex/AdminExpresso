@@ -8,31 +8,48 @@
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
-        vm.model = { };
-        vm.header = {};
+        vm.model = { statusCodes: [] };
+        vm.statusAction = {}; 
         var isEditting = false;
-        vm.statusCodes = [];
+        var editIndex = 0;
         vm.modalName = 'successMessageOutputModal';
         var currentWidgetOption = '';
-         
+        $scope.$on('modalOpened', onModalOpen);
+
         vm.initDataModel = function (data) {
-            console.log('vm.initDataModel', data);
-            var initData = JSON.parse(data.flowData);
-            vm.model = initData;
-            var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: "clientResult", description: vm.model.description };
+            currentWidgetOption = data.flowGroup;
+            if (data.flowData && typeof data.flowData === 'string') {
+                var initData = JSON.parse(data.flowData);
+                vm.model = initData;
+            } else {
+                vm.model = data.data;
+            }  
+            var obj = { controlName: "Success Message Result", flowItemType: 'successMessage', flowGroup: 'clientResult' };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
+            obj.isEditting = isEditting;
             return obj;
+        }
+
+        vm.init = function () {
+            var parentActions = DataHolder.getParentFunctions();
+            console.log('parentActions', parentActions);
+            vm.model = { statusCodes: [] };
         }
 
         vm.deleteStatusCodes = function (index) {
             console.log('The delete index >>', index);
-            vm.statusCodes.splice(index,1);
+            vm.model.statusCodes.splice(index,1);
         }
 
         vm.addStatusCode = function () {
-            vm.statusCodes.push(Object.assign({},vm.model));
-            vm.model = {};
+            vm.model.statusCodes.push(Object.assign({}, vm.statusAction));
+            vm.statusAction = {};
+        }
+
+
+        vm.openForEditting = function (flowItem) {
+             $('#' + vm.modalName).modal('show');
         }
 
         vm.saveData = function () {
@@ -40,26 +57,44 @@
                 return;
             }
             var obj = { controlName: "Success Message Result", flowItemType: 'successMessage', flowGroup: 'clientResult' };
-            obj.data = { statusCodes: vm.statusCodes };
+            obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             obj.modalName = vm.modalName;
+            obj.isEditting = isEditting;
+            obj.editIndex = editIndex;
             DataHolder.saveData('successMessage', obj);
             vm.statusCodes = [];
         }
 
-        
+        function onModalOpen(event, data) {
+            console.log(typeof data);
+            if (typeof data === 'string') {
+                if (data === vm.modalName) {
+                    vm.init();
+                }
+            } else {
+                if (data.modalName === vm.modalName) {
+                    vm.init();
+                    if (data.isEditting) {
+                        isEditting = true;
+                        editIndex = data.editIndex;
+                         vm.initDataModel(data.flowItem);
+                    }
+                }
+            }
+
+        }
         function buildHtmlBindView() {
-           
-            var html = ' <br/> <div> <table class="table">';
-            html += '<caption>Status Codes</caption>';
-            html += '<thead>';
+
+            var html = '<h5>Status Codes</h5>';
+            html += '<br/> <div> <table class="table">';
             html += '<thead><tr>' +
-                '<td>Status Code Field</td>' +
-                '<td>Status Code Value</td>' +
-                '<td>Status Message</td>' +
-                '<td>Alert Type</td></tr></thead>';
+                '<th>Status Code Field</th>' +
+                '<th>Status Code Value</th>' +
+                '<th>Status Message</th>' +
+                '<th>Alert Type</th></tr></thead>';
             html += '<tbody>';
-            vm.statusCodes.forEach(function (item) {
+            vm.model.statusCodes.forEach(function (item) {
                 var statusMessage = item.messageField;
                 if (item.enterMessage) {
                     statusMessage = item.staticMessage;
@@ -68,7 +103,7 @@
                 html += '<td>' + item.code + '</td>';
                 html += '<td>' + statusMessage + '</td>';
                 html += '<td>' + item.alertType + '</td></tr>';
-            });
+            })
             html += '</tbody>';
             html += '</table> </div>';
             return  html;
