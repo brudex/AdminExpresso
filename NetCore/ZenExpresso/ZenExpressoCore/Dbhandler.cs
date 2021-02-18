@@ -66,6 +66,15 @@ namespace ZenExpressoCore
             }
         }
 
+        public List<TopMenu> GetTopMenus()  
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                return connection.Query<TopMenu>("SELECT  * FROM [dbo].[TopMenu] order by menuOrder").ToList();
+                
+            }
+        }
+
         public List<TaskFlowItem> GetAdvancedTaskFlowItems(int supportTaskFlowId)
         {
             using (var connection = GetOpenDefaultConnection())
@@ -230,12 +239,20 @@ namespace ZenExpressoCore
                 return id;
             }
         }
+        
+        public void UpdateAdmin(DedicatedAdmin obj)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var id = connection.Update(obj);
+             }
+        }
 
         public int GetUsersCount()
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                return connection.Query<int>("select count(*) 'int' from [AspNetUsers]").FirstOrDefault(); ;
+                return connection.Query<int>("select count(*) 'int' from [AspNetUsers]").FirstOrDefault(); 
             }
         }
 

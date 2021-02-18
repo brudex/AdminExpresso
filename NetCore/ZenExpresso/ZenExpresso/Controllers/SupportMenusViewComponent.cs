@@ -27,7 +27,7 @@ namespace ZenExpresso.Controllers
                 var menuModel = new SupportMenuModel();
                 menuModel.menuName = topMenu.menuName;
                 var subTasks = tasks.Where(x => x.topLevelMenu == topMenu.menuName && x.UserHasAccess(User.Identity.Name, claims)).ToList();
-                if (subTasks.Any())
+                if(subTasks.Any())
                 {
                     menuModel.SubMenus = new List<SubMenu>();
                     foreach (var supportTask in subTasks)

@@ -37,7 +37,10 @@
 
             getAdminList: getData('api/SetupApi/GetAdminList'),
             addAdmin: postData('api/SetupApi/SaveDedicatedAdmin'),
-            deleteAdmin: postData('api/SetupApi/DeleteAdmin')
+            deleteAdmin: postData('api/SetupApi/DeleteAdmin'),
+            setAdminPreviledges: postData('api/SetupApi/SetDedicatedAdminPreviledges')
+
+            
         }; 
         function startSpiner() {
             var opts =  {

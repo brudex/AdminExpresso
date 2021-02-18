@@ -8,6 +8,7 @@ using ZenExpressoCore;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using ZenExpresso.Models;
+using System.Linq;
 
 namespace ZenExpresso.Controllers
 {
@@ -48,8 +49,9 @@ namespace ZenExpresso.Controllers
             return View();
         }
 
-        [DedicatedAdminsAllowed]
-        internal async Task<IActionResult> CreateUser(RegisterViewModel model)
+        
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromForm]RegisterViewModel model)
         {
             var user = new ApplicationUser
             {
@@ -65,6 +67,10 @@ namespace ZenExpresso.Controllers
             }
             else
             {
+                if (result.Errors.Any())
+                {
+                    ViewBag.Error = result.Errors.First().Description;
+                }
                 ViewBag.Created = false;
             }
             return  View(); ;

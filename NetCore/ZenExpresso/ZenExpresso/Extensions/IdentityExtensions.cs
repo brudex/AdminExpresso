@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using ZenExpresso.Helpers;
 using ZenExpresso.Models;
+using ZenExpressoCore.Models;
 
 namespace ZenExpresso
 {
@@ -29,6 +30,44 @@ namespace ZenExpresso
             return false;
         }
 
+          
+        public static DedicatedAdmin GetPreviledges(this IPrincipal user)
+        {
+            var identity = (ClaimsIdentity)user.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var roleClaims = claims.Where(x => x.Type == ClaimTypes.Role).ToList();
+
+            if (!roleClaims.Any())
+            {
+                roleClaims = GetUserClaims(user.Identity.Name);
+            }
+            var admin = new DedicatedAdmin();
+
+            if (roleClaims.Any(x => x.Value == "Admin"))
+            {
+                admin.fullName = user.Identity.Name;
+                admin.userName = user.Identity.Name;
+               
+            }
+            if (roleClaims.Any(x => x.Value == "canCreateTask"))
+            {
+                admin.canCreateTask = true;
+            }
+            if (roleClaims.Any(x => x.Value == "canCreateAdmin"))
+            {
+                admin.canCreateAdmin = true;
+            }
+            if (roleClaims.Any(x => x.Value == "canCreateUser"))
+            {
+                admin.canCreateUser = true;
+            }
+            if (roleClaims.Any(x => x.Value == "canManageLogs"))
+            {
+                admin.canManageLogs = true;
+            }
+            return admin;
+        }
+
         public static async Task CustomSignInWithAdditionalClaimsAsync<TIdentityUser>(this SignInManager<TIdentityUser> signInManager, TIdentityUser user, bool isPersistent) where TIdentityUser : IdentityUser
         {
             var claimsPrincipal = await signInManager.CreateUserPrincipalAsync(user);
@@ -42,11 +81,28 @@ namespace ZenExpresso
         {
             List<Claim> claims = new List<Claim>();
             var dedicatedeAdmins = MemDb.Instance.GetDedicatedAdmins();
-            bool isAdmin = dedicatedeAdmins.Any(x => x.userName.ToLower() == userName.ToLower());
-            if (isAdmin)
+            var admin = dedicatedeAdmins.FirstOrDefault(x => x.userName.ToLower() == userName.ToLower());
+            if (admin!=null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                if (admin.canCreateTask)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "canCreateTask"));
+                }
+                if (admin.canCreateAdmin)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "canCreateAdmin"));
+                }
+                if (admin.canCreateUser)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "canCreateUser"));
+                }
+                if (admin.canManageLogs)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "canManageLogs"));
+                }
             }
+                
             return claims;
         }
 

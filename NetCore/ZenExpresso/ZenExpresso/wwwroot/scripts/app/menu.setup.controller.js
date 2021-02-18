@@ -39,6 +39,7 @@
         vm.addMenu = function (formValid) {
             if (formValid) {
                 var payload = vm.model;
+                payload.menuOrder = ((vm.list.length) +1)
                 services.addMenu(payload, function (response) {
                     if (response.status === "00") {
                         vm.searchResults = response.data;

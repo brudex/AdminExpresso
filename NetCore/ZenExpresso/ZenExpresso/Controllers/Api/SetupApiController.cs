@@ -27,6 +27,7 @@ namespace ZenExpresso.Controllers
         {
             var Menu = new TopMenu();
             Menu.menuName = data["menuName"].ToStringOrEmpty();
+            Menu.menuOrder = data["menuOrder"].ToInteger();
             DbHandler.Instance.Save(Menu);
             MemDb.Instance.ReloadMenus();
             var response = new ServiceResponse();
@@ -119,6 +120,18 @@ namespace ZenExpresso.Controllers
             var response = new ServiceResponse();
             response.status = "00";
             response.message = "Success";
+            return response;
+        }
+
+        [HttpPost]
+        public ServiceResponse SetDedicatedAdminPreviledges([FromBody] DedicatedAdmin admin)
+        {
+            
+            DbHandler.Instance.UpdateAdmin(admin);
+            MemDb.Instance.ReloadAdmins();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.message = "Success: Previledges Updated";
             return response;
         }
 

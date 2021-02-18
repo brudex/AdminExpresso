@@ -53,7 +53,7 @@ namespace ZenExpresso.Helpers
         public void Init()
         {
             _dedicatedAdmins = DbHandler.Instance.GetList<DedicatedAdmin>();
-            _topMenus = DbHandler.Instance.GetList<TopMenu>();
+            _topMenus = DbHandler.Instance.GetTopMenus();
             _supportTasksList = DbHandler.Instance.GetSupportTaskWithGroupsAssigned();
             _dataSources = DbHandler.Instance.GetList<DataSource>();
             SetupInitialAdmin(); 

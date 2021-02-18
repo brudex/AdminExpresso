@@ -1,6 +1,10 @@
 ﻿@using ZenExpresso
+@{
 
-@if (User.IsAdmin())
+    var userPreviledges = User.GetPreviledges();
+}
+
+@if (userPreviledges.HasPreviledges())
 {
     <div class="sidebar-heading">Support Tasks</div>
     <ul class="sidebar-menu"> 

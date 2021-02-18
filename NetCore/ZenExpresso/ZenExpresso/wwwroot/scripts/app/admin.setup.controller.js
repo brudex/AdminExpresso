@@ -16,6 +16,7 @@
 
         function listAdmins() {
             services.getAdminList(function (response) {
+                console.log('Admin responses>>', response);
                 if (response.status === "00") {
                     vm.list = response.data;
                 }
@@ -47,6 +48,19 @@
                     }
                 });
             }
+        }
+
+        vm.setPreviledges = function (admin) {
+            utils.alertConfirm("Change Previledges", "Confirm ?", function () {
+                var payload = admin;
+                services.setAdminPreviledges(payload, function (response) {
+                    if (response.status === "00") {
+                        vm.searchResults = response.data;
+                        utils.alertSuccess("", response.message);
+                        vm.init();
+                    }
+                });
+            });
         }
 
         
