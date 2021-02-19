@@ -189,25 +189,25 @@ namespace ZenExpresso.Controllers
                 {
                     _logger.LogInformation("Curent user pass." + model.Password);
                      var result =  await _signInManager.PasswordSignInAsync(userName, model.Password, model.RememberMe, lockoutOnFailure: false);
-                     await _signInManager.SignInAsync(user,new AuthenticationProperties { IsPersistent=false});
-                    //await _signInManager.CustomSignInWithAdditionalClaimsAsync(user, model.RememberMe);
+                    // await _signInManager.SignInAsync(user,new AuthenticationProperties { IsPersistent=false});
+                   // await _signInManager.CustomSignInWithAdditionalClaimsAsync(user, model.RememberMe);
                     //                    if (result.Succeeded)
                     //                    {
                     //                        _logger.LogInformation("User logged in.");
                     //                        return RedirectToAction("Index", "Home");
                     //                    }
-                    //if (result.Succeeded)
-                    //{
+                    if (result.Succeeded)
+                    {
                         
-                        var user1 = await _userManager.GetUserAsync(User);
+                        //var user1 = await _userManager.GetUserAsync(User);
                         //_logger.LogInformation("User logged islockedout."+ result.IsLockedOut);
                         //_logger.LogInformation("User logged requiresTwofactor."+ result.RequiresTwoFactor);
-                        _logger.LogInformation("User logged in."+ user1.Email);
-                        _logger.LogInformation("User logged in."+user1.UserName);
-                        _logger.LogInformation("Curent user name." + User.Identity.Name);
-                        _logger.LogInformation("Curent user authenticated." + User.Identity.IsAuthenticated);
+                        // _logger.LogInformation("User logged in."+ user1.Email);
+                        // _logger.LogInformation("User logged in."+user1.UserName);
+                        // _logger.LogInformation("Curent user name." + User.Identity.Name);
+                        // _logger.LogInformation("Curent user authenticated." + User.Identity.IsAuthenticated);
                         return true;
-                    //}
+                    }
                     
                     
                 }
