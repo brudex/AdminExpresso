@@ -33,6 +33,7 @@ namespace ZenExpresso
           
         public static DedicatedAdmin GetPreviledges(this IPrincipal user)
         {
+            Console.Write("The Current UserName is >>", user.Identity.Name);
             var identity = (ClaimsIdentity)user.Identity;
             IEnumerable<Claim> claims = identity.Claims;
             var roleClaims = claims.Where(x => x.Type == ClaimTypes.Role).ToList();
@@ -71,14 +72,15 @@ namespace ZenExpresso
         public static async Task CustomSignInWithAdditionalClaimsAsync<TIdentityUser>(this SignInManager<TIdentityUser> signInManager, TIdentityUser user, bool isPersistent) where TIdentityUser : IdentityUser
         {
             var claimsPrincipal = await signInManager.CreateUserPrincipalAsync(user);
+            Console.WriteLine("The PrincipalUser", user.Email);
             await signInManager.Context.SignInAsync(IdentityConstants.ApplicationScheme,
-                claimsPrincipal,
-                new AuthenticationProperties { IsPersistent = isPersistent });
+                claimsPrincipal,new AuthenticationProperties { IsPersistent = isPersistent });
              
         }
 
         public static  List<Claim> GetUserClaims(string userName)
         {
+            Console.WriteLine("The username is >>", userName);
             List<Claim> claims = new List<Claim>();
             var dedicatedeAdmins = MemDb.Instance.GetDedicatedAdmins();
             var admin = dedicatedeAdmins.FirstOrDefault(x => x.userName.ToLower() == userName.ToLower());

@@ -1,113 +1,216 @@
-﻿@using ZenExpresso
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@{
+    var userPreviledges = User.GetPreviledges();
+
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewBag.Title - Inbar KMS Admin</title>
-    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW" />
-    <link href="~/assets/css/font-awesome.css" rel="stylesheet" />
-    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/assets/css/animate.css" rel="stylesheet" />
-    <link href="~/assets/css/admin.css" rel="stylesheet" />
-    <link href="~/assets/css/sweetalert.css" rel="stylesheet" />
-    <link href="~/assets/plugins/dataTables/datatables.min.css" rel="stylesheet" />
-    <link href="~/assets/plugins/dataTables/Scroller-2.0.0/css/scroller.bootstrap.min.css" rel="stylesheet" />
-    <link href="~/assets/plugins/dataTables/Scroller-2.0.0/css/scroller.dataTables.min.css" rel="stylesheet" />
-    <link href="~/assets/plugins/spinjs/spin.css" rel="stylesheet" />
-    <link href="~/assets/css/datepicker.min.css" rel="stylesheet" />
-    <link href="~/assets/css/toastr.min.css" rel="stylesheet" />
 
-</head> 
-<body class="light_theme  fixed_header left_nav_fixed">
-    <div class="wrapper">
-        <!--\\\\\\\ wrapper Start \\\\\\-->
-        <div class="header_bar">
-            <!--\\\\\\\ header Start \\\\\\-->
-            <div class="brand" style="background: white">
-                <!--\\\\\\\ brand Start \\\\\\-->
-                <div class="row">
-                    <div class="col-md-3">
-                        <a href="~/">
-                            <img src="~/assets/images/zenExpressoLogo2.gif" width="170" alt="s-logo" />
-                        </a>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="small_logo" style="display: none">
-                            <img src="~/assets/images/zenExpresso.gif" alt="s-logo" />
-                            <img src="~/assets/images/zenExpresso.gif" alt="r-logo" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--\\\\\\\ brand end \\\\\\-->
-            <div class="header_top_bar">
-                <!--\\\\\\\ header top bar start \\\\\\-->
-                <a href="javascript:void(0);" class="menutoggle"> <i class="fa fa-bars"></i> </a>
-                <div class="top_left">
-                    <div class="top_left_menu">
-                        <ul></ul>
-                    </div>
-                </div>
-                @if (User.IsAdmin())
-                {
-                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="add_user"> <i class="fa fa-plus-square"></i> <span>Basic Task</span> </a>
-                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user" style="margin-left:5px"> <i class="fa fa-plus-square"></i> <span>Advanced Task</span> </a>
-                }
-                <div class="top_right_bar">
-                    <div class="top_right">
-                        <div class="top_right_menu">
-                            <ul></ul>
-                        </div>
-                    </div>
-                    <div class="user_admin dropdown">
-                        <a href="javascript:void(0);" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="user_adminname">@User.Identity.Name</span> <b class="caret"></b> </a>
-                        <ul class="dropdown-menu">
-                            <div class="top_pointer"></div>
-                            <li>  </li>
-                            <li>  </li>
-                            <li>
-                                <a href="">
-                                    <form method="POST" action="@Url.Action("Logout", "Account")">
-                                        @Html.AntiForgeryToken()
-                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-power-off"></i> Logout</button>
-                                    </form>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="inner">
-            <div class="left_nav">
-                <div class="left_nav_slidebar">
-                    @await Html.PartialAsync("_MenuPartial")
-                </div>
-            </div>
-            <div class="contentpanel">
-                <div class="pull-left breadcrumb_admin clear_both">
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots" content="noindex" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
+          rel="stylesheet" />
+    <!-- Preloader -->
+    <link type="text/css" href="~/vendor/spinkit.css" rel="stylesheet" />
+    <!-- Perfect Scrollbar -->
+    <link type="text/css" href="~/vendor/perfect-scrollbar.css" rel="stylesheet" />
+    <!-- Material Design Icons -->
+    <link type="text/css" href="~/css/material-icons.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <link type="text/css" href="~/css/fontawesome.css" rel="stylesheet" />
+    <!-- Preloader -->
+    <link type="text/css" href="~/css/preloader.css" rel="stylesheet" />
+    <!-- App CSS -->
+    <link type="text/css" href="~/css/app.css" rel="stylesheet" />
+    <!-- Toastr -->
+    <link type="text/css" href="~/vendor/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/sweetalert.css">
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <!-- Flatpickr -->
+    <link type="text/css" href="~/css/flatpickr.css" rel="stylesheet">
+    <link type="text/css" href="~/css/flatpickr-airbnb.css" rel="stylesheet">
+</head>
 
-                </div>
-                <div class="container clear_both padding_fix">
-                    <div id="spinnerContainer" class="spinner">
-                    </div>
-                    @RenderBody()
-                </div>
-            </div>
+<body class="layout-app ">
+
+    <div class="preloader">
+        <div class="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
         </div>
     </div>
 
+    <!-- Drawer Layout -->
+
+    <div class="mdk-drawer-layout js-mdk-drawer-layout"
+         data-push=data-push
+         data-responsive-width="992px">
+        <div class="mdk-drawer-layout__content page-content">
+
+            <!-- Header -->
+            <!-- Navbar -->
+
+            <div class="navbar navbar-expand pr-0 navbar-light border-bottom-2" id="default-navbar" data-primary=data-primary>
+                <!-- Navbar Toggler -->
+                <button class="navbar-toggler w-auto mr-16pt d-block d-lg-none rounded-0"
+                        type="button"
+                        data-toggle="sidebar">
+                    <span class="material-icons">short_text</span>
+                </button>
+
+                <!-- // END Navbar Toggler -->
+                <!-- Navbar Brand -->
+
+                <a href="/"
+                   class="navbar-brand mr-16pt d-lg-none">
+
+                    <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
+
+                        <span class="avatar-title rounded bg-primary">
+                            <img src="~/assets/images/inbarLogo.png" alt="s-logo" />
+                        </span>
+
+                    </span>
+
+                    <span class="d-none d-lg-block">INBAR</span>
+                </a>
+
+                <!-- // END Navbar Brand -->
+
+                <span class="d-none d-md-flex align-items-center mr-16pt">
+                </span>
+
+                @if (userPreviledges.HasPreviledges())
+                {
+                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="btn btn-outline-dark"> <i class="fa fa-plus-square"></i> <span>Basic Task</span> </a>
+                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user btn btn-outline-dark" style="margin-left:5px"> <i class="fa fa-plus-square"></i> <span>Advanced Task</span> </a>
+                }
+
+                <div class="flex"></div>
+
+                <!-- Navbar Menu -->
+
+                <div class="nav navbar-nav flex-nowrap d-flex mr-16pt">
+
+
+                    <div class="nav-item dropdown">
+                        <a href="#"
+                           class="nav-link d-flex align-items-center dropdown-toggle"
+                           data-toggle="dropdown"
+                           data-caret="false">
+
+                            <span class="avatar avatar-sm mr-8pt2">
+                                <span class="avatar-title rounded-circle bg-primary"><i class="material-icons">account_box</i></span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="dropdown-header"><strong>@User.Identity.Name</strong></div>
+                            <div class="dropdown-item">
+                                <form method="POST" action="@Url.Action("Logout", "Account")">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-power-off"></i> Logout</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- // END Navbar Menu -->
+            </div>
+
+            <!-- // END Navbar -->
+            <!-- // END Header -->
+            <!-- BEFORE Page Content -->
+            <!-- // END BEFORE Page Content -->
+            <!-- Page Content -->
+            <!-- Replace this with your page content -->
+
+            <div class=" page__container flex my-32pt">
+                @RenderBody()
+            </div>
+
+            <!-- // END Replace this with your page content -->
+            <!-- // END Page Content -->
+            <!-- Footer -->
+
+            @await Html.PartialAsync("_Footer.cshtml")
+
+            <!-- // END Footer -->
+
+        </div>
+
+        <!-- // END drawer-layout__content -->
+        <!-- Drawer -->
+
+        <div class="mdk-drawer js-mdk-drawer"
+             id="default-drawer">
+            <div class="mdk-drawer__content">
+                <div class="sidebar sidebar-dark-pickled-bluewood sidebar-left"
+                     data-perfect-scrollbar=data-perfect-scrollbar>
+
+                    <!-- Sidebar Content -->
+
+
+                    <a href="/"
+                       class="sidebar-brand ">
+                        <!-- <img class="sidebar-brand-icon" src="~/images/illustration/student/128/white.svg" alt="Luma"> -->
+                        <span class="avatar avatar-xl sidebar-brand-icon h-auto">
+
+                            <span class="avatar-title rounded ">
+                                <img src="~/assets/images/inbarLogo.png"
+                                     class="img-fluid"
+                                     alt="logo" />
+
+                            </span>
+
+                        </span>
+
+                        <span>INBAR KMS Admin</span>
+                    </a>
+
+                    @await Html.PartialAsync("_MenuPartial2")
+                </div>
+            </div>
+        </div>
+
+        <!-- // END Drawer -->
+
+    </div>
+
+    <!-- // END Drawer Layout -->
+    <!-- jQuery -->
+    <script src="~/vendor/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/vendor/popper.min.js"></script>
+    <script src="~/vendor/bootstrap.min.js"></script>
+
+    <!-- Perfect Scrollbar -->
+    <script src="~/vendor/perfect-scrollbar.min.js"></script>
+
+    <!-- DOM Factory -->
+    <script src="~/vendor/dom-factory.js"></script>
+    <!-- MDK -->
+    <script src="~/vendor/material-design-kit.js"></script>
+    <script src="~/vendor/flatpickr/flatpickr.min.js"></script>
+    <!-- App JS -->
+    <script src="~/js/app.js"></script>
+    <!-- Preloader -->
+    <script src="~/js/preloader.js"></script>
     <input type="hidden" value="@Url.Content("~")" id="___applicationbaseUrl" />
-    <script src="~/assets/js/jquery-2.1.0.js"></script>
-    <script src="~/assets/js/bootstrap.min.js"></script>
-    <script src="~/assets/js/common-script.js"></script>
     <script src="~/assets/js/jquery.slimscroll.min.js"></script>
     <script src="~/assets/js/jPushMenu.js"></script>
-    <script src="~/assets/js/side-chats.js"></script>
     <script src="~/assets/js/sweetalert.js"></script>
     <script src="~/assets/plugins/spinjs/spin.js"></script>
-    <script src="~/assets/js/datepicker.js"></script>
-    <script src="~/assets/js/datepicker.en.js"></script>
     <script src="~/scripts/buckets.min.js"></script>
     <script src="~/scripts/angular.js"></script>
     <script src="~/scripts/angular-animate.js"></script>
@@ -117,9 +220,8 @@
     <script src="~/scripts/app/utils.factory.js"></script>
     <script src="~/assets/js/validate.min.js"></script>
     <script src="~/assets/js/lodash.min.js"></script>
-    <script src="~/assets/js/scroller.bootstrap.min.js"></script>
     <script src="~/assets/js/toastr.min.js"></script>
-
+    <script type="text/javascript" src="~/assets/plugins/ckeditor/ckeditor.js"></script>
     <script src="~/assets/plugins/dataTables/datatables.min.js"></script>
     <script src="~/assets/plugins/dataTables/JSZip-2.5.0/jszip.min.js"></script>
     <script src="~/assets/plugins/dataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
@@ -133,25 +235,23 @@
     <script src="~/scripts/app/execute.advanced.task.controller.js"></script>
     <script src="~/scripts/app/assigngroups.controller.js"></script>
     <script src="~/scripts/app/admin.setup.controller.js"></script>
+    <script src="~/scripts/app/widget.successmessage.controller.js"></script>
     <script src="~/scripts/app/createadvanced.supporttask.controller.js"></script>
     <script src="~/scripts/app/widget.clientinput.controller.js"></script>
     <script src="~/scripts/app/widget.restapi.controller.js"></script>
     <script src="~/scripts/app/widget.sqlquery.controller.js"></script>
     <script src="~/scripts/app/widget.javascript.controller.js"></script>
     <script src="~/scripts/app/widget.tableresult.controller.js"></script>
-    <script src="~/scripts/app/widget.successmessage.controller.js"></script>
+    <script src="~/scripts/app/widget.carddesign.controller.js"></script>
+
     <script src="~/scripts/app/view.tableresult.controller.js"></script>
+    <script src="~/scripts/app/view.cardresult.controller.js"></script>
     <script src="~/scripts/app/view.inputform.controller.js"></script>
     <script src="~/scripts/app/vexecute.script.controller.js"></script>
+    <script src="~/scripts/app/view.successmessage.controller.js"></script>
+    <script src="~/js/toastr.js"></script>
 
-    <script>
-        $('.mdatepicker').datepicker({
-            language: 'en',
-            dateFormat: 'yyyy-mm-dd',
-            todayButton: new Date(),
-            autoClose: true
-        });
-    </script>
 
 </body>
+
 </html>

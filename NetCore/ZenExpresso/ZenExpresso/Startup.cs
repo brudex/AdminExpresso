@@ -42,12 +42,8 @@ namespace ZenExpresso
             //services.AddDbContext<ApplicationDbContext>();
             services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(connectionString));
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                options.User.AllowedUserNameCharacters = null;
-            }).AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
-             .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-            services.AddAuthentication();  
+           
+            
             services.Configure<IdentityOptions>(options =>
             {
                 //Password settings
@@ -60,10 +56,10 @@ namespace ZenExpresso
                 //Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.AllowedForNewUsers = false;
                 //User settings
                 options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
             });
             services.ConfigureApplicationCookie(options =>
             {
@@ -79,7 +75,18 @@ namespace ZenExpresso
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 // options.SlidingExpiration = true;
             });
+            
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.User.AllowedUserNameCharacters = null;
+            }).AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
+             .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
+            services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = IdentityConstants.ApplicationScheme;
+                //o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            });
             // Add application services.
             if (_env.IsProduction())
             {
@@ -112,12 +119,13 @@ namespace ZenExpresso
             }
             loggerFactory.AddLog4Net();
             app.UseStaticFiles();
-            app.UseAuthentication();
+           
             app.UseCookiePolicy();
             Logger.EnsureInitialized();
             //app.UseHttpsRedirection();
             app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
@@ -126,21 +134,21 @@ namespace ZenExpresso
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            new InitializeDatabase();
-            int noOfUsers = DbHandler.Instance.GetUsersCount();
-            if (noOfUsers == 0)
-            {
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
-                    var user = new ApplicationUser() { Email = "brudexgh@gmail.com" ,UserName = "brudexgh@gmail.com" };
-                    var result = userManager.CreateAsync(user, "Pass@1234").Result;
-                    if (result.Succeeded)
-                    {
-                        Logger.Info(this, "Initial account created.");
-                    }
-                }
-            }
+            //new InitializeDatabase();
+            //int noOfUsers = DbHandler.Instance.GetUsersCount();
+            //if (noOfUsers == 0)
+            //{
+            //    using (var scope = app.ApplicationServices.CreateScope())
+            //    {
+            //        var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
+            //        var user = new ApplicationUser() { Email = "brudexgh@gmail.com" ,UserName = "brudexgh@gmail.com" };
+            //        var result = userManager.CreateAsync(user, "Pass@1234").Result;
+            //        if (result.Succeeded)
+            //        {
+            //            Logger.Info(this, "Initial account created.");
+            //        }
+            //    }
+            //}
             MemDb.Instance.Init();
         }
     }

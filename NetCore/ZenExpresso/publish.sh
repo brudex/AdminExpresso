@@ -7,7 +7,7 @@ fi
 echo "Entering source directory path ${SRC_FOLDER}"
 cd $SRC_FOLDER
 echo "Current Working directory $(pwd)"
-if [ command -v pm2 ]; then
+if [ type "$(pm2)" &> /dev/null  ]; then
  echo "Stopping Application"
  pm2 stop inbarAdmin
  pm2 delete inbarAdmin
