@@ -1,0 +1,166 @@
+﻿<div class="modal fade  " id="fileUploadClientModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="CardWidgetController as vm">
+        <div class="modal-content">
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="modal-title" id="myModalLabel">Client File Upload </h5>
+                        </div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                <div class="card p-relative o-hidden mb-0">
+                    <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                        <a href="#cardOptions" class="active" data-toggle="tab" role="tab">File Upload Options </a>
+                        <a href="#cardType" data-toggle="tab" role="tab">Form Control Designs </a>
+                    </div>
+                    <div class="card-body tab-content text-70">
+                        <div id="cardOptions" class="tab-pane active">
+                            <form autocomplete="off">
+                                <div class="form-group row">
+                                     <label class="col-6 col-form-label form-label" >
+                                                Field Label
+                                    </label>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control mb-2" placeholder="Field Label" data-ng-model="vm.model.fieldLabel">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                     <label class="col-6 col-form-label form-label" >
+                                             Field Name <small class="text-50">Variable name to be used on server</small>
+                                    </label>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control mb-2" placeholder="Upload FieldName" data-ng-model="vm.model.fieldName">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                     <label class="col-6 col-form-label form-label" >
+                                             Files Mode
+                                    </label>
+                                    <div class="col-3">
+                                        <select class="form-control" data-ng-model="vm.model.fileTypes" required="">
+                                                            <option value="">..Select..</option>
+                                                             <option value="mulitple">Multiple Files</option>
+                                                             
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="form-group row">
+                                     <label class="col-6 col-form-label form-label" >
+                                             Field Type
+                                    </label>
+                                    <div class="col-3">
+                                        <select class="form-control" data-ng-model="vm.model.fileTypes" required="">
+                                                            <option value="">..Select..</option>
+                                                            <option value="jpg-jpeg">Jpeg: .jpg, .jpeg</option>
+                                                            <option value="png">Png : .png</option>
+                                                            <option value="gif">Gif: .gif</option>
+                                                            <option value="doc-docx">Word Document </option>
+                                                            <option value="pdf">Pdf Document </option>
+                                                            <option value="xls-xlsx">Excel : .xls, .xlsx </option>
+                                                            <option value="ppt-pptx">Enter Regex </option>
+                                                            <option value="__">Enter File Extenstion </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                                <input type="text" class="form-control mb-2" placeholder="Upload FieldName" data-ng-model="vm.model.fieldName">
+
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="button" class="btn button-primary mb-2" placeholder="Upload FieldName">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="cardType" class="tab-pane ">
+                            <h5>Select Design Option</h5>
+                            <form>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="cardDesignOption" id="fileUploadDesignOption1" data-ng-model="vm.model.fileUploadDesign" value="formControlDisplay" checked>
+                                            <label class="form-check-label h5" for="fileUploadDesignOption1">
+                                                Form Control View
+                                            </label>
+                                            <div class="col-md-12 col-xl-12 form-group row">
+                                                     <label class="col-sm-3 form-label col-form-label"> Field Label</label>
+                                                    <div class="col-sm-6 col-md-6">
+                                                        <div class="form-group m-0">
+                                                                <div class="custom-file">
+                                                                    <input type="file" id="file" class="custom-file-input">
+                                                                    <label for="file" class="custom-file-label">Choose file</label>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="cardDesignOption" id="fileUploadDesignOption2" data-ng-model="vm.model.fileUploadDesign" value="formControlDisplay" checked>
+                                            <label class="form-check-label h5" for="fileUploadDesignOption2">
+                                                Drop Area View
+                                            </label>
+
+                                <div class="dropzone dropzone-multiple w-100 mb-24pt dz-clickable" data-toggle="dropzone" data-dropzone-multiple="" data-dropzone-url="http://" data-dropzone-files="">
+
+                                    <ul class="dz-preview dz-preview-multiple list-group list-group-flush mt-16pt">
+                                    </ul>
+
+                                <div class="dz-default dz-message"><button class="dz-button" type="button">Drop files here to upload</button>
+                                </div>
+                                </div>
+
+
+
+
+
+
+
+                                        </div>
+                                    </div>
+                            </div>
+
+
+
+                            </form>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -25,7 +25,7 @@
                 vm.model = initData;
             } else {
                 vm.model = data.data; 
-            }  
+            }
             var obj = { controlName: "File Upload", flowItemType: 'tableResult', flowGroup: currentWidgetOption, description: vm.model.description };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();

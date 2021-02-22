@@ -38,7 +38,7 @@ namespace ZenExpresso
                 .AddRazorRuntimeCompilation();
             }
             services.AddControllersWithViews().AddNewtonsoftJson();
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+             var connectionString = Configuration.GetConnectionString("DefaultConnection");
              services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(connectionString));
            
