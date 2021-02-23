@@ -1,11 +1,11 @@
-﻿<div class="modal fade  " id="fileUploadClientModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
-    <div class="modal-dialog modal-lg" role="document" data-ng-controller="FileUploadClientWidgetController as vm">
+﻿<div class="modal fade  " id="fileUploadServerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="FileUploadServerWidgetController as vm">
         <div class="modal-content">
             <div class="modal-header row pb-0">
                 <div class="col-10 ">
                     <div class="row">
                         <div class="col-8">
-                            <h5 class="modal-title" id="myModalLabel">Client File Upload </h5>
+                            <h5 class="modal-title" id="myModalLabel"> File Upload Server Handler</h5>
                         </div>
                         <div class="col-4">
                             <form>
@@ -26,79 +26,72 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="card p-relative o-hidden mb-0">
-                    <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
-                        <a href="#cardOptions" class="active" data-toggle="tab" role="tab">File Upload Options </a>
-                        <a href="#cardType" data-toggle="tab" role="tab">Form Control Designs </a>
-                    </div>
+                <div class="card o-hidden mb-0">
+                    
                     <div class="card-body tab-content text-70">
                         <div id="cardOptions" class="tab-pane active">
                             <form autocomplete="off">
                                 <div class="form-group row">
-                                     <label class="col-4 col-form-label form-label" >
-                                                Field Label
-                                    </label>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control mb-2" placeholder="Field Label" data-ng-model="vm.model.fieldLabel">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                     <label class="col-4 col-form-label form-label" >
-                                             Field Name <small class="text-50">Variable name to be used on server</small>
-                                    </label>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control mb-2" placeholder="FieldName" data-ng-model="vm.model.fieldName">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group row">
-                                    <label class="col-4" >
-                                    </label>
-                                    <div class="col-8">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="cardDesignOption" id="allowMulitple" data-ng-model="vm.model.allowMultiple"  >
-                                            <label class="form-check-label h5" for="allowMulitple">
-                                                Allow Multiple Files
-                                            </label> 
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-
-                               
-
-                                <div class="form-group row">
-                                     <label class="col-4 col-form-label form-label" >
-                                             Allowed File Extensions
+                                    <label class="col-4 col-form-label form-label">
+                                        Form Fields for this handler 
                                     </label>
                                     <div class="col-4">
+                                        <select data-ng-model="vm.model.fieldSelect" required="" class="form-control">
+                                            <option value="all">All File Upload Fields</option>
+                                            <option value="specify">Specify Fields</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4" data-ng-show="vm.model.fieldSelect==='specify'">
+                                        <input type="text" class="form-control mb-2" placeholder="separate multiple with comma" data-ng-model="vm.model.handlerFields">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label form-label">
+                                        Save Files to Directory
+                                    </label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control mb-2" placeholder="e.g. /var/www/images or c:/inetpup/app/images " data-ng-model="vm.model.destFolder">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-4 col-form-label form-label">
+                                        File Naming Logic
+                                    </label>
+                                    <div class="col-8">
+                                        <select data-ng-model="vm.model.fileNameLogic" required="" class="form-control">
+                                            <option value="sameName">Save with same name</option>
+                                            <option value="fileNameDateTime">Append datetime to name (e.g. picture1_20220301_230059.jpg)</option>
+                                            <option value="dateTime">Save file name with datetime (e.g. 20220301_230059.jpg)</option>
+                                            <option value="uuid">Generate UUID (unique) file name</option>
+                                            <option value="fileNameUuid">Append UUID to file</option>
+                                            <option value="javascript">Javascript Function </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" data-ng-show="vm.model.fileNameLogic=='javascript'">
+                                    <label class="col-12 col-form-label form-label">
+                                        Enter Javascript Code
+                                    </label>
+                                    <div class="col-12">
                                         <div class="form-group">
-                                            <select id="select03" data-ng-model="vm.model.fileTypes" data-ng-hide="vm.model.customFileType"
-                                                    data-toggle="select"
-                                                    multiple required=""
-                                                    class="form-control">
-                                                <option value="*.*">All files extension</option>
-                                                <option value="jpg-jpeg">Jpeg: .jpg, .jpeg</option>
-                                                <option value="png">Png : .png</option>
-                                                <option value="gif">Gif: .gif</option>
-                                                <option value="doc-docx">Word Document </option>
-                                                <option value="pdf">Pdf Document </option>
-                                                <option value="xls-xlsx">Excel : .xls, .xlsx </option>
-                                                <option value="ppt-pptx">Power Point </option>
-                                            </select>
+
+                                            <pre style="padding: 0"><code data-language="javascript">
+    /**Your code will be embedded in a function with the following arguments **/
+    //inputFormData=Client Form input in json
+    //IMPORTANT : Your function must return a string of the new file name
+    function(inputFormData)
+    { //put your code in the box below
+</code></pre>
+                                            <textarea class="form-control" rows="7" data-ng-model="vm.model.javascript"></textarea>
                                         </div>
-                                        <input type="text" class="form-control mb-2" placeholder="Separate mulitple with comma " data-ng-model="vm.model.fileTypes" data-ng-show="vm.model.customFileType">
+
                                     </div>
-                                    <div class="col-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="cardDesignOption" id="customExtension" data-ng-model="vm.model.customFileType"  >
-                                            <label class="form-check-label h5" for="customExtension">
-                                               Custom File Extension
-                                            </label> 
-                                        </div> 
-                                    </div>
-                                    
                                 </div>
+
+
+
+
                             </form>
                         </div>
                         <div id="cardType" class="tab-pane ">

@@ -75,7 +75,9 @@
                 'tableResult': 'TableResultWidgetController',
                 'cardResult': 'CardWidgetController',
                 'rest': 'RestApiWidgetController',
-                'javascript': 'JavascriptWidgetController'
+                'javascript': 'JavascriptWidgetController',
+                'fileUploadClient': 'FileUploadWidgetController',
+                'fileUploadServer': 'FileUploadServerWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }
@@ -130,23 +132,23 @@
             }
         }
 
-        vm.getFlowsByFlowGroup = function (flowGroup) {
+        vm.getFlowsByFlowGroup = function(flowGroup) {
             switch (flowGroup) {
-                case "clientRender":
-                case "client":
-                    return vm.clientFlows;
-                    break;
-                case "beforeRender":
-                    return vm.beforeRenderFlows;
-                    break;
-                case "postAction":
-                    return vm.postActionsFlows;
-                    break;
-                case "clientResult":
-                   return vm.clientResultFlows;
-                    break;
+            case "clientRender":
+            case "client":
+                return vm.clientFlows;
+                break;
+            case "beforeRender":
+                return vm.beforeRenderFlows;
+                break;
+            case "postAction":
+                return vm.postActionsFlows;
+                break;
+            case "clientResult":
+                return vm.clientResultFlows;
+                break;
             }
-        }
+        };
 
         vm.saveWidgetData = function (key, data) {
             if (data.isEditting) {

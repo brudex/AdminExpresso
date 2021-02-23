@@ -37,7 +37,7 @@
                                 <th>
                                     <a href="javascript:void(0)"
                                        class="sort"
-                                       data-sort="js-lists-values-tasks">Tasks</a>
+                                       data-sort="js-lists-values-tasks">Title</a>
                                 </th>
                                 <th>
                                     <a href="javascript:void(0)"
@@ -48,19 +48,11 @@
 
                                     <a href="javascript:void(0)"
                                        class="sort"
-                                       data-sort="js-lists-values-toplevelmenu">TopLevelMenu Task</a>
+                                       data-sort="js-lists-values-toplevelmenu">Parent Menu</a>
 
 
                                 </th>
-                                <th>
-
-                                    <a href="javascript:void(0)"
-                                       class="sort"
-                                       data-sort="js-lists-values-tasktype">TaskType</a>
-
-
-
-                                </th>
+                                
                                 <th>
 
                                     <a href="javascript:void(0)"
@@ -80,7 +72,6 @@
                                     <td class="js-lists-values-tasks">@task.taskName</td>
                                     <td class="js-lists-values-description">@task.description</td>
                                     <td class="js-lists-values-toplevelmenu">@task.topLevelMenu Task</td>
-                                    <td class="js-lists-values-tasktype">@task.taskType</td>
                                     <td class="js-lists-values-createdby">@task.createdBy</td>
                                     <td>
                                         <a class="btn btn-danger btn-sm" href="@Url.Action("DeleteTask", new {id = task.id})">Delete </a>
@@ -93,7 +84,7 @@
                                             <a class="btn btn-info btn-sm" href="@Url.Action("EditSupportTask", new {id = task.id})">Edit</a>
                                         }
                                         <a class="btn btn-secondary btn-sm" href="@Url.Action("MakeCopy", new {id = task.id})">Make Copy</a>
-                                        <a class="btn btn-primary btn-sm" href="@Url.Action("AssignGroups", new {id = task.id})">Assign Groups</a>
+                                        <a class="btn btn-primary btn-sm" href="@Url.Action("AssignGroups", new {id = task.id})">Assign Users</a>
                                         <a class="btn btn-success btn-sm" href="@Url.Action("ExecuteTask", new {id = task.id})">Execute</a>
                                     </td>
                                 </tr>

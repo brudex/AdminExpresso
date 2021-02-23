@@ -31,6 +31,8 @@
     <link type="text/css" href="~/css/flatpickr.css" rel="stylesheet">
     <link type="text/css" href="~/css/flatpickr-airbnb.css" rel="stylesheet">
     <link type="text/css" href="~/css/dropzone.css" rel="stylesheet">
+    <link type="text/css" href="~/vendor/select2/select2.min.css" rel="stylesheet">
+    <link type="text/css" href="~/css/select2.css" rel="stylesheet">
 </head>
 
 <body class="layout-app ">
@@ -162,15 +164,12 @@
                             <span class="avatar-title rounded ">
                                 <img src="~/assets/images/inbarLogo.png"
                                      class="img-fluid"
-                                     alt="logo" />
-
-                            </span>
-
+                                     alt="logo" /> 
+                            </span> 
                         </span>
 
                         <span>INBAR KMS Admin</span>
                     </a>
-
                     @await Html.PartialAsync("_MenuPartial2")
                 </div>
             </div>
@@ -196,6 +195,8 @@
     <!-- MDK -->
     <script src="~/vendor/material-design-kit.js"></script>
     <script src="~/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <script src="~/js/select2.js"></script>
     <!-- App JS -->
     <script src="~/js/app.js"></script>
     <!-- Preloader -->
@@ -237,7 +238,8 @@
     <script src="~/scripts/app/widget.javascript.controller.js"></script>
     <script src="~/scripts/app/widget.tableresult.controller.js"></script>
     <script src="~/scripts/app/widget.carddesign.controller.js"></script>
-
+    <script src="~/scripts/app/widget.fileuploadclient.controller.js"></script>
+    <script src="~/scripts/app/widget.fileuploadserver.controller.js"></script>
     <script src="~/scripts/app/view.tableresult.controller.js"></script>
     <script src="~/scripts/app/view.cardresult.controller.js"></script>
     <script src="~/scripts/app/view.inputform.controller.js"></script>

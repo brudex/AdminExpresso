@@ -216,12 +216,12 @@
 
 </div>
 <div class="col-4">
-    <section class="panel default blue_title h4">
-        <div class="panel-heading">Widgets </div>
-        <div class="panel-body">
+    <section class="card">
+        <div class="card-header h4"> Widgets </div>
+        <div class="card-body">
             <div class="client-widgets">
                 <h5 class="">Client Widgets</h5>
-                <ul class="list-group ">
+                <ul class="list-group card-title">
                     <li class="list-group-item ">
                         <button class="badge btn badge-primary clientInput" data-toggle="modal" data-target="#inputFormModal" data-ng-click="vm.onModalOpen('inputFormModal')">
                             <i class="fa fa-plus"></i>
@@ -262,44 +262,50 @@
             </div>
             <div class="server-widgets">
                 <h5>Server Widgets</h5>
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-info">
+                <ul class="list-group card-title">
+                    <li class="list-group-item">
                         <button class="badge badge-success btn" data-toggle="modal" data-target="#sqlModal" data-ng-click="vm.onModalOpen('sqlModal')">
                             <i class="fa fa-plus"></i>
                         </button>
                         Sql Query
                     </li>
-                    <li class="list-group-item list-group-item-info">
+                    <li class="list-group-item ">
                         <button class="badge badge-success btn" data-toggle="modal" data-target="#restApiModal" data-ng-click="vm.onModalOpen('restApiModal')">
                             <i class="fa fa-plus"></i>
                         </button>
                         Rest Request
                     </li>
-                    <li class="list-group-item list-group-item-info">
+                    <li class="list-group-item">
+                        <button class="badge badge-success btn " data-toggle="modal" data-target="#fileUploadServerModal" data-ng-click="vm.onModalOpen('fileUploadServerModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        File Upload Handler
+                    </li>
+                    <li class="list-group-item ">
                         <button class="badge badge-success btn" data-toggle="modal" data-target="#dataTransformModal">
                             <i class="fa fa-plus"></i>
                         </button>
                         Data Transformation(using Js)
                     </li>
-                    <li class="list-group-item list-group-item-info">
+                    <li class="list-group-item ">
                         <button class="badge badge-success btn" data-toggle="modal" data-target="#mergetTablesModal">
                             <i class="fa fa-plus"></i>
                         </button>
                         Merge tables with lookup
                     </li>
-                    <li class="list-group-item list-group-item-info">
+                    <li class="list-group-item ">
                         <button class="badge badge-success btn" data-toggle="modal" data-target="#exportDataModal">
                             <i class="fa fa-plus"></i>
                         </button>
                         Export Data
                     </li>
-                    <li class="list-group-item list-group-item-info">
+                    <li class="list-group-item">
                         <button class="badge badge-success btn " data-toggle="modal" data-target="#serverSideJavascriptModal">
                             <i class="fa fa-plus"></i>
                         </button>
                         Sever Side Script
                     </li>
-                    <li class="list-group-item list-group-item-info">
+                    <li class="list-group-item ">
                         <button class="badge badge-success btn" data-toggle="modal" data-target="#looperModal">
                             <i class="fa fa-plus"></i>
                         </button>
