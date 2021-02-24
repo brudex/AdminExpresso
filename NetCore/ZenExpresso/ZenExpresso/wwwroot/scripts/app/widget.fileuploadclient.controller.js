@@ -43,8 +43,7 @@
                 if (data === vm.modalName) {
                     isEditting = false;
                     vm.init();
-                }
-                
+                } 
             } else {
                 if (data.modalName === vm.modalName) {
                     vm.init();
@@ -77,7 +76,6 @@
       
 
         function buildHtmlBindView() {
-            
             var html = '<div class="row">';
             html += '<div class="col-md-10">';
             html += '<label> Field Label : ' + vm.model.fieldLabel + ' </label><br/>';

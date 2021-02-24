@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewBag.Title - Inbar KMS Admin</title>
     <!-- Prevent the demo from appearing in search engines -->
-    <meta name="robots" content="noindex"/>
+    <meta name="robots" content="noindex" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap" rel="stylesheet" />
     <!-- Preloader -->
     <link type="text/css" href="~/vendor/spinkit.css" rel="stylesheet" />
@@ -30,8 +30,8 @@
     <!-- Flatpickr -->
     <link type="text/css" href="~/css/flatpickr.css" rel="stylesheet">
     <link type="text/css" href="~/css/flatpickr-airbnb.css" rel="stylesheet">
-    <link type="text/css" href="~/css/dropzone.css" rel="stylesheet">
-    <link type="text/css" href="~/vendor/select2/select2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.6/dropzone.css" integrity="sha512-7uSoC3grlnRktCWoO4LjHMjotq8gf9XDFQerPuaph+cqR7JC9XKGdvN+UwZMC14aAaBDItdRj3DcSDs4kMWUgg==" crossorigin="anonymous" />
+     <link type="text/css" href="~/vendor/select2/select2.min.css" rel="stylesheet">
     <link type="text/css" href="~/css/select2.css" rel="stylesheet">
 </head>
 
@@ -164,8 +164,8 @@
                             <span class="avatar-title rounded ">
                                 <img src="~/assets/images/inbarLogo.png"
                                      class="img-fluid"
-                                     alt="logo" /> 
-                            </span> 
+                                     alt="logo" />
+                            </span>
                         </span>
 
                         <span>INBAR KMS Admin</span>
@@ -196,7 +196,9 @@
     <script src="~/vendor/material-design-kit.js"></script>
     <script src="~/vendor/flatpickr/flatpickr.min.js"></script>
     <script src="~/vendor/select2/select2.min.js"></script>
-    <script src="~/js/select2.js"></script>
+    <script src="~/js/select2.js"></script> 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.6/min/dropzone.min.js"></script>
     <!-- App JS -->
     <script src="~/js/app.js"></script>
     <!-- Preloader -->
@@ -216,7 +218,7 @@
     <script src="~/assets/js/validate.min.js"></script>
     <script src="~/assets/js/lodash.min.js"></script>
     <script src="~/assets/js/toastr.min.js"></script>
-    <script type="text/javascript" src="~/assets/plugins/ckeditor/ckeditor.js"></script>
+    @* <script type="text/javascript" src="~/assets/plugins/ckeditor/ckeditor.js"></script> *@
     <script src="~/assets/plugins/dataTables/datatables.min.js"></script>
     <script src="~/assets/plugins/dataTables/JSZip-2.5.0/jszip.min.js"></script>
     <script src="~/assets/plugins/dataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
@@ -245,6 +247,7 @@
     <script src="~/scripts/app/view.inputform.controller.js"></script>
     <script src="~/scripts/app/vexecute.script.controller.js"></script>
     <script src="~/scripts/app/view.successmessage.controller.js"></script>
+    <script src="~/scripts/app/view.fileupload.controller.js"></script>
     <script src="~/js/toastr.js"></script>
 
 

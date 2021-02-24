@@ -76,7 +76,7 @@
                 'cardResult': 'CardWidgetController',
                 'rest': 'RestApiWidgetController',
                 'javascript': 'JavascriptWidgetController',
-                'fileUploadClient': 'FileUploadWidgetController',
+                'fileUploadClient': 'FileUploadClientWidgetController',
                 'fileUploadServer': 'FileUploadServerWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });

@@ -17,6 +17,7 @@
         var currentValidationScript = null;
         var currentTaskResult = null;
         var formSubmitSuccessCallbacks = [];
+       
         var broadcastFunctions = {
             getTaskResults: function() {
                 return taskResults;
@@ -46,6 +47,7 @@
                 callback(jsResult.status);
             });
         }
+
         //recursive function to run thru queued submit scripts synchronously
         function executeOnFormSubmitScripts() {
             var validationScripInfo = getNextValidationScriptInfo();
@@ -75,30 +77,35 @@
         }
 
         function submitTaskResult(taskResult, successCallback) {
+            console.log('the taskResult flow item type>>', taskResult.flowItemType);
             if (successCallback) {
                formSubmitSuccessCallbacks.push(successCallback);
             }
-            console.log('The Task Result has been submitted>>', JSON.stringify(taskResult));
-            if (taskResult.flowItemType === 'inputForm.html') {
+            if(taskResult.flowItemType === 'inputForm.html') { //todo change this to isSubmittedControl
                 currentTaskResult = taskResult;
-                vm.formData = taskResult.formData;
+                triggerResultSubmissions();
+                vm.formData = taskResult.formData; //passed to javascript scripts as parameter
                 executeOnFormSubmitScripts(); 
+            } else if (taskResult.flowItemType === 'fileUploadClient.html') {
+                clientResults.push(taskResult); //todo this is where I was
             } else {
-                if (taskResult.status === "00") {
+                if(taskResult.status === "00") {
                     currentValidationScript = null;
                 }
             } 
         }
 
+        function triggerResultSubmissions() {
+            console.log("Triggering submitTaskResults");
+            $scope.$broadcast('submitTaskResults');
+        };
 
         function getControllerByFlowItemType(flowItemType) {
             var dict = {
                 'javascript': 'ExecuteScriptViewController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
-        }
-
-
+        } 
          
         function executeJsScriptController(flow,callback) {
             var controller = getControllerByFlowItemType(flow.flowItemType);
@@ -110,7 +117,6 @@
             var clientRenderFlows = BeforeRenderDataStore.getClientRenderFlows();
             taskResults = beforeRenderResults;
             if(clientRenderFlows.length === 0) {
-                console.log('Before Render results length>>>', beforeRenderResults.length);
                 if (beforeRenderResults.length) {
                     var obj = {};
                     obj.supportTaskFlowId = supportTaskInfo.id;
@@ -166,7 +172,10 @@
                                             recursiveIterator();
                                         } 
                                     } else {
-                                        recursiveIterator();
+                                        indexIterator += 1;
+                                        if (indexIterator < clientRenderFlows.length) {
+                                            recursiveIterator();
+                                        } 
                                     }
                                 }); 
 
@@ -175,7 +184,12 @@
                         }
                     } else {
                         flow.flowItemType = flow.flowItemType + '.html';
+                        console.log('The flow.flowItemType>>', flow.flowItemType);
                         vm.taskFlowItems.push(flow);
+                        indexIterator += 1;
+                        if (indexIterator < clientRenderFlows.length) {
+                            recursiveIterator();
+                        } 
                     }
                 }
                 recursiveIterator();
@@ -215,9 +229,8 @@
                     vm.taskFlowItems.push(obj);
                 }
             } else {
-                if (clientRenderFlows.length == 1) {
+                if (clientRenderFlows.length === 1) {
                     if (['javascript', 'successMessage'].indexOf(clientRenderFlows[0].flowItemType) == -1) { //don't clear screen if its js or successMessage result
-                        console.log("Screen is cleard")
                         vm.taskFlowItems = [];
                     }
                 } else {
@@ -254,7 +267,6 @@
             }
 
             function runRenderFlows() {
-                console.log('RENDERING FLOWS FROM RESULT');
                 for (var k = 0, len = clientRenderFlows.length; k < len; k++) {
                     var flow = clientRenderFlows[k];
                     flow.flowItemType = flow.flowItemType + '.html';
