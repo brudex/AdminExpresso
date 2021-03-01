@@ -28,9 +28,9 @@
 
                 <div class="card p-relative o-hidden mb-0">
                     <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
-                        <a href="#cardOptions" class="active" data-toggle="tab" role="tab">Card Options </a>
+                        <a href="#cardOptions" data-toggle="tab" class="active" role="tab">Card Options </a>
                         <a href="#cardType" data-toggle="tab" role="tab">Card Designs </a>
-                        <a href="#cardActions" data-toggle="tab" role="tab" class="">Card Actions </a>
+                        <a href="#cardActions" data-toggle="tab" role="tab">Card Actions </a>
                     </div>
                     <div class="card-body tab-content text-70">
                         <div id="cardOptions" class="tab-pane active">
@@ -259,11 +259,8 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                           
-                          
+
                         </form>
-                        
 
                     </div>
                         <div id="cardActions" class="tab-pane  ">
@@ -292,7 +289,8 @@
                                             <label class="col-sm-5 col-form-label">Payload Mode</label>
                                             <div class="col-sm-7">
                                                 <select type="text" class="form-control form-control-sm" data-ng-model="vm.rowAction.payloadSelection" required="">
-                                                    <option value=""></option>
+                                                    <option value="">[Select One]</option>
+                                                    <option value="none">No Payload</option>
                                                     <option value="fullrow">Full Row As Json</option>
                                                     <option value="selectfields">Select Columns</option>
                                                     <option value="javascript">Javascript </option>
@@ -302,7 +300,9 @@
                                         <div class="form-group row">
                                             <label class="col-sm-5 col-form-label">Executing Task ID</label>
                                             <div class="col-sm-7">
-                                                <input class="form-control form-control-sm" data-ng-model="vm.rowAction.executingTask" required="" />
+                                            <select type="text" class="form-control" data-ng-model="vm.rowAction.executingTask" data-ng-options="item.id as item.taskName for item in vm.supportTasks">
+                                                <option value="">[Select One..]</option>
+                                            </select>
                                             </div>
 
                                         </div>
@@ -362,7 +362,7 @@ function(rowData, utils, next)
                                                 Executing Task
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-danger btn-sm" data-ng-click="vm.addRowAction()">Delete</button>
+                                                <button type="button" class="btn btn-danger btn-sm" data-ng-click="vm.deleteRowAction($index)">Delete</button>
                                             </td>
                                         </tr>
                                     </tbody>

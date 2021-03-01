@@ -11,6 +11,7 @@
         vm.dataSource = {};
         vm.initialFormDataSources = [];
         vm.dataSources = [];
+        vm.description ='';
         vm.controlDataSource = "_none_";
         vm.dataSourceEditIndex = -1;
         vm.parameter = {};
@@ -26,11 +27,13 @@
             if (data.flowData && typeof data.flowData === 'string') {
                 var initData = JSON.parse(data.flowData);
                 vm.formControls = initData.formControls;
+                vm.description=initData.description;
                 vm.dataSources = initData.dataSources;
                 vm.controlDataSource = initData.controlDataSource;
             } else {
                 vm.formControls = data.data.formControls;
                 vm.dataSources = data.data.dataSources;
+                vm.description=data.data.description;
                 vm.controlDataSource = data.data.controlDataSource;
             } 
             var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
@@ -71,17 +74,22 @@
             }
         }
 
-        vm.addFormControl = function () {
-            vm.formControls.push({error: {}, required:true });
+        vm.addFormControl = function (index) {
+            if(index==null){
+                vm.formControls.push({error: {}, required:true });
+                return;
+            }
+            vm.formControls.splice(index,0,{error: {}, required:true });
         }
+
         vm.removeFormControl = function (index) {
             vm.formControls.splice(index, 1);
         }
-       
+
         vm.addDataSource = function () {
             vm.dataSource.key = _.uniqueId();
             vm.isFlowItem = false;
-            vm.dataSources.push(vm.dataSource);
+            vm.dataSources.push(Object.assign({},vm.dataSource));
             vm.dataSource = {};
         }
 
@@ -120,9 +128,9 @@
                 if (_.isEmpty(item.validation)) {
                     item.error.validation = true;
                     vm.errorMsg.push('validation');
-                } 
+                }
             });
-            
+
             if (!isEditting) {
                 var parentActions = DataHolder.getParentFunctions();
                 if (parentActions.inputFormAdded()) {
@@ -133,7 +141,7 @@
                 return;
             }
             var obj = {controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
-            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources, controlDataSource: vm.controlDataSource};
+            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources, controlDataSource: vm.controlDataSource,description:vm.description};
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
             obj.editIndex = editIndex;

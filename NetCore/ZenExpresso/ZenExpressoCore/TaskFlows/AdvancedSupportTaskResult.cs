@@ -9,7 +9,7 @@ namespace ZenExpressoCore.TaskFlows
         private List<TaskFlowItem> taskFlowItems;
         private SupportTask _supportTask;
         public List<TaskFlowResult> taskFlowResults { get; set; }
-        public AdvancedSupportTaskResult(SupportTask supportTask, List<TaskFlowItem> taskFlowItems) 
+        public AdvancedSupportTaskResult(SupportTask supportTask, List<TaskFlowItem> taskFlowItems)
         {
             _supportTask = supportTask;
             taskFlowResults = new List<TaskFlowResult>();
@@ -22,7 +22,7 @@ namespace ZenExpressoCore.TaskFlows
         }
         public  void ExecuteResult(ClientInputTaskFlowItem clientInputTaskFlow=null)
         {
-          
+
             List<ScriptParameter> inputList = new List<ScriptParameter>();
             if (clientInputTaskFlow != null)
             {
@@ -63,6 +63,5 @@ namespace ZenExpressoCore.TaskFlows
             }
         }
 
-       
     }
 }

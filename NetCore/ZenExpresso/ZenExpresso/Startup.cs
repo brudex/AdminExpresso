@@ -133,21 +133,21 @@ namespace ZenExpresso
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //new InitializeDatabase();
-            //int noOfUsers = DbHandler.Instance.GetUsersCount();
-            //if (noOfUsers == 0)
-            //{
-            //    using (var scope = app.ApplicationServices.CreateScope())
-            //    {
-            //        var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
-            //        var user = new ApplicationUser() { Email = "brudexgh@gmail.com" ,UserName = "brudexgh@gmail.com" };
-            //        var result = userManager.CreateAsync(user, "Pass@1234").Result;
-            //        if (result.Succeeded)
-            //        {
-            //            Logger.Info(this, "Initial account created.");
-            //        }
-            //    }
-            //}
+            new InitializeDatabase();
+            int noOfUsers = DbHandler.Instance.GetUsersCount();
+            if (noOfUsers == 0)
+            {
+               using (var scope = app.ApplicationServices.CreateScope())
+               {
+                   var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
+                   var user = new ApplicationUser() { Email = "brudexgh@gmail.com" ,UserName = "brudexgh@gmail.com" };
+                   var result = userManager.CreateAsync(user, "Pass@1234").Result;
+                   if (result.Succeeded)
+                   {
+                       Logger.Info(this, "Initial account created.");
+                   }
+               }
+            }
             MemDb.Instance.Init();
         }
     }

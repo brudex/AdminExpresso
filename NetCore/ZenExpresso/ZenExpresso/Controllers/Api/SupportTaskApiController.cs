@@ -248,7 +248,7 @@ namespace ZenExpresso.Controllers.Api
 
         [HttpGet]
         public ServiceResponse ListTasks()
-        { 
+        {
             var tasks = DbHandler.Instance.GetAllSupportTasks();
             var response = new ServiceResponse();
             response.status = "00";
@@ -267,11 +267,12 @@ namespace ZenExpresso.Controllers.Api
                 GroupPrincipal qbeGroup = new GroupPrincipal(ctx);
                 PrincipalSearcher srch = new PrincipalSearcher(qbeGroup);
                 foreach (var found in srch.FindAll())
-                { 
+                {
                     if (found.ContextType == ContextType.Domain)
                     {
-                        if (found.DisplayName != null)
+                        if (found.DisplayName != null){
                             list.Add(found.DisplayName);
+                        }
                     }
                 }
             }
@@ -287,6 +288,7 @@ namespace ZenExpresso.Controllers.Api
 
 
         [HttpGet]
+        [HttpGet("{id:int}")]
         public ServiceResponse TaskGroups(int id)
         { 
             var groups = DbHandler.Instance.GetTaskAssignedGroupsByTaskId(id);

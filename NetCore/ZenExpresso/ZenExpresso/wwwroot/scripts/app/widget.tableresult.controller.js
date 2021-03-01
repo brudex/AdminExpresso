@@ -14,6 +14,7 @@
         var editIndex = 0;
         vm.dataSources = [];
         var currentWidgetOption = '';
+        vm.supportTasks =[];
         vm.modalName = 'tabularOutputModal';
          $scope.$on('modalOpened', onModalOpen);
 
@@ -24,8 +25,8 @@
                 var initData = JSON.parse(data.flowData);
                 vm.model = initData;
             } else {
-                vm.model = data.data; 
-            }  
+                vm.model = data.data;
+            }
             var obj = { controlName: "Table Output", flowItemType: 'tableResult', flowGroup: currentWidgetOption, description: vm.model.description };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
@@ -35,10 +36,15 @@
 
         vm.openForEditting = function(flowItem) {
            $('#' + vm.modalName).modal('show');
-        } 
+        }
 
         vm.init = function () {
             var parentActions = DataHolder.getParentFunctions();
+            if(!vm.supportTasks.length){
+                parentActions.getAllSupportTasks(function(tasks){
+                    vm.supportTasks=tasks;
+                })
+            }
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             var dataSources = [];
             vm.dataSources = [];
@@ -60,7 +66,6 @@
                     isEditting = false;
                     vm.init();
                 }
-                
             } else {
                 if (data.modalName === vm.modalName) {
                     vm.init();
@@ -92,8 +97,12 @@
             vm.model.rowActionButtons.push(vm.rowAction);
             vm.rowAction = {}; 
         }
-         
-      
+ 
+
+        vm.deleteRowAction = function (index) {
+            console.log('Deleteing rowActionButtons>>'+index);
+            vm.model.rowActionButtons.splice(index,1);
+        }
 
         function buildHtmlBindView() {
             var searchableChecked = '';

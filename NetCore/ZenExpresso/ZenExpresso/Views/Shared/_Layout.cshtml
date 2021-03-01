@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>@ViewBag.Title - Inbar KMS Admin</title>
+    <title>@ViewBag.Title - MedTech Pharmaceutical</title>
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap" rel="stylesheet" />
@@ -33,6 +33,11 @@
     <link type="text/css" href="~/css/dropzone.css" rel="stylesheet">
     <link type="text/css" href="~/vendor/select2/select2.min.css" rel="stylesheet">
     <link type="text/css" href="~/css/select2.css" rel="stylesheet">
+     
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/cr-1.5.3/datatables.min.css"/>
+
+
+ 
 </head>
 
 <body class="layout-app ">
@@ -73,12 +78,12 @@
                     <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
 
                         <span class="avatar-title rounded bg-primary">
-                            <img src="~/assets/images/inbarLogo.png" alt="s-logo" />
+                            <img src="~/assets/images/medTech.jpg" alt="s-logo" />
                         </span>
 
                     </span>
 
-                    <span class="d-none d-lg-block">INBAR</span>
+                    <span class="d-none d-lg-block">MEDTECH</span>
                 </a>
 
                 <!-- // END Navbar Brand -->
@@ -88,8 +93,8 @@
 
                 @if (userPreviledges.HasPreviledges())
                 {
-                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="btn btn-outline-dark"> <i class="fa fa-plus-square"></i> <span>Basic Task</span> </a>
-                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user btn btn-outline-dark" style="margin-left:5px"> <i class="fa fa-plus-square"></i> <span>Advanced Task</span> </a>
+                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="btn btn-outline-dark "> <i class="material-icons ">launch</i> <span>Basic Task</span> </a>
+                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user btn btn-outline-dark" style="margin-left:5px"> <i class="material-icons icon--plus">launch</i> <span>Advanced Task</span> </a>
                 }
 
                 <div class="flex"></div>
@@ -97,7 +102,6 @@
                 <!-- Navbar Menu -->
 
                 <div class="nav navbar-nav flex-nowrap d-flex mr-16pt">
-
 
                     <div class="nav-item dropdown">
                         <a href="#"
@@ -162,13 +166,13 @@
                         <span class="avatar avatar-xl sidebar-brand-icon h-auto">
 
                             <span class="avatar-title rounded ">
-                                <img src="~/assets/images/inbarLogo.png"
+                                <img src="~/assets/images/medTech.jpg"
                                      class="img-fluid"
                                      alt="logo" /> 
                             </span> 
                         </span>
 
-                        <span>INBAR KMS Admin</span>
+                        <span>MedTech</span>
                     </a>
                     @await Html.PartialAsync("_MenuPartial2")
                 </div>
@@ -216,11 +220,16 @@
     <script src="~/assets/js/validate.min.js"></script>
     <script src="~/assets/js/lodash.min.js"></script>
     <script src="~/assets/js/toastr.min.js"></script>
-    <script type="text/javascript" src="~/assets/plugins/ckeditor/ckeditor.js"></script>
-    <script src="~/assets/plugins/dataTables/datatables.min.js"></script>
-    <script src="~/assets/plugins/dataTables/JSZip-2.5.0/jszip.min.js"></script>
-    <script src="~/assets/plugins/dataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.7/datatables.min.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.7/datatables.min.js"></script>
+
+
     @RenderSection("MyScripts", required: false)
+    <script src="~/js/list.js"></script>
+    <script src="~/vendor/list.min.js"></script>
     <script src="~/scripts/app/dblog.controller.js"></script>
     <script src="~/scripts/app/searchlog.controller.js"></script>
     <script src="~/scripts/app/createsupporttask.controller.js"></script>

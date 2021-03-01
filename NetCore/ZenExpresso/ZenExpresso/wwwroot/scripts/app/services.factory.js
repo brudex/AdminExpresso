@@ -21,6 +21,7 @@
             getSuppotTaskInfo: postData('api/SupportTaskApi/SupportTaskInfo'),
             getScriptParameters: postData('api/SupportTaskApi/ScriptParameters'),
             getSupportTaskGroups: getData('api/SupportTaskApi/TaskGroups'),
+            getAllSupportTasks: getData('api/SupportTaskApi/ListTasks'),
             saveSupportTaskGroup: postData('api/SupportTaskApi/SaveSupportTaskGroup'),
             executeSupportTask: postData('api/SupportTaskApi/ExecuteSupportTask'),
             executeAdvancedTask: postData('api/SupportTaskApi/ExecuteAdvancedTask'),
@@ -40,8 +41,8 @@
             deleteAdmin: postData('api/SetupApi/DeleteAdmin'),
             setAdminPreviledges: postData('api/SetupApi/SetDedicatedAdminPreviledges')
 
-            
-        }; 
+
+        };
         function startSpiner() {
             var opts =  {
                 lines: 13,  

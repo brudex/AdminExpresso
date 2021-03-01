@@ -14,9 +14,10 @@
         vm.clientResultFlows = [];
         vm.successMsg = [];
         vm.topMenus = [];
-        vm.model = {parameters:[],inputFormPresent:false};
+        vm.model = { parameters:[],inputFormPresent:false};
         vm.formSubmitted = false;
         vm.parameter = {};
+        vm.supportTasks =[];
         var isEditting = false;
         var flowsIncrementer = {}
 
@@ -25,11 +26,25 @@
             getBeforeRenderDataSources: getBeforeRenderDataSources,
             getPostActionDataSources: getPostActionDataSources,
             inputFormAdded: function () { return vm.model.inputFormPresent },
-            getParentModel: function () { return vm; }
+            getParentModel: function () { return vm; },
+            getAllSupportTasks :getAllSupportTasks
         };
 
         vm.trustAsHtml = function (html) {
             return $sce.trustAsHtml(html);
+        }
+
+        function getAllSupportTasks(callback){
+            if(vm.supportTasks.length===0){
+                services.getAllSupportTasks(function(response){
+                    if(response.status=="00"){
+                        vm.supportTasks = response.data;
+                        callback(response.data);
+                    }
+                });
+            }else{
+                return  callback(vm.supportTasks);
+            }
         }
 
         function incrementFlowCounter(flowItemType) {

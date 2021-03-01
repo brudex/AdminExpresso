@@ -8,6 +8,7 @@ namespace ZenExpresso.Models
     {
         public AdvancedSupportTaskResult taskResult { get; set; }
         public SupportTask supportTask { get; set; }
+        public dynamic queryData {get;set;}
         public List<TaskFlowItem> clientRenderFlows { get; set; }
     }
 }

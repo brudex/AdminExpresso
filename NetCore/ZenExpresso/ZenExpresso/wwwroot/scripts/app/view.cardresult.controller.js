@@ -52,18 +52,17 @@
                     utils.alertWarning("No matching data source for identifier "+controlDataSource);
                 }
             }
-        } 
-      
+        }
+
         function executeResult(result) {
             if (result.length) {
                 renderCardView(result);
             } else {
                 utils.alertWarning("Query returned no data");
             }
-        } 
+        }
 
         function buildActionLink(rowData,actionInfo) {
-            
             var data = '';
             switch (actionInfo.payloadSelection) {
                 case 'fullrow':
@@ -128,8 +127,6 @@
                 });
                 vm.model.cardItems.push(card); 
             }
-            console.log('The row Arrays...', vm.model.cardItems);
-
         }
   
     }

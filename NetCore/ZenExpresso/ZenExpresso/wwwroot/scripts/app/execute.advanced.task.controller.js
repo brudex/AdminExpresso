@@ -176,12 +176,16 @@
                     } else {
                         flow.flowItemType = flow.flowItemType + '.html';
                         vm.taskFlowItems.push(flow);
+                        indexIterator += 1;
+                        if (indexIterator < clientRenderFlows.length) {
+                            recursiveIterator();
+                        }
                     }
                 }
                 recursiveIterator();
             }
 
-            
+ 
         }
 
 

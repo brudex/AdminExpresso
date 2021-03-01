@@ -3,8 +3,8 @@
     angular
         .module("app")
         .controller("InputFormViewController", InputFormViewController);
-    InputFormViewController.$inject = ["brudexservices", "brudexutils", "$window", "DataHolder", "$scope"];
-    function InputFormViewController(services, utils, $window, DataHolder, $scope) {
+    InputFormViewController.$inject = ["BeforeRenderDataStore", "brudexutils", "$window", "DataHolder", "$scope"];
+    function InputFormViewController(BeforeRenderDataStore, utils, $window, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
         vm.model = { viewName: "Input Form View" };
@@ -15,12 +15,11 @@
         var parentActions = null;
         vm.init = function (data) {
             vm.taskInfo = data;
-            console.log("The taskinfo is >>", vm.taskInfo);
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
-            console.log("The taskResults from parent>>", vm.taskResults);
             executeResult();
         };
+
 
         function executeResult() {
             if (vm.taskInfo) {
@@ -34,10 +33,11 @@
                             initialData = taskResult.data.length ? taskResult.data[0] : null;
                         } else {
                             initialData = taskResult.data;
-                        } 
-                    } 
+                        }
+                    }
                 }
                 var hasDateField = false;
+
                 for (var k = 0, len = flowData.formControls.length; k < len; k++) {
                     var item = flowData.formControls[k];
                     var control = {};
@@ -60,15 +60,24 @@
                     }
                     vm.formControls.push(control);
                 }
+                var queryData = BeforeRenderDataStore.getQueryData();
+                console.log('The query data is >>',queryData);
+                queryData.forEach(function(item){
+                    var control = {};
+                    control.fieldName = item.parameterName;
+                    control.fieldType = "hidden";
+                    control.fieldValue= item.parameterValue;
+                    control.required = false;
+                    vm.formControls.push(control);
+                })
                 if (hasDateField) {
                     console.log("initializaing date control>>");
                     initFlatPickrDateControl();
                 }
             }
         }
-        
+
         function buildSelectOptions(selectOptionsDatasource) {
-            console.log('Select options datasource', selectOptionsDatasource);
             var dataSource = [];
             if (selectOptionsDatasource == null) {
                 return dataSource;
@@ -101,7 +110,6 @@
                 }
             } else if (dt.inputFormat === "rest") {
                 var task = utils._.filter(vm.taskResults, function (item) { return item.controlIdentifier === dt.dataSourceName });
-                console.log('the filter task', task);
                 if (task.length) {
                     buildDropSelectOptions(task[0].data);
                 }
@@ -243,14 +251,18 @@
                 }
                 case "number":
                 {
-                    if (control.required && !_.isNumber(control.fieldValue)) {
-                        vm.formControls[p].valid = false;
+                    if (control.required) {
+                        if(_.isNumber(vm.formControls[p].fieldValue)){
+                            vm.formControls[p].valid = true;
+                        }else{
+                            vm.formControls[p].valid = false;
+                        }
                     } else {
                         if (control.fieldValue == null || control.fieldValue == "") {
                             vm.formControls[p].valid = true;
                             return;
                         }
-                        if (!_.isNumber(control.fieldValue)) {
+                        if (!_.isNumeric(control.fieldValue)) {
                             vm.formControls[p].valid = false;
                         }
                     }
@@ -313,7 +325,12 @@
             }
 
             console.log('Form controls after validation', JSON.stringify(vm.formControls));
-            return !vm.formControls.some(isInvalid);
+            var validationResult = !vm.formControls.some(isInvalid);
+            if(!validationResult){
+
+            }
+            console.log("form is valid >>",validationResult);
+            return validationResult;
         }
 
 
