@@ -13,6 +13,7 @@
         var isEditting = false;
         var editIndex = 0;
         vm.dataSources = [];
+        vm.supportTasks=[];
         var currentWidgetOption = '';
         vm.modalName = 'cardOutputModal';
          $scope.$on('modalOpened', onModalOpen);
@@ -41,7 +42,13 @@
             var parentActions = DataHolder.getParentFunctions();
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             var dataSources = [];
-            vm.dataSources = [];
+            vm.dataSources = []; 
+            if(vm.supportTasks.length===0){
+                console.log("Getting all support tasks >>");
+                parentActions.getAllSupportTasks(function(tasks){
+                    vm.supportTasks=tasks;
+                })
+            }
             if (currentWidgetOption === 'client') {
                 dataSources = parentActions.getBeforeRenderDataSources();
                 console.log('Card Datasource>>', dataSources);
@@ -97,9 +104,8 @@
 
         vm.deleteRowAction = function (index) {
             vm.model.rowActionButtons.splice(index,1);
-         }
-         
-      
+        }
+
 
         function buildHtmlBindView() {
             var cardImageFieldName = '';

@@ -82,7 +82,6 @@
                     </div>
                     <div class="card-body tab-content">
                         <div id="ptab1" class="tab-pane active">
-                             
                             <div class="card card-group-row__card card-sm"  data-ng-repeat="item in vm.beforeRenderFlows">
                                 <div class="card-body d-flex align-items-center">
                                     <div class="flex">
@@ -111,10 +110,9 @@
                                     </div>
                                 </div>
                             </div>
-                             
+
                         </div>
-                        <div id="ptab2" class="tab-pane"> 
-                            
+                        <div id="ptab2" class="tab-pane">
                             <div class="card card-group-row__card card-sm" data-ng-repeat="item in vm.clientFlows">
                                 <div class="card-body d-flex align-items-center">
                                     <div class="flex">
@@ -235,6 +233,12 @@
                         File Upload
                     </li>
                     <li class="list-group-item">
+                        <button class="badge badge-primary btn " data-toggle="modal" data-target="#fileDownloadModal" data-ng-click="vm.onModalOpen('fileDownloadModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        File Download
+                    </li>
+                    <li class="list-group-item">
                         <button class="badge badge-primary btn clientInput" data-toggle="modal" data-target="#validationFormatingModal" data-ng-click="vm.onModalOpen('validationFormatingModal')">
                             <i class="fa fa-plus"></i>
                         </button>
@@ -280,6 +284,12 @@
                             <i class="fa fa-plus"></i>
                         </button>
                         File Upload Handler
+                    </li>
+                    <li class="list-group-item">
+                        <button class="badge badge-success btn " data-toggle="modal" data-target="#pdfFormInputModal" data-ng-click="vm.onModalOpen('pdfFormInputModal')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        Pdf Form Input
                     </li>
                     <li class="list-group-item ">
                         <button class="badge badge-success btn" data-toggle="modal" data-target="#dataTransformModal">

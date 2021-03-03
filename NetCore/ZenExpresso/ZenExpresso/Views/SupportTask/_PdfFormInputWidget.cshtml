@@ -1,0 +1,111 @@
+﻿<div class="modal fade  " id="pdfFormInputModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="PdfFormInputWidgetController as vm">
+        <div class="modal-content">
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8"> <h5 class="modal-title" id="myModalLabel">Pdf Form Input</h5></div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> 
+            </div>
+            <div class="modal-body" style="padding-bottom: 5px">
+                <div class="card  ">
+                    <div class="card-body  text-70">
+                        <div id="restbody" class="tab-pane active">
+                            <form>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 form-label col-form-label">Template File</label>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group m-0">
+                                            <div class="custom-file">
+                                                <input type="file" id="file" class="custom-file-input">
+                                                <label for="file" class="custom-file-label">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr style="border-bottom: 1px solid #8b0000" />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" > File Prefix </label>
+                                            <div class="col-sm-8">
+                                                <input type="text"  class="form-control" data-ng-model="vm.model.filePrefix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Date Format</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" data-ng-model="vm.model.fileDateFormat">
+                                                    <option value="">..Date Format..</option>
+                                                    <option value="yyyy-MM-dd">yyyy-MM-dd</option>
+                                                    <option value="dd-MM-yyyy">dd-MM-yyyy</option>
+                                                    <option value="ddMMyyyy">ddMMyyyy</option>
+                                                    <option value="yyyyMMdd">yyyyMMdd</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div data-ng-show="vm.model.method!=='GET'">
+                                    <h5>Pdf Form Input Mapping</h5>
+                                    <textarea cols="10" rows="10" class="form-control" data-ng-model="vm.model.inputMap"></textarea>
+                                </div>
+                                <br />
+                                <div class="row" data-ng-show="vm.formControls.length">
+                                    <div class="col-md-12"> 
+                                        <h5>Available Input FieldNames</h5>
+                                        <table class="table ">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>Parameter Label</th>
+                                                    <th>Parameter Name</th>
+                                                    <th>Parameter Type</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="item in vm.formControls">
+                                                    <td><span data-ng-bind="item.fieldLabel"></span></td>
+                                                    <td><span class="font-weight-bold text-danger" data-ng-bind="item.fieldName"></span></td>
+                                                    <td><span data-ng-bind="item.fieldType"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+      
+                    </div>
+                </div> 
+
+                 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

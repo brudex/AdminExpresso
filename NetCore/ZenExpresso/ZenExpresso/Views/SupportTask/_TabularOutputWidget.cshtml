@@ -52,16 +52,61 @@
                                                     <label>Searchable </label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input type="checkbox" class=" parsley-validated" data-ng-model="vm.model.options.searchable">
+                                                    <input type="checkbox" class=" parsley-validated" data-ng-model="vm.model.paginate">
                                                 </div>
                                             </div>
-                                            <br />
                                             <div class="row">
                                                 <div class="col-sm-3">
-                                                    <label>Export Buttons </label>
+                                                    <label>Paginate </label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.options.exportbuttons">
+                                                    <input type="checkbox" class=" parsley-validated" data-ng-model="vm.model.paginate">
+                                                </div>
+                                            </div>
+                                            
+                                            <br />
+                                            <div class="page-separator">
+                                                <div class="page-separator__text">Export Buttons </div>
+                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Copy Data  </label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.copyData">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Export Excel </label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.exportExcel">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Export Csv </label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.exportCsv">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Export Pdf </label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.exportPdf">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label>Print Preview  </label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input type="checkbox" class="parsley-validated" data-ng-model="vm.model.printPreview">
                                                 </div>
                                             </div>
                                         </div>
@@ -73,7 +118,7 @@
                                                     <label> Data Source</label>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <select class="form-control" data-ng-model="vm.model.controlDataSource">
+                                                    <select  class="form-control" data-ng-model="vm.model.controlDataSource">
                                                         <option value="">__Default Behaviour__</option>
                                                         <option data-ng-repeat="item in vm.dataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
                                                     </select>
@@ -86,7 +131,7 @@
                         </div>
                         <div id="actionButtons" class="tab-pane fade">
                             <form autocomplete="off">
-                                <input type="hidden" value="" autocomplete="off" />
+                                <input type="hidden" value="" autocomplete="off"/>
                                 <div class="row">
                                     <div class="col-md-5">
                                         <div class="form-group">
@@ -95,8 +140,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label class=" control-label">Payload Mode</label>
-                                            <select type="text" class="form-control" data-ng-model="vm.rowAction.payloadSelection" required="">
-                                                <option value=""></option>
+                                            <select class="form-control" data-ng-model="vm.rowAction.payloadSelection" required="">
+                                                <option value="">[ Select One ]</option>
+                                                <option value="none">No Payload</option>
                                                 <option value="fullrow">Full Row As Json</option>
                                                 <option value="selectfields">Select Columns</option>
                                                 <option value="javascript">Javascript </option>
@@ -104,8 +150,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Executing Task ID</label>
-                                            <input class="form-control" data-ng-model="vm.rowAction.executingTask" required="" />
-                                        </div>
+                                            <select data-toggle="select" type="text" class="form-control" data-ng-model="vm.rowAction.executingTask" data-ng-options="item.id as item.taskName for item in vm.supportTasks track by item.id">
+                                                <option value="">[ Select One.. ]</option>
+                                            </select>
+                                         </div>
                                     </div>
                                     <div class="col-md-7">
                                         <div class="form-group">
@@ -117,7 +165,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br />
+                                <br/>
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -130,6 +178,9 @@
                                             <th>
                                                 Executing Task
                                             </th>
+                                            <th>
+                                                ..
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -141,7 +192,10 @@
                                                 Payload Mode
                                             </td>
                                             <td data-ng-bind="item.executingTask">
-                                                Executing Task 
+                                                Executing Task
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm" data-ng-click="vm.deleteRowAction($index)">Delete</button>
                                             </td>
                                         </tr>
                                     </tbody>

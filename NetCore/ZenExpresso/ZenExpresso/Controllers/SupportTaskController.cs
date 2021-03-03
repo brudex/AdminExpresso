@@ -125,6 +125,7 @@ namespace ZenExpresso.Controllers
         {
             try
             {
+                SettingsData.HostUrl = $"{Request.Scheme}://{Request.Host.Value}";
                 var supportTask = DbHandler.Instance.GetSupportTaskById(id);
                 if (supportTask == null)
                 {
@@ -136,6 +137,8 @@ namespace ZenExpresso.Controllers
                     Logger.Error(this, "Unauthorized>>" + id);
                     return new StatusCodeResult(403);
                 }
+                var queryData = Request.Query["data"];
+                //ClientInputTaskFlowItem.CreateTaskFlow
                 var viewModel = new TaskResultViewModel();
                 viewModel.supportTask = supportTask;
                 if (supportTask.taskType == Constants.TaskType.AdvancedTaskFlow)
@@ -144,15 +147,17 @@ namespace ZenExpresso.Controllers
                     List<TaskFlowItem> taskFlowItems = supportTask.GetFlowItemsForAdvancedTask("beforeRender");
                     List<TaskFlowItem> clientRenderFlowItems = supportTask.GetFlowItemsForAdvancedTask("clientRender");
                     var taskResult = new AdvancedSupportTaskResult(supportTask, taskFlowItems);
-                    taskResult.ExecuteResult();
+                    var inputTaskFlow =new ClientInputTaskFlowItem(queryData);
+                    taskResult.ExecuteResult(inputTaskFlow);
                     var executedTask = new ExecutedTasks(taskFlowItems, supportTask, taskResult);
                     executedTask.executedBy = staffId;
                     DbHandler.Instance.Save(executedTask);
                     viewModel.taskResult = taskResult;
+                    viewModel.queryData = inputTaskFlow.GetClientInputs().ToJsonString();
                     viewModel.clientRenderFlows = clientRenderFlowItems;
                     return View(viewModel);
-                } 
-                return View(viewModel); 
+                }
+                return View(viewModel);
             }
             catch (Exception ex)
             {

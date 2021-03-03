@@ -32,15 +32,20 @@
                 function BeforeRenderDataStore() {
                     var beforeRenderResults = @Html.Raw(Model.taskResult.taskFlowResults.ToJsonString());
                     var clientRenderFlows = @Html.Raw(Model.clientRenderFlows.ToJsonString());
+                    var queryData = @Html.Raw(Model.queryData);
                     function getBeforeRenderResults() {
                         return beforeRenderResults;
                     }
                     function getClientRenderFlows() {
                         return clientRenderFlows;
                     }
+                    function getQueryData() {
+                        return queryData;
+                    }
                     return {
                         getBeforeRenderResults: getBeforeRenderResults,
-                        getClientRenderFlows: getClientRenderFlows
+                        getClientRenderFlows: getClientRenderFlows,
+                        getQueryData:getQueryData
                     }
                 }
             })(window.jQuery);

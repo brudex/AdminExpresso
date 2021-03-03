@@ -11,16 +11,16 @@
         <div data-ng-init="vm.init(@Model.id)"></div>
 
         @await Html.PartialAsync("_AdvancedSuppotTaskForm")
-
         @await Html.PartialAsync("_FormInputWidget")
+        @await Html.PartialAsync("_PdfFormInputWidget")
         @await Html.PartialAsync("_FileUploadClientWidget")
         @await Html.PartialAsync("_FileUploadServerWidget")
+        @await Html.PartialAsync("_FileDownloadWidget")
         @await Html.PartialAsync("_FormatValidationWidget")
         @await Html.PartialAsync("_OuptutTransformWidget")
         @await Html.PartialAsync("_TabularOutputWidget")
         @await Html.PartialAsync("_CardOutputWidget")
         @await Html.PartialAsync("_SuccessMessageOutputWidget")
-
         @* Server Widgets *@
         @await Html.PartialAsync("_SqlScriptWidget", Model.GetDataSources())
         @await Html.PartialAsync("_RestApiWidget")

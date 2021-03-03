@@ -3,25 +3,23 @@
     angular
         .module("app")
         .controller("InputFormViewController", InputFormViewController);
-    InputFormViewController.$inject = ["brudexservices", "brudexutils", "$window", "DataHolder", "$scope","$controller"];
-    function InputFormViewController(services, utils, $window, DataHolder, $scope, $controller) {
+    InputFormViewController.$inject = ["BeforeRenderDataStore", "brudexutils", "$window", "DataHolder", "$scope"];
+    function InputFormViewController(BeforeRenderDataStore, utils, $window, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
         vm.model = { viewName: "Input Form View" };
         vm.taskInfo = null;
         vm.taskResults = [];
         vm.formControls = [];
-        vm.fileFields = [];
         vm.formSubmitted = false;
         var parentActions = null;
         vm.init = function (data) {
             vm.taskInfo = data;
-            console.log("The taskinfo is >>", vm.taskInfo);
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
-            console.log("The taskResults from parent>>", vm.taskResults);
             executeResult();
         };
+
 
         function executeResult() {
             if (vm.taskInfo) {
@@ -35,10 +33,11 @@
                             initialData = taskResult.data.length ? taskResult.data[0] : null;
                         } else {
                             initialData = taskResult.data;
-                        } 
-                    } 
+                        }
+                    }
                 }
                 var hasDateField = false;
+
                 for (var k = 0, len = flowData.formControls.length; k < len; k++) {
                     var item = flowData.formControls[k];
                     var control = {};
@@ -61,13 +60,23 @@
                     }
                     vm.formControls.push(control);
                 }
+                var queryData = BeforeRenderDataStore.getQueryData();
+                console.log('The query data is >>',queryData);
+                queryData.forEach(function(item){
+                    var control = {};
+                    control.fieldName = item.parameterName;
+                    control.fieldType = "hidden";
+                    control.fieldValue= item.parameterValue;
+                    control.required = false;
+                    vm.formControls.push(control);
+                })
                 if (hasDateField) {
                     console.log("initializaing date control>>");
                     initFlatPickrDateControl();
                 }
             }
         }
-        
+
         function buildSelectOptions(selectOptionsDatasource) {
             var dataSource = [];
             if (selectOptionsDatasource == null) {
@@ -76,6 +85,7 @@
             var dt = selectOptionsDatasource;
             if (dt.inputFormat === "delimited") {
                 var arr = dt.dropDownOptions.split(/[.,\n;]/);
+                console.log("delimited >>", arr);
                 arr.forEach(function (txt) {
                     dataSource.push({ label: txt, value: txt });
                 });
@@ -100,7 +110,6 @@
                 }
             } else if (dt.inputFormat === "rest") {
                 var task = utils._.filter(vm.taskResults, function (item) { return item.controlIdentifier === dt.dataSourceName });
-                console.log('the filter task', task);
                 if (task.length) {
                     buildDropSelectOptions(task[0].data);
                 }
@@ -163,67 +172,9 @@
                         parameter.parameterValue = JSON.stringify(control.fieldValue);
                     }
                 }
-                if (vm.fileFields.length===0) { //if no files uploaded yet
-                    if (control.fieldType === "fileupload") {
-                        parameter.parameterValue = null; //set value to null to indicate not processed
-                        vm.fileFields.push(parameter);
-                    }
-                }
-               
                 scriptParameters.push(parameter);
             });
             return scriptParameters;
-        }
-
-        function uploadFormFiles(scriptParameters,onCompleted) {
-            if (vm.fileFields.length) {
-                var controller = $controller('FileUploadViewController', { $scope: $scope });
-                var currentIndex = 0;
-                var currentFileField = vm.fileFields[currentIndex];
-                var onCompletedCalled = false;
-                uploadFormFieldFiles(currentFileField);
-
-                function uploadFormFieldFiles(formField){
-                    if (formField.parameterValue) { //if value set upload already done 
-                        currentIndex += 1;
-                        if (currentIndex < vm.fileFields.length) { //if not the last one continue
-                            return uploadFormFieldFiles(vm.fileFields[currentIndex]);
-                        } else {
-                            if (!onCompletedCalled) {
-                                onCompletedCalled = true;
-                               return  onCompleted(scriptParameters);
-                            }
-                        }
-                    }
-                    controller.executeUploads(formField.parameterName,
-                        function (uploadResult) {
-                            if (uploadResult.status === "00") {
-                                formField.parameterValue = uploadResult.message;
-                                setScriptParameterValue(formField.parameterName, formField.parameterValue);
-                            }
-                            currentIndex += 1;
-                            if (currentIndex < vm.fileFields.length) {
-                               return uploadFormFieldFiles(vm.fileFields[currentIndex]);
-                            } else {
-                                if (!onCompletedCalled) {
-                                    onCompletedCalled = true;
-                                   return  onCompleted(scriptParameters);
-                                } 
-                            }
-                        });
-                }
-
-            } else {
-               return onCompleted(scriptParameters);
-            } 
-
-            function setScriptParameterValue(key, value) {
-                for (var k = 0, len = scriptParameters.length; k < len; k++) {
-                    if (scriptParameters[k].parameterName === key) {
-                        scriptParameters[k].parameterValue = value;
-                    }
-                }
-            }
         }
 
         function buildFormDataJson() {
@@ -250,20 +201,17 @@
             vm.formSubmitted = true;
             if (validateForm()) {
                 console.log('Form is Valid');
-                var formScriptParameters = buildPayload();
-                uploadFormFiles(formScriptParameters,
-                    function (payload) {
-                        var taskInfo = {};
-                        taskInfo.id = vm.taskInfo.id;
-                        taskInfo.controlName = vm.taskInfo.controlName;
-                        taskInfo.flowItemType = vm.taskInfo.flowItemType;
-                        taskInfo.controlIdentifier = vm.taskInfo.controlIdentifier;
-                        taskInfo.flowGroup = vm.taskInfo.flowGroup;
-                        taskInfo.taskResult = payload;
-                        taskInfo.formData = buildFormDataJson();
-                        taskInfo.updateFormData = updateFormData;
-                        parentActions.submitTaskResult(taskInfo);
-                    }); 
+                var payload = buildPayload();
+                var taskInfo = {};
+                taskInfo.id = vm.taskInfo.id;
+                taskInfo.controlName = vm.taskInfo.controlName;
+                taskInfo.flowItemType = vm.taskInfo.flowItemType;
+                taskInfo.controlIdentifier = vm.taskInfo.controlIdentifier;
+                taskInfo.flowGroup = vm.taskInfo.flowGroup;
+                taskInfo.taskResult = payload;
+                taskInfo.formData = buildFormDataJson();
+                taskInfo.updateFormData = updateFormData;
+                parentActions.submitTaskResult(taskInfo);
             }
          }; 
 
@@ -303,14 +251,18 @@
                 }
                 case "number":
                 {
-                    if (control.required && !_.isNumber(control.fieldValue)) {
-                        vm.formControls[p].valid = false;
+                    if (control.required) {
+                        if(_.isNumber(vm.formControls[p].fieldValue)){
+                            vm.formControls[p].valid = true;
+                        }else{
+                            vm.formControls[p].valid = false;
+                        }
                     } else {
                         if (control.fieldValue == null || control.fieldValue == "") {
                             vm.formControls[p].valid = true;
                             return;
                         }
-                        if (!_.isNumber(control.fieldValue)) {
+                        if (!_.isNumeric(control.fieldValue)) {
                             vm.formControls[p].valid = false;
                         }
                     }
@@ -373,7 +325,12 @@
             }
 
             console.log('Form controls after validation', JSON.stringify(vm.formControls));
-            return !vm.formControls.some(isInvalid);
+            var validationResult = !vm.formControls.some(isInvalid);
+            if(!validationResult){
+
+            }
+            console.log("form is valid >>",validationResult);
+            return validationResult;
         }
 
 
@@ -497,11 +454,10 @@
         }
 
         function initFlatPickrDateControl() {
-            $(document).ready(function() {
-                $(".flatpickr-input").flatpickr({ dateFormat: "Y-m-d" });
-            });
+            $(document).ready(function () {
+                $(".flatpickr-input").flatpickr({ dateFormat: "Y-m-d"});
+            })
         }
-         
         
     }
 

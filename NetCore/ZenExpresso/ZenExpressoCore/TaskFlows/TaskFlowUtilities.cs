@@ -47,15 +47,14 @@ namespace ZenExpressoCore.TaskFlows
                         replaceVal = quotes + parameter.parameterValue + quotes;
                         break;
                     case "text":
+                    case "hidden":
                     case "textarea":
-                   
                         replaceVal = quotes + parameter.parameterValue + quotes;
                         break;
-                        
                     case "select":
                         replaceVal = quotes + parameter.parameterValue + quotes;
                         break;
-                    case "multiselect":  
+                    case "multiselect":
                         List<string> selected = JsonConvert.DeserializeObject<List<string>>(parameter.parameterValue);
                         StringBuilder sb = new StringBuilder();
                         sb.Append($"'{selected.First()}'");
