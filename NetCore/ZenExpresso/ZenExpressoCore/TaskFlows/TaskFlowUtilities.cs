@@ -99,7 +99,7 @@ namespace ZenExpressoCore.TaskFlows
         public static List<PlaceHolder> ExtractPlaceHolders(string text)
         {
              
-            var matches= Regex.Matches(text, @"([{{]([\S])+[}}])+");
+            var matches= Regex.Matches(text, @"([{{]([\S])+[}]{2})+");
             var list = new List<PlaceHolder>();
             for (int i = 0; i < matches.Count; i++)
             {
@@ -158,9 +158,11 @@ namespace ZenExpressoCore.TaskFlows
 
         public static string InterpolateSequenceParams(string sqlScript, List<PlaceHolder> placeholders, List<TaskFlowResult> resultSequence)
         {
-
             foreach (var placeholder in placeholders)
             {
+                if(placeholder.fieldName=="testResult"){
+                    Console.WriteLine("The testResult Parameters  >>"+JsonConvert.SerializeObject(placeholder));
+                }
                 TaskFlowResult sequenceResult= null;
                 if (placeholder.sequenceIndex >= 0)
                 {
@@ -196,8 +198,12 @@ namespace ZenExpressoCore.TaskFlows
                     {
                         try
                         {
-                            resultObject = JToken.Parse(sequenceResult.data.ToString());
-                            fieldValue = resultObject[placeholder.fieldName].ToStringOrEmpty();
+
+                            if(sequenceResult.status=="00"){
+                                 resultObject = JToken.Parse(sequenceResult.data.ToString());
+                                fieldValue = resultObject[placeholder.fieldName].ToStringOrEmpty();
+                            }
+                           
                         }
                         catch (Exception ex)
                         {

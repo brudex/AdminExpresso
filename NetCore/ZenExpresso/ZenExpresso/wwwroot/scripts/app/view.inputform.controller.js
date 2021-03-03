@@ -44,7 +44,9 @@
                     control.fieldLabel = item.fieldLabel;
                     control.fieldName = item.fieldName;
                     control.fieldType = item.fieldType;
+                    control.range = item.range;
                     control.required = true;
+                    control.regex = item.regex;
                     if (initialData) {
                         control.fieldValue = initialData[item.fieldName];
                     }
@@ -85,7 +87,6 @@
             var dt = selectOptionsDatasource;
             if (dt.inputFormat === "delimited") {
                 var arr = dt.dropDownOptions.split(/[.,\n;]/);
-                console.log("delimited >>", arr);
                 arr.forEach(function (txt) {
                     dataSource.push({ label: txt, value: txt });
                 });
@@ -225,6 +226,18 @@
             return re.test(String(phone));
         }
 
+        function isWithinRange(val,min,max){
+            console.log('Mibf  nMax >'+min +" >>"+max);
+            if(_.isNumeric(min) && _.isNumeric(max)){
+                console.log('MinMax >'+min +" >>"+max);
+                if (val>= Number(min) && val <= Number(max)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
         function validateForm() {
             for (var p = 0, len = vm.formControls.length; p < len; p++) {
                 var fieldType = vm.formControls[p].fieldType;
@@ -233,14 +246,14 @@
                 case "textarea":
                 case "text":
                 {
-                    if (control.required) {
+                    if(control.required) {
                         if (!_.isEmpty(control.fieldValue)) {
                             vm.formControls[p].valid = validateInput(vm.formControls[p]);
                             console.log("Called Validate Input");
                         } else {
                             vm.formControls[p].valid = false;
                         }
-                    } else {
+                    }else {
                         if (_.isEmpty(control.fieldValue)) {
                             vm.formControls[p].valid = true;
                         } else {
@@ -253,21 +266,23 @@
                 {
                     if (control.required) {
                         if(_.isNumber(vm.formControls[p].fieldValue)){
-                            vm.formControls[p].valid = true;
+                            vm.formControls[p].valid = validateInput(vm.formControls[p]);
                         }else{
                             vm.formControls[p].valid = false;
                         }
                     } else {
+                        vm.formControls[p].valid = false;
                         if (control.fieldValue == null || control.fieldValue == "") {
                             vm.formControls[p].valid = true;
-                            return;
+                            continue;
                         }
-                        if (!_.isNumeric(control.fieldValue)) {
-                            vm.formControls[p].valid = false;
+                        if (_.isNumeric(control.fieldValue)) {
+                            vm.formControls[p].valid = validateInput(vm.formControls[p]);;
                         }
                     }
                     break;
                 }
+               
                 case "date":
                 {
                     if (control.required) {
@@ -324,8 +339,7 @@
                 return !c.valid;
             }
 
-            console.log('Form controls after validation', JSON.stringify(vm.formControls));
-            var validationResult = !vm.formControls.some(isInvalid);
+             var validationResult = !vm.formControls.some(isInvalid);
             if(!validationResult){
 
             }
@@ -363,6 +377,21 @@
                 }
                 break;
             }
+            case "range":
+                {
+                    console.log('Range validation encountered >>>>',control);
+                    validationResult.valid = true;
+                    if (_.isNumber(control.fieldValue)) {
+                        var range = control.range.split(",");
+                        validationResult.valid = isWithinRange(control.fieldValue,range[0],range[1]);
+                        if(!validationResult.valid){
+                            validationResult.message = "Field must be withing "+range[0] +" and " +range[1];
+                        }
+                    }else{
+                        validationResult.message = "This field must be numeric";
+                    }
+                    break;
+                }
             case "email":
             {
                 validationResult.valid = true;
@@ -377,7 +406,7 @@
             case "phone":
             {
                 validationResult.valid = true;
-                if (/^((2)(3)(3)\d{9})$/.test(control.fieldValue)) {
+                if (/^((2)(3)(3)\d{9})$/.test(control.fieldValue) || /^((0)\d{9})$/.test(control.fieldValue) ) {
                     validationResult.valid = true;
                 } else {
                     validationResult.valid = false;
