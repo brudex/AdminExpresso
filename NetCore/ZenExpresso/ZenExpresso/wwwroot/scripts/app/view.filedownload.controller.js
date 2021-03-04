@@ -12,9 +12,9 @@
         vm.downloadDone = false;
         vm.init = function (data) {
             vm.taskInfo = data;
-            console.log('The taskInfo >>', vm.taskInfo);
             var parentActions = DataHolder.getParentFunctions();
             var taskResults = parentActions.getTaskResults();
+            console.log('The task results >>',taskResults);
             if (taskResults.length === 1) {
                 console.log("The TaskResult is >>", taskResults);
                 if (taskResults[0].status === "00") {
@@ -36,17 +36,17 @@
                 }
                 var taskResult = _.find(taskResults, function (o) { return o.controlIdentifier === controlDataSource; });
                 if (taskResult) {
-                    vm.tableId = vm.tableId + "-" + controlDataSource;
+                    console.log('The found task Result is >>',taskResult);
                     if (taskResult.status === "00") {
-                        if (taskResults[0].status === "00") {
-                            if (isValidUrlLink(taskResults[0].data)) {
-                                executeResult(taskResults[0].data);
+                        if (taskResult.status === "00") {
+                            if (isValidUrlLink(taskResult.data)) {
+                                executeResult(taskResult.data);
                             } else {
                                 utils.alertWarning("Invalid Url link :" + response[0].data);
                             }
                             return;
                         } else {
-                            utils.alertWarning(taskResults[0].message);
+                            utils.alertWarning(taskResult.message);
                         }
                     } else {
                         utils.alertWarning(taskResult.message);

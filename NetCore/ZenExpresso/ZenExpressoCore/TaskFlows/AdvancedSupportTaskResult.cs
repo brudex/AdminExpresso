@@ -33,6 +33,7 @@ namespace ZenExpressoCore.TaskFlows
             {
                 foreach (var taskFlowItem in taskFlowItems)
                 {
+                    Console.WriteLine("Executing Task >>"+taskFlowItem.controlName+ "-"+taskFlowItem.flowItemType);
                      ITaskExecutor flowItem = null;
                     switch (taskFlowItem.flowItemType)
                     {
@@ -53,6 +54,7 @@ namespace ZenExpressoCore.TaskFlows
                     if (flowItem != null)
                     {
                         var result = flowItem.ExecuteResult(inputList, taskFlowResults);
+                        Console.WriteLine("The Task Result Message >>"+result.message);
                         taskFlowResults.Add(result);
                     }
                 }

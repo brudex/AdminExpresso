@@ -114,6 +114,7 @@
                                                             <option value="_none_">No Validation</option>
                                                             <option value="text">Text</option>
                                                             <option value="number">Number </option>
+                                                            <option value="range">Number Range</option>
                                                             <option value="email">Email </option>
                                                             <option value="phone">Mobile Phone </option>
                                                             <option value="date">Date </option>
@@ -126,7 +127,8 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.validation}">
-                                                        <input type="text" data-ng-disabled="item.validation!=='regex'" class="form-control " placeholder="Enter Regex " data-ng-model="item.regex">
+                                                        <input type="text" data-ng-show="item.validation=='regex'" class="form-control " placeholder="Enter Regex " data-ng-model="item.regex">
+                                                        <input type="text" data-ng-show="item.validation=='range'" class="form-control " placeholder="Min, Max" data-ng-model="item.range">
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <label><input type="checkbox" ng-model="item.required"> Required</label>

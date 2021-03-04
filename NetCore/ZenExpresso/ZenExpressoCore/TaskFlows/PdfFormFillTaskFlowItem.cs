@@ -30,11 +30,13 @@ namespace ZenExpressoCore.TaskFlows
             response.description = description;
             response.controlIdentifier = controlIdentifier;
             flowData = TaskFlowUtilities.InterpolateParams(flowData, inputList,"\\\"");
+             Console.WriteLine("Before interpolate Params  +"+flowData);
             if (resultSequence.Any())
             {
                 List<PlaceHolder> placeHolders = TaskFlowUtilities.ExtractPlaceHolders(flowData);
                 flowData = TaskFlowUtilities.InterpolateSequenceParams(flowData, placeHolders, resultSequence); 
             }
+            Console.WriteLine("After interpolate Params  +"+flowData);
             var jsonFlowData = JObject.Parse(flowData);
             var filePrefix = jsonFlowData["filePrefix"].ToStringOrEmpty();
             var fileDateFormat = jsonFlowData["fileDateFormat"].ToStringOrEmpty();
@@ -48,6 +50,7 @@ namespace ZenExpressoCore.TaskFlows
                 {
                     fileDateFormat = "yyyyMMdd";
                 }
+                Console.WriteLine("The inputMapStr +"+inputMapStr);
                 var inputMap = JObject.Parse(inputMapStr);
                 var fileName = filePrefix + Guid.NewGuid().ToString().Substring(0, 10) + "_" +
                                DateTime.Now.ToString(fileDateFormat) + ".pdf";
