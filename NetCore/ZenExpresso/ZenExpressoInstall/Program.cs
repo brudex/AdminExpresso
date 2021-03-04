@@ -14,11 +14,13 @@ namespace ZenExpressoInstall
             // Console.WriteLine("Hello World!");
 
             var fileSrc = "C:\\developer\\zenithbank\\ZenExpresso\\NetCore\\ZenExpresso\\ZenExpresso\\wwwroot\\uploads\\pdftemplate.pdf";
-            var fileDest = "C:\\developer\\zenithbank\\ZenExpresso\\NetCore\\ZenExpresso\\pdftemplate5.pdf";
+            var fileDest = "C:\\developer\\zenithbank\\ZenExpresso\\NetCore\\ZenExpresso\\pdftemplate9.pdf";
             // FileInfo file = new FileInfo(DEST);
             // file.Directory.Create();
-
-            new FillFormSpecialChars().ManipulatePdf(fileSrc,fileDest);
+            Console.WriteLine("Start barcode replacement");
+              ReplacePdfFile.SetBarCodeFormField(fileSrc,fileDest);
+              Console.WriteLine("Completed barcode replacement");
+            Console.ReadLine();
         }
     }
 }
