@@ -24,7 +24,7 @@
                 var initData = JSON.parse(data.flowData);
                 vm.model = initData;
             } else {
-                vm.model = data.data; 
+                vm.model = data.data;
             }
             console.log('The data model for rest >>', vm.model);
             var obj = { controlName: "Rest Api", flowItemType: 'rest', flowGroup: data.flowGroup, controlIdentifier: vm.model.controlIdentifier};
@@ -35,13 +35,13 @@
         vm.openForEditting = function (flowItem) {
             $('#' + vm.modalName).modal('show');
         }
-         
+
         vm.addHeader = function () {
             vm.model.headers.push({});
         }
         vm.removeHeader = function (index) {
             vm.model.headers.splice(index, 1);
-        } 
+        }
 
         vm.saveData = function () {
             console.log('Checking validations >>>');
@@ -55,7 +55,7 @@
                 if (_.isEmpty(item.headerValue)) {
                     item.error.headerValue = true;
                     vm.errorMsg.push('Header Values must be filled');
-                } 
+                }
             });
             if (vm.errorMsg.length) {
                 return;
@@ -72,17 +72,16 @@
             vm.model = { headers: [], basicAuth: {} };
         }
 
-        vm.init = function () { 
+        vm.init = function () {
             var parentActions = DataHolder.getParentFunctions();
             console.log('parentActions', parentActions);
             var controlIndex = parentActions.getFlowCounterIndex('rest');
+            vm.model = { headers: [], basicAuth: {}, controlName: "Rest Api", flowItemType: 'rest', flowGroup: currentWidgetOption};
             vm.model.controlIdentifier = 'restApi' + controlIndex;
             vm.formControls = [];
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             if (currentWidgetOption === 'postAction') {
-                 
-                vm.formControls = parentActions.getParentModel().getInputFields();  
-                 
+                vm.formControls = parentActions.getParentModel().getInputFields();
             }
         }
 
@@ -120,6 +119,7 @@
                     vm.init();
                     console.log('initialized');
                     if (data.isEditting) {
+                        console.log('Is editting rest>>',data.flowItem);
                         isEditting = true;
                         editIndex = data.editIndex;
                         vm.initDataModel(data.flowItem);

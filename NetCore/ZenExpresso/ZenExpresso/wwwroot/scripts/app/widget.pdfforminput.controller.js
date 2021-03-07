@@ -36,20 +36,19 @@
         vm.openForEditting = function (flowItem) {
             $('#' + vm.modalName).modal('show');
         }
-         
+
         vm.addHeader = function () {
             vm.model.headers.push({});
         }
         vm.removeHeader = function (index) {
             vm.model.headers.splice(index, 1);
-        } 
+        }
 
         vm.saveData = function () {
             if (!(['beforeRender', 'postAction'].indexOf(currentWidgetOption) > -1)) {
                 currentWidgetOption = 'postAction';
             }
-            var obj = {
-                controlName: "Pdf Form Input", flowItemType: 'pdfform', flowGroup: currentWidgetOption, controlIdentifier: vm.model.controlIdentifier};
+            var obj = { controlName: "Pdf Form Input", flowItemType: 'pdfform', flowGroup: currentWidgetOption, controlIdentifier: vm.model.controlIdentifier};
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;

@@ -62,7 +62,7 @@ namespace ZenExpressoCore.TaskFlows
                         {
                             sb.Append($",'{selected[i]}'");
                         }
-                        replaceVal = sb.ToString();
+                        replaceVal = quotes + sb.ToString() + quotes;
                         break;
                     case "checkbox":
                     {

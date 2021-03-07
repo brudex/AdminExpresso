@@ -39,6 +39,7 @@
         } 
 
         vm.init = function () {
+            vm.model = { options: {}, rowActionButtons: [], description: '', cardDesignOption:'verticalWithButtons'};
             var parentActions = DataHolder.getParentFunctions();
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             var dataSources = [];

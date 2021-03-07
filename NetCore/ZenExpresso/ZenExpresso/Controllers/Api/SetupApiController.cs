@@ -74,7 +74,7 @@ namespace ZenExpresso.Controllers
             {
                 DbHandler.Instance.Save(dataSource);
             }
-           
+
             MemDb.Instance.ReloadDataSources();
             var response = new ServiceResponse();
             response.status = "00";
@@ -88,7 +88,7 @@ namespace ZenExpresso.Controllers
         {
 
             int id = data["id"].ToInteger();
-            DbHandler.Instance.DeleteTopMenuById(id);
+            DbHandler.Instance.DeleteDataSourceById(id);
             MemDb.Instance.ReloadMenus();
             var response = new ServiceResponse();
             response.status = "00";
@@ -100,7 +100,6 @@ namespace ZenExpresso.Controllers
         [HttpGet]
         public ServiceResponse GetAdminList()
         {
-
             var response = new ServiceResponse();
             var list = DbHandler.Instance.GetList<DedicatedAdmin>();
             response.status = "00";
@@ -126,7 +125,6 @@ namespace ZenExpresso.Controllers
         [HttpPost]
         public ServiceResponse SetDedicatedAdminPreviledges([FromBody] DedicatedAdmin admin)
         {
-            
             DbHandler.Instance.UpdateAdmin(admin);
             MemDb.Instance.ReloadAdmins();
             var response = new ServiceResponse();
@@ -138,7 +136,7 @@ namespace ZenExpresso.Controllers
 
         [HttpPost]
         public ServiceResponse DeleteAdmin([FromBody]JObject data)
-        { 
+        {
             int id = data["id"].ToInteger();
             DbHandler.Instance.DeleteAdminById(id);
             MemDb.Instance.ReloadAdmins();
@@ -147,10 +145,17 @@ namespace ZenExpresso.Controllers
             response.message = "Success";
             return response;
         }
-         
 
 
-
+        [HttpGet]
+        public ServiceResponse GetUsersList()
+        {
+            var list = DbHandler.Instance.GetUsersList();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.data = list;
+            return response;
+        }
 
     }
 }

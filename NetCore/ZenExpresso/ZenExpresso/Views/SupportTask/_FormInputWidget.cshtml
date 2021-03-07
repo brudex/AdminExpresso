@@ -97,11 +97,13 @@
                                                             <option value="date">Date </option>
                                                             <option value="checkbox">CheckBox Field</option>
                                                             <option value="select">Single-Select </option>
+                                                            <option value="radio">Radio Buttons </option>
+                                                            <option value="separator">Field Separator</option>
                                                             <option value="multiselect">Multi-Select </option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.selectOptionsDatasource}">
-                                                        <select class="form-control" data-ng-model="item.selectOptionsDatasource" data-ng-options="source as source.dataSourceName for source in vm.dataSources" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect')">
+                                                        <select class="form-control" data-ng-model="item.selectOptionsDatasource" data-ng-options="source as source.dataSourceName for source in vm.dataSources" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect' || item.fieldType=='radio')">
                                                             <option value="">..Data Source..</option>
                                                         </select>
                                                     </div>
@@ -109,7 +111,7 @@
                                                 <br />
                                                 <div class="row">
                                                     <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.validation}">
-                                                        <select class="form-control" data-ng-model="item.validation" required="">
+                                                        <select data-ng-show="item.fieldType=='text' || item.fieldType=='number' || item.fieldType=='textarea'" class="form-control" data-ng-model="item.validation" required="">
                                                             <option value="">..Select Validation..</option>
                                                             <option value="_none_">No Validation</option>
                                                             <option value="text">Text</option>
@@ -124,6 +126,11 @@
                                                             <option value="accountOrPhone">Account or Phone </option>
                                                             <option value="phoneOrEmail">Phone or Email</option>
                                                             <option value="accountOrPhoneOrEmail">Account or Phone or Email</option>
+                                                        </select>
+                                                        <select data-ng-show="item.fieldType=='multiselect'" class="form-control" data-ng-model="item.selectMode" required="">
+                                                            <option value="">..Multi Display Type..</option>
+                                                            <option value="checkbox">Check Boxes</option>
+                                                            <option value="dropdown">Drop Down </option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.validation}">

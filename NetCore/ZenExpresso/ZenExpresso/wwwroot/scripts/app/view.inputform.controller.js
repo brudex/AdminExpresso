@@ -15,8 +15,10 @@
         var parentActions = null;
         vm.init = function (data) {
             vm.taskInfo = data;
+           
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
+            console.log("The task Results >>",vm.taskResults);
             executeResult();
         };
 
@@ -25,19 +27,22 @@
             if (vm.taskInfo) {
                 var flowData = vm.taskInfo.flowData;
                 var initialData = null;
+                console.log('The flowData ',flowData);
                 if (flowData.controlDataSource) {
                     var controlDataSource = flowData.controlDataSource;
                     var taskResult = _.find(vm.taskResults, function (o) { return o.controlIdentifier === controlDataSource; });
+                    console.log('The taskResult ',taskResult);
                     if (taskResult && taskResult.status === "00") {
                         if (_.isArray(taskResult.data)) {
                             initialData = taskResult.data.length ? taskResult.data[0] : null;
+                            console.log('The initialData ',initialData);
                         } else {
                             initialData = taskResult.data;
                         }
                     }
                 }
                 var hasDateField = false;
-
+                var activateSelect2 = [];
                 for (var k = 0, len = flowData.formControls.length; k < len; k++) {
                     var item = flowData.formControls[k];
                     var control = {};
@@ -49,6 +54,9 @@
                     control.regex = item.regex;
                     if (initialData) {
                         control.fieldValue = initialData[item.fieldName];
+                        if(control.fieldType=="number"){
+                            control.fieldValue = Number(control.fieldValue);
+                        }
                     }
                     control.validation = item.validation;
                     if (item.require != null) {
@@ -56,14 +64,19 @@
                     }
                     if (["select", "multiselect"].indexOf(control.fieldType) > -1) {
                         control.dataSource = buildSelectOptions(item.selectOptionsDatasource);
+                        if(control.dataSource.length > 12|| control.fieldType=='multiselect'){
+                            activateSelect2.push("."+control.fieldName) ;
+                        }
+                        if(control.fieldValue=='Ghanaian'){
+                            control.fieldValue="Ghana";
+                        }
                     }
-                    if (["date"].indexOf(control.fieldType) > -1) {
+                    if(["date"].indexOf(control.fieldType) > -1) {
                         hasDateField = true;
                     }
                     vm.formControls.push(control);
                 }
                 var queryData = BeforeRenderDataStore.getQueryData();
-                console.log('The query data is >>',queryData);
                 queryData.forEach(function(item){
                     var control = {};
                     control.fieldName = item.parameterName;
@@ -72,8 +85,15 @@
                     control.required = false;
                     vm.formControls.push(control);
                 })
+                if (activateSelect2.length){
+                    $(document).ready(function(){
+                        var selectItems = activateSelect2.join(', ')
+                        $(selectItems).select2({
+                            placeholder: '[Select one]'
+                          });
+                    });
+                }
                 if (hasDateField) {
-                    console.log("initializaing date control>>");
                     initFlatPickrDateControl();
                 }
             }
@@ -282,7 +302,6 @@
                     }
                     break;
                 }
-               
                 case "date":
                 {
                     if (control.required) {
@@ -330,7 +349,7 @@
                     }
                     break;
                 }
-                    default:
+                default:
                         control.valid = true;
                 }
 

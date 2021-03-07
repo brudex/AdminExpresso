@@ -10,19 +10,19 @@
         vm.errorParameter = [];
         vm.successMsg = [];
         vm.supportGroups = [];
+        vm.supportUsers = [];
         vm.group = {};
         vm.singleUser = {};
         vm.model = { groups:[]};
-        vm.formSubmitted = false;  
+        vm.formSubmitted = false;
 
         vm.init = function (id) {
             console.log('the task id is >>', id);
             vm.model.id = id;
-            loadActiveDirectoryGroups();
             loadTaskGroups(id);
+            loadUsers();
         }
-        
-         
+
         vm.addGroup = function () {
             vm.group.groupType = 'Groups';
             console.log('pushing result >>', vm.group);
@@ -30,7 +30,6 @@
                 vm.model.groups.push(vm.group);
                 vm.group = {};
             }
-            
         }
 
         vm.addSingleUser = function () {
@@ -39,8 +38,8 @@
                 vm.model.groups.push(vm.singleUser);
                 vm.singleUser = {};
             }
-            
         }
+ 
 
         vm.removeGroup = function ($index) {
             vm.model.groups.splice($index, 1);
@@ -61,10 +60,8 @@
             } else {
                 utils.alertError("Add one or more groups");
             }
-           
         }
 
-        
         function loadActiveDirectoryGroups() {
             services.listActiveDirectoryGroups(function (response) {
                if (response.status === "00") {
@@ -73,7 +70,7 @@
                 }
             });
         }
-       
+
 
         function loadTaskGroups(taskId) {
             services.getSupportTaskGroups(taskId,function (response) {
@@ -83,6 +80,17 @@
                 }
             });
         }
-        
+
+        function loadUsers() {
+            services.getUsersList(function (response) {
+                console.log('loadTaskGroups >>', response);
+                if (response.status === "00") {
+                    vm.supportUsers = response.data;
+                    if(vm.supportUsers.length==0){
+                        loadActiveDirectoryGroups();
+                    }
+                }
+            });
+        }
     }
 })();

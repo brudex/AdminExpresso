@@ -8,11 +8,9 @@
                 </div>
             </div>
         </div>
-
         <br />
         <div class="card1">
             <div class="table-responsive " data-ng-if="vm.viewSettings.useDataTable">
-
                 <div style="overflow-x:scroll">
                     <table class="table" data-ng-attr-id="{{ vm.tableId }}"></table>
                 </div>
@@ -43,8 +41,6 @@
                     </tbody>
                 </table>
             </div>
-
-
         </div>
     </div>
 </script>
@@ -70,7 +66,6 @@
 
         <div>
             <div class="flex" style="max-width: 100%" data-ng-if="vm.model.startImmediately">
-
                 <div class="alert alert-primary" role="alert">
                     <div class="d-flex flex-wrap align-items-start">
                         <div class="mr-8pt">
@@ -83,7 +78,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <a  data-ng-href="{{vm.model.downloadLink}}" target="_blank" class="btn btn-secondary btn-rounded ">
                 <i class="fa fa-download mr-2"></i> Download
@@ -107,6 +101,13 @@
         </div>
         <form name="executeTaskForm" class="align-content-center" parsley-validate="" novalidate="" data-ng-submit="vm.executeSupportTask(executeTaskForm.$valid)">
             <div data-ng-repeat="control in vm.formControls">
+                <div data-ng-if="control.fieldType=='separator'" class="form-group row">
+                    <div class="col-sm-9 page-separator">
+                        <div class="page-separator__text">
+                            <h4 class="title">{{control.fieldLabel}}</h4>
+                        </div>
+                    </div>
+                </div>
                 <div data-ng-if="control.fieldType=='number'" class="form-group row">
                     <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
                     <div class="col-sm-6">
@@ -128,10 +129,18 @@
                 <div data-ng-if="control.fieldType=='select'" class="form-group row">
                     <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
                     <div class="col-sm-6">
-                        <select class="form-control" data-ng-model="control.fieldValue" name="{{control.fieldName}}" data-ng-class="{'is-invalid': vm.formSubmitted && !control.valid,'is-valid': vm.formSubmitted && control.valid }">
+                        <select class="form-control select2 {{control.fieldName}}" data-ng-model="control.fieldValue" data-ng-options="item.value as item.label for item in control.dataSource" name="{{control.fieldName}}" data-ng-class="{'is-invalid': vm.formSubmitted && !control.valid,'is-valid': vm.formSubmitted && control.valid }">
                             <option value="">[Select One]</option>
-                            <option data-ng-repeat="item in control.dataSource" value="{{item.value}}">{{item.label}}</option>
                         </select>
+                    </div>
+                </div>
+                <div data-ng-if="control.fieldType=='radio'" class="form-group row">
+                    <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
+                    <div class="col-sm-6">
+                        <div class="form-check form-check-inline" data-ng-repeat="item in control.dataSource">
+                            <input class="form-check-input" type="radio" name="{{control.fieldName}}" value="{{item.value}}">
+                            <label class="form-check-label" for="{{control.fieldName}}-{{item.value}}">{{control.fieldLabel}}</label>
+                        </div>
                     </div>
                 </div>
                 <div data-ng-if="control.fieldType=='textarea'" class="form-group row">
@@ -163,7 +172,7 @@
                 <div data-ng-if="control.fieldType=='multiselect'" class="form-group row">
                     <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
                     <div class="col-sm-6">
-                        <select class="form-control" data-ng-model="control.fieldValue" name="{{control.fieldName}}" multiple="multiple" size="7" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm[control.fieldName].$invalid,'is-valid': vm.formSubmitted && executeTaskForm[control.fieldName].$valid }">
+                        <select class="form-control select2 {{control.fieldName}}" data-ng-model="control.fieldValue" name="{{control.fieldName}}" multiple="multiple" size="7" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm[control.fieldName].$invalid,'is-valid': vm.formSubmitted && executeTaskForm[control.fieldName].$valid }">
                             <option  data-ng-repeat="item in control.dataSource" value="{{item.value}}">{{item.label}}</option>
                         </select>
                     </div>

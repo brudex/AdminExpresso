@@ -28,28 +28,25 @@
                     <div class="card-body  text-70">
                         <div id="restbody" class="tab-pane active">
                             <form>
- 
                                     <div class="form-group row">
-                                        <label class="col-sm-5">Title/Description </label>
+                                        <label class="col-sm-5 col-form-label form-label">Title/Description </label>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control " data-ng-model="vm.model.description">
                                         </div>
                                     </div>
-                               
                                         <div class="form-group row">
-                                            <label class="col-sm-5 col-form-label form-label">Download Link Type</label>
+                                            <label class="col-sm-5 col-form-label form-label">Download File From </label>
                                             <div class="col-sm-6">
-                                                <select class="form-control" data-ng-model="vm.model.controlDataSource">
+                                                <select class="form-control" data-ng-model="vm.model.controlDataSource" data-ng-options="item.key as item.dataSourceName for item in vm.dataSources">
                                                     <option value="">..Select ..</option>
-                                                    <option value="static">Static file link</option>
-                                                    <option data-ng-repeat="item in vm.dataSources" value="{{item.key}}">From Task: {{item.dataSourceName}}</option>
+                                                   
                                                 </select>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <div class="form-group row" data-ng-show="vm.model.controlDataSource=='static'">
                                             <label class="col-sm-5 col-form-label form-label">Enter Static File link </label>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" data-ng-model="vm.model.fileLink">
+                                                <input type="text" class="form-control" placehold="http://example.com/examplefile.pdf" data-ng-model="vm.model.fileLink">
                                             </div>
                                         </div> 
                                         <div class="form-group row">

@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('FileDownloadWidgetController', FileDownloadWidgetController);
-    FileDownloadWidgetController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder','$scope'];
-    function FileDownloadWidgetController(services, utils, $window, DataHolder, $scope) {
+    FileDownloadWidgetController.$inject = ['brudexutils', '$window', 'DataHolder','$scope'];
+    function FileDownloadWidgetController(utils, $window, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
@@ -16,11 +16,12 @@
         var currentWidgetOption = '';
         vm.supportTasks =[];
         vm.modalName = 'fileDownloadModal';
+        vm.model = {};
         $scope.$on('modalOpened', onModalOpen);
 
         vm.initDataModel = function (data) {
             currentWidgetOption = data.flowGroup;
-            console.log('vm.initDataModel', data); 
+            console.log('vm.initDataModel >> ', data); 
             if (data.flowData && typeof data.flowData === 'string') {
                 var initData = JSON.parse(data.flowData);
                 vm.model = initData;
@@ -39,6 +40,7 @@
         }
 
         vm.init = function () {
+            vm.model = {};
             var parentActions = DataHolder.getParentFunctions();
             if(!vm.supportTasks.length) {
                 parentActions.getAllSupportTasks(function(tasks) {
@@ -53,9 +55,10 @@
             } else {
                 dataSources = parentActions.getPostActionDataSources();
             }
-            if (dataSources.length) {
+            vm.dataSources.push({key:"static",dataSourceName:"Static file link"});
+            if (dataSources.length) { 
                 dataSources.forEach(function (dt) {
-                    vm.dataSources.push(dt);
+                    vm.dataSources.push({key:dt.key,dataSourceName:"TaskFlow Output - "+dt.dataSourceName});
                 });
             }
         }
@@ -89,11 +92,10 @@
             obj.isEditting = isEditting;
             obj.editIndex = editIndex;
             obj.modalName = vm.modalName;
-            DataHolder.saveData('fileDownload', obj);  
+            DataHolder.saveData('fileDownload', obj);
             vm.model = { description: '' };
         }
 
-       
 
         function buildHtmlBindView() {
             var html = '<div class="row">';

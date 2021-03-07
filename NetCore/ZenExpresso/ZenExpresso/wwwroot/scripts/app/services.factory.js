@@ -31,6 +31,7 @@
             getMenuList: getData('api/SetupApi/GetMenuList'),
             addMenu: postData('api/SetupApi/SaveMenu'),
             deleteMenu: postData('api/SetupApi/DeleteDataSource'),
+            getUsersList: getData('api/SetupApi/GetUsersList'),
 
             getDataSources: getData('api/SetupApi/GetDataSources'),
             saveDataSource: postData('api/SetupApi/SaveDataSource'),
@@ -51,24 +52,26 @@
                 radius: 80, 
                 scale: 1,  
                 corners: 1,  
-                color: '#000000',  
+                color: '#000',
+                opacity: 0.25,
                 fadeColor: 'transparent', 
                 speed: 1,  
                 rotate: 0,  
                 animation: 'spinner-line-fade-quick', 
                 direction: 1,  
                 zIndex: 2e9,  
-                className: 'spinner',  
+                className: 'myspinner',  
                 top: '30%',  
                 left: '50%', 
-                shadow: '0 0 1px transparent',  
+                shadow: false,  
                 position: 'absolute'  
             };
             if (!spinTarget) {
                 spinTarget = $window.document.getElementById('spinnerContainer');
                 spinner = new $window.Spinner(opts);
-            } 
-            spinner.spin(spinTarget);
+            }
+
+            spinner.spin(spinTarget); 
         }
 
         function stopSpinner() {
@@ -96,7 +99,6 @@
         }
 
         function getData(url) {
-            
             return function (callback) {
                 if (arguments.length > 1) {
                     url =  url + "/" + arguments[0];
@@ -110,7 +112,6 @@
                         return;
                     }
                     callback(response.data);
-                   
                 });
             }
         }

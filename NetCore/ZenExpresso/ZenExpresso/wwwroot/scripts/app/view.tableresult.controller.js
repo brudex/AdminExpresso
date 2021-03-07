@@ -75,7 +75,7 @@
 
         function buildActionHtml(rowData,actionData){
           var link = buildActionLink(rowData,actionData);
-          return '<a class="btn btn-sm btn-primary" href="'+link+'">'+actionData.buttonLabel+'</a>';
+          return '<a class="btn btn-sm btn-primary ml-2" href="'+link+'">'+actionData.buttonLabel+'</a>';
         }
 
         function buildActionLink(rowData,actionInfo) {

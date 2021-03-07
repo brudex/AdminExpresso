@@ -76,10 +76,10 @@
 
         vm.addFormControl = function (index) {
             if(index==null){
-                vm.formControls.push({error: {}, required:true });
+                vm.formControls.push({validation:"_none_",error: {}, required:true });
                 return;
             }
-            vm.formControls.splice(index,0,{error: {}, required:true });
+            vm.formControls.splice(index,0,{validation:"_none_",error: {}, required:true });
         }
 
         vm.removeFormControl = function (index) {
@@ -171,6 +171,6 @@
             html += '<table>';
             return html;
         }
-       
+
     }
 })();

@@ -22,7 +22,7 @@ namespace ZenExpressoCore
         static DbHandler instance = null;
         static readonly object padlock = new object();
         private readonly string DefaultConnection;
-        
+
         DbHandler()
         {
             DefaultConnection = SettingsData.DefaultConnection;
@@ -46,7 +46,6 @@ namespace ZenExpressoCore
             }
         }
 
-        
         public bool Update<T>(T obj) where T : class
         {
             using (var connection = GetOpenDefaultConnection())
@@ -70,8 +69,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                return connection.Query<TopMenu>("SELECT  * FROM [dbo].[TopMenu] order by menuOrder").ToList();
-                
+                return connection.Query<TopMenu>("SELECT  * FROM [dbo].[TopMenu] where menuName!='exe' order by menuOrder").ToList();
             }
         }
 
@@ -106,12 +104,32 @@ namespace ZenExpressoCore
             }
         }
 
+        public void DeleteDataSourceById(int id)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var p1 = Predicates.Field<DataSource>(f => f.Id, Operator.Eq, id);
+                var list = connection.Delete<DataSource>(p1);
+            }
+        }
+
+
         public void DeleteAdminById(int id)
         {
             using (var connection = GetOpenDefaultConnection())
             {
                 var p1 = Predicates.Field<DedicatedAdmin>(f => f.id, Operator.Eq, id);
                 var list = connection.Delete<DedicatedAdmin>(p1);
+            }
+        }
+
+
+        public List<string> GetUsersList()
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var list = connection.Query<string>("SELECT userName 'string' from AspNetUsers");
+                return list.ToList();
             }
         }
 
@@ -499,7 +517,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                var query = string.Format("select top 20 max(id) 'id',taskId,taskName,taskDescription,topMenu, max(dateExecuted) 'dateExecuted' FROM ExecutedTasks  where executedBy='{0}' group by taskId, taskName, taskDescription, topMenu order by id desc",
+                var query = string.Format("select top 20 max(id) 'id',taskId,taskName,taskDescription,topMenu, max(dateExecuted) 'dateExecuted' FROM ExecutedTasks  where executedBy='{0}' and topMenu!='exe' group by taskId, taskName, taskDescription, topMenu order by id desc",
                     userName);
                 return connection.Query<ExecutedTasks>(query).ToList();
             }

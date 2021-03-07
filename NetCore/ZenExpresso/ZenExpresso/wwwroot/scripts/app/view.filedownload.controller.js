@@ -34,6 +34,7 @@
                     executeResult();
                     return;
                 }
+                console.log('The control dataSource >>',controlDataSource);
                 var taskResult = _.find(taskResults, function (o) { return o.controlIdentifier === controlDataSource; });
                 if (taskResult) {
                     console.log('The found task Result is >>',taskResult);
@@ -42,7 +43,7 @@
                             if (isValidUrlLink(taskResult.data)) {
                                 executeResult(taskResult.data);
                             } else {
-                                utils.alertWarning("Invalid Url link :" + response[0].data);
+                                utils.alertWarning("Invalid Url link :" + taskResult.data);
                             }
                             return;
                         } else {

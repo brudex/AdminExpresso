@@ -6,4 +6,5 @@
 # Form Input
  Query Strings are rendered on the page as hidden items to allow submit on server post
 
-# 
+# Success Message modal
+ Add ability to get success message field using dot notation
