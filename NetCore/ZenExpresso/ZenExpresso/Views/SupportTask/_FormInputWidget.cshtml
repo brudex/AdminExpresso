@@ -24,7 +24,6 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
             </div>
             <div class="modal-body">
 
@@ -32,62 +31,61 @@
                     <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
                         <a href="#forminputs" class="active" data-toggle="tab" role="tab">Form Inputs</a>
                         <a href="#datasource" data-toggle="tab" role="tab" class="">DropDown Data Source</a>
+                        <a href="#validationScriptsTab" data-toggle="tab" role="tab" class="">Form Scripts</a>
                     </div>
                     <div class="card-body tab-content text-70">
                         <div id="forminputs" class="tab-pane active">
-                            <form class="form-horizontal group-border-dashed">
+                            <form class="">
                                 <div class="row">
                                     <div class="col-md-2">
                                         <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
                                     </div>
                                     <div class="col-md-2"></div>
                                     <div class="col-md-8">
-                                        <div class="form-group ">
-                                            <div class="row ">
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                            <div class="col-sm-3">
-                                                                <label>Title/Description </label>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <input type="text" class="form-control " data-ng-model="vm.description">
-                                                            </div>
-                                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">Title/Description</div>
                                                     </div>
+                                                    <input type="text" value="" placeholder="Title/Description" class="form-control form-control-sm" data-ng-model="vm.description" />
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="col-sm-5">
-                                                        <label> Initial Form Data</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">Initial Form Data</div>
                                                     </div>
-                                                    <div class="col-sm-6 ">
-                                                        <select class="form-control" data-ng-model="vm.controlDataSource">
-                                                            <option value="_none_">__None__</option>
-                                                            <option data-ng-repeat="item in vm.initialFormDataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
-                                                        </select>
-                                                    </div>
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.controlDataSource">
+                                                        <option value="_none_">__None__</option>
+                                                        <option data-ng-repeat="item in vm.initialFormDataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
+                                                    </select>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr class="col-sm-9" style="border-bottom: 1px solid #2c3edd" />
                                 <p>
+
                                     <div class="alert alert-info" data-ng-hide="vm.formControls.length">
                                         Add form controls for input
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-11 col-sm-offset-1">
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 ">
                                             <div class="form-group" data-ng-repeat="item in vm.formControls">
                                                 <div class="row">
-                                                    <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.fieldLabel}">
-                                                        <input type="text" class="form-control parsley-validated" required="" placeholder="Field Label" data-ng-model="item.fieldLabel">
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.fieldLabel}">
+                                                        <input type="text" class="form-control form-control-sm" required="" placeholder="Field Label" data-ng-model="item.fieldLabel">
                                                     </div>
-                                                    <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.fieldName}">
-                                                        <input type="text" class="form-control parsley-validated" required="" placeholder="Field Name" data-ng-model="item.fieldName">
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.fieldName}">
+                                                        <input type="text" class="form-control form-control-sm" required="" placeholder="Field Name" data-ng-model="item.fieldName">
+                                                    </div>
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.placeholder}">
+                                                        <input type="text" class="form-control form-control-sm" required="" placeholder="Place Holder" data-ng-model="item.placeholder">
                                                     </div>
                                                     <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.fieldType}">
-                                                        <select class="form-control" data-ng-model="item.fieldType" required="">
+                                                        <select class="form-control form-control-sm" data-ng-model="item.fieldType" required="">
                                                             <option value="">..Field Type..</option>
                                                             <option value="text">Text</option>
                                                             <option value="textarea">Text Area</option>
@@ -102,16 +100,21 @@
                                                             <option value="multiselect">Multi-Select </option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.selectOptionsDatasource}">
-                                                        <select class="form-control" data-ng-model="item.selectOptionsDatasource" data-ng-options="source as source.dataSourceName for source in vm.dataSources" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect' || item.fieldType=='radio')">
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.selectOptionsDatasource}">
+                                                        <select class="form-control form-control-sm" data-ng-model="item.selectOptionsDatasource" data-ng-options="source as source.dataSourceName for source in vm.dataSources" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect' || item.fieldType=='radio')">
                                                             <option value="">..Data Source..</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.selectOptionsDatasource}">
+                                                        <select class="form-control form-control-sm" data-ng-model="item.onChangeScript" data-ng-options="script as script.scriptName for script in vm.validationScripts" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect' || item.fieldType=='number'|| item.fieldType=='text' || item.fieldType=='checkbox')">
+                                                            <option value="">..OnChange Script..</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <br />
                                                 <div class="row">
-                                                    <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.validation}">
-                                                        <select data-ng-show="item.fieldType=='text' || item.fieldType=='number' || item.fieldType=='textarea'" class="form-control" data-ng-model="item.validation" required="">
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.validation}">
+                                                        <select data-ng-show="item.fieldType=='text' || item.fieldType=='number' || item.fieldType=='textarea'" class="form-control form-control-sm" data-ng-model="item.validation" required="">
                                                             <option value="">..Select Validation..</option>
                                                             <option value="_none_">No Validation</option>
                                                             <option value="text">Text</option>
@@ -127,25 +130,28 @@
                                                             <option value="phoneOrEmail">Phone or Email</option>
                                                             <option value="accountOrPhoneOrEmail">Account or Phone or Email</option>
                                                         </select>
-                                                        <select data-ng-show="item.fieldType=='multiselect'" class="form-control" data-ng-model="item.selectMode" required="">
+                                                        <select data-ng-show="item.fieldType=='multiselect'" class="form-control form-control-sm" data-ng-model="item.selectMode">
                                                             <option value="">..Multi Display Type..</option>
                                                             <option value="checkbox">Check Boxes</option>
                                                             <option value="dropdown">Drop Down </option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-sm-3" data-ng-class="{'is-invalid':item.error.validation}">
-                                                        <input type="text" data-ng-show="item.validation=='regex'" class="form-control " placeholder="Enter Regex " data-ng-model="item.regex">
-                                                        <input type="text" data-ng-show="item.validation=='range'" class="form-control " placeholder="Min, Max" data-ng-model="item.range">
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.validation}">
+                                                        <input type="text" data-ng-show="item.validation=='regex'" class="form-control form-control-sm" placeholder="Enter Regex " data-ng-model="item.regex">
+                                                        <input type="text" data-ng-show="item.validation=='range'" class="form-control form-control-sm" placeholder="Min, Max" data-ng-model="item.range">
+                                                    </div>
+                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.defaultValue}">
+                                                        <input type="text" data-ng-show="item.fieldType=='text' || item.fieldType=='textarea' || item.fieldType=='number'" class="form-control form-control-sm" placeholder="Default Value" data-ng-model="item.fieldValue">
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <label><input type="checkbox" ng-model="item.required"> Required</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <button type="button" class="btn btn-sm btn-primary btn-sm" data-ng-click="vm.addFormControl($index)">
-                                                            <i class="material-icons">addbox</i>
+                                                            <i class="fa fa-plus"></i>
                                                         </button>
-                                                         <button type="button" class="btn btn-sm btn-danger btn-sm" data-ng-click="vm.removeFormControl($index)">
-                                                            <i class="material-icons">close</i>
+                                                        <button type="button" class="btn btn-sm btn-danger btn-sm" data-ng-click="vm.removeFormControl($index)">
+                                                            <i class="fa fa-times"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -225,6 +231,75 @@
 
                             </form>
                         </div>
+
+
+                        <div id="validationScriptsTab" class="tab-pane">
+                            <form>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label>Script Name</label>
+                                                <input type="text" class="form-control parsley-validated" required="" placeholder="Script Name" data-ng-model="vm.script.scriptName">
+                                            </div>
+                                            <div class="col">
+                                                <label>Executed On :</label>
+                                                <select class="form-control" data-ng-model="vm.script.executionMode" required="">
+                                                    <option value="">..Execution Mode..</option>
+                                                    <option value="onFormLoad">Form Load</option>
+                                                    <option value="onControlChange">Input Value Change</option>
+                                                    <option value="onSubmit">Form Submit</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label>Enter Javascript</label>
+                                                <textarea data-ng-model="vm.validationScripts.dropDownOptions" name="dropDownOptions" cols="7" rows="5" class="form-control"></textarea>
+                                            </div>
+                                            <div class="col-12">
+                                                <br />
+                                                <div class="float-right">
+                                                    <button class="btn btn-sm btn-primary" data-ng-click="vm.addDataSource()" data-ng-hide="vm.isEdittingDataSource">Add Data Source</button>
+                                                    <button class="btn btn-sm btn-info" data-ng-click="vm.saveDataSource()" data-ng-show="vm.isEdittingDataSource">Save Data Source</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <hr style="border-bottom: 1px solid #8b0000" />
+                                        <table class="table table-bordered">
+                                            <caption>Validation Scripts</caption>
+                                            <thead>
+                                                <tr>
+                                                    <td>Script Name</td>
+                                                    <td>Executed When</td>
+                                                    <td></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="item in vm.validationScripts">
+                                                    <td data-ng-bind="item.scriptName">
+                                                    </td>
+                                                    <td data-ng-bind="item.executionMode"></td>
+                                                    <td>
+                                                        <div data-ng-hide="item.isFlowItem">
+                                                            <button type="button" class="btn btn-sm btn-info" data-ng-click="vm.editDataSource($index)">Edit</button>
+                                                            <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.removeDataSource($index)">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+
+
+
                     </div>
                 </div>
 
