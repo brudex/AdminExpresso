@@ -120,7 +120,7 @@ namespace ZenExpressoCore.TaskFlows
             {
                 response.status = "07";
                 Logger.Error(this, ex);
-                response.message = ex.Message;
+                response.message = ex.Message +" " + ex.InnerException;
             }
 
             return response;

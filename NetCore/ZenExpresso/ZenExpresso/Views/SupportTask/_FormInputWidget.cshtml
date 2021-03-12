@@ -40,10 +40,22 @@
                                     <div class="col-md-2">
                                         <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
                                     </div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-8">
+                                   
+                                    <div class="col-md-10">
                                         <div class="form-group row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <div class="input-group input-group-sm mb-2 mr-sm-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">On Success Response</div>
+                                                    </div>
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.onSuccessResult">
+                                                        <option value="clearData">Clear Form Data</option>
+                                                        <option value="keep">Keep Form and Input</option>
+                                                        <option value="removeForm">Remove Form</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
                                                 <div class="input-group input-group-sm mb-2 mr-sm-2">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">Title/Description</div>
@@ -51,7 +63,7 @@
                                                     <input type="text" value="" placeholder="Title/Description" class="form-control form-control-sm" data-ng-model="vm.description" />
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="input-group input-group-sm mb-2 mr-sm-2">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">Initial Form Data</div>
@@ -230,9 +242,7 @@
                                 </div>
 
                             </form>
-                        </div>
-
-
+                        </div> 
                         <div id="validationScriptsTab" class="tab-pane">
                             <form>
                                 <div class="row">
@@ -240,7 +250,7 @@
                                         <div class="row">
                                             <div class="col">
                                                 <label>Script Name</label>
-                                                <input type="text" class="form-control parsley-validated" required="" placeholder="Script Name" data-ng-model="vm.script.scriptName">
+                                                <input type="text" class="form-control " required="" placeholder="Script Name" data-ng-model="vm.script.scriptName">
                                             </div>
                                             <div class="col">
                                                 <label>Executed On :</label>
@@ -256,20 +266,29 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <label>Enter Javascript</label>
-                                                <textarea data-ng-model="vm.validationScripts.dropDownOptions" name="dropDownOptions" cols="7" rows="5" class="form-control"></textarea>
+                                                <pre style="padding: 0"><code data-language="javascript">
+/**Your code will be embedded in a function with the following arguments **/
+//control={fieldName, fieldValue,fieldLabel} //if called from an onchange event this is the control that raised the event
+//utils=utils.alertSuccess, utils.alertError,utils.alertConfirm, utils.sweetAlert, utils.toastr, utils._ (lodash)
+//Avalilsble Methods : setFieldValue('fieldName',value), getFieldValue('fieldName'), hide('fieldName')
+function(control, utils)
+{ //put your code in the box below
+                                            </code></pre>
+                                                <textarea data-ng-model="vm.script.javacript" name="dropDownOptions"   rows="7" class="form-control"></textarea>
                                             </div>
                                             <div class="col-12">
                                                 <br />
                                                 <div class="float-right">
-                                                    <button class="btn btn-sm btn-primary" data-ng-click="vm.addDataSource()" data-ng-hide="vm.isEdittingDataSource">Add Data Source</button>
-                                                    <button class="btn btn-sm btn-info" data-ng-click="vm.saveDataSource()" data-ng-show="vm.isEdittingDataSource">Save Data Source</button>
+                                                    <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormScript()" data-ng-hide="vm.isEdittingScript">Add Form Script</button>
+                                                    <button class="btn btn-sm btn-info" data-ng-click="vm.saveFormScript()" data-ng-show="vm.isEdittingScript">Save Form Script</button>
                                                 </div>
                                             </div>
 
                                         </div>
                                         <hr style="border-bottom: 1px solid #8b0000" />
-                                        <table class="table table-bordered">
-                                            <caption>Validation Scripts</caption>
+                                        <h4>Validation Scripts</h4>
+                                        <table class="table">
+                                           
                                             <thead>
                                                 <tr>
                                                     <td>Script Name</td>
@@ -284,8 +303,8 @@
                                                     <td data-ng-bind="item.executionMode"></td>
                                                     <td>
                                                         <div data-ng-hide="item.isFlowItem">
-                                                            <button type="button" class="btn btn-sm btn-info" data-ng-click="vm.editDataSource($index)">Edit</button>
-                                                            <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.removeDataSource($index)">Delete</button>
+                                                            <button type="button" class="btn btn-sm btn-info" data-ng-click="vm.editFormScript($index)">Edit</button>
+                                                            <button type="button" class="btn btn-sm btn-danger" data-ng-click="vm.removeFormScript($index)">Delete</button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -295,11 +314,7 @@
                                 </div>
 
                             </form>
-                        </div>
-
-
-
-
+                        </div> 
                     </div>
                 </div>
 

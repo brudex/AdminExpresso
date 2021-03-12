@@ -15,10 +15,9 @@
         var parentActions = null;
         vm.init = function (data) {
             vm.taskInfo = data;
-           
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
-            console.log("The task Results >>",vm.taskResults);
+            console.log("The task Info >>",data);
             executeResult();
         };
 
@@ -232,7 +231,7 @@
                 taskInfo.taskResult = payload;
                 taskInfo.formData = buildFormDataJson();
                 taskInfo.updateFormData = updateFormData;
-                parentActions.submitTaskResult(taskInfo);
+                parentActions.submitTaskResult(taskInfo, onFormSubmitSuccessCallback);
             }
          }; 
 
@@ -246,8 +245,18 @@
             return re.test(String(phone));
         }
 
+        function onFormSubmitSuccessCallback() {
+            console.log('The onSuccessResult is >>', vm.taskInfo.flowData);
+            console.log('The onSuccessResult is >>', vm.taskInfo.flowData.onSuccessResult);
+            if (vm.taskInfo.flowData.onSuccessResult === "clearData") {
+                vm.formControls.forEach(function(control) {
+                    control.fieldValue = '';
+                    control.valid = false;
+                });
+            }
+        }
+
         function isWithinRange(val,min,max){
-            console.log('Mibf  nMax >'+min +" >>"+max);
             if(_.isNumeric(min) && _.isNumeric(max)){
                 console.log('MinMax >'+min +" >>"+max);
                 if (val>= Number(min) && val <= Number(max)) {
@@ -359,9 +368,7 @@
             }
 
              var validationResult = !vm.formControls.some(isInvalid);
-            if(!validationResult){
-
-            }
+            
             console.log("form is valid >>",validationResult);
             return validationResult;
         }
@@ -369,8 +376,6 @@
 
         function validateInput(control) {
             var validationResult = { valid: false, message: "" };
-            console.log("The control validation >>>", control);
-            console.log("The control validation >>>", control.validation);
             switch (control.validation) {
             case "_none_":
             {
@@ -480,8 +485,7 @@
                     validationResult.valid = false;
                     validationResult.message = "Invalid phone number or email";
                 }
-                break;
-
+                break; 
             }
             case "accountOrPhoneOrEmail":
             {
@@ -502,9 +506,9 @@
         }
 
         function initFlatPickrDateControl() {
-            $(document).ready(function () {
-                $(".flatpickr-input").flatpickr({ dateFormat: "Y-m-d"});
-            })
+            $(document).ready(function() {
+                $(".flatpickr-input").flatpickr({ dateFormat: "Y-m-d" });
+            });
         }
         
     }

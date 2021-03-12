@@ -96,9 +96,7 @@
                 'javascript': 'ExecuteScriptViewController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
-        }
-
-
+        } 
          
         function executeJsScriptController(flow,callback) {
             var controller = getControllerByFlowItemType(flow.flowItemType);
@@ -201,14 +199,23 @@
         }
 
         function executeOnFormResult(response) {
-              
-            taskResults = response.taskFlowResults;
+            taskResults = response.taskFlowResults;  //value retrieved by other control widgets
             var renderResults = response.taskFlowResults;
-            var clientRenderFlows = response.taskFlowItems;
+            var clientRenderFlows = response.taskFlowItems;  //modified in this function
+            console.log('the response is >>>', response);
+            if (response.status === "00") {
+                console.log('Executing callbacks', formSubmitSuccessCallbacks.length);
+                formSubmitSuccessCallbacks.forEach(function (func) {
+                    func(response);
+                });
+                formSubmitSuccessCallbacks = [];
+            }
             if (clientRenderFlows.length === 0) {
                 console.log('Before Render results length>>>', renderResults.length);
                 if (renderResults.length) {
-                    vm.taskFlowItems = [];
+                    if (vm.taskFlowItems[0].flowData.removeOnResult) { //clear Screen if the form widget says so
+                        vm.taskFlowItems = [];
+                    }
                     var obj = {};
                     obj.supportTaskFlowId = supportTaskInfo.id;
                     obj.controlName = '';
@@ -219,13 +226,17 @@
                     vm.taskFlowItems.push(obj);
                 }
             } else {
-                if (clientRenderFlows.length == 1) {
-                    if (['javascript', 'successMessage'].indexOf(clientRenderFlows[0].flowItemType) == -1) { //don't clear screen if its js or successMessage result
-                        console.log("Screen is cleard")
-                        vm.taskFlowItems = [];
+                
+                var clearScreen = true;
+                if (clientRenderFlows.length === 1 && ['javascript', 'successMessage'].indexOf(clientRenderFlows[0].flowItemType) === -1) {
+                    clearScreen = false;
+                }
+                if (clearScreen && vm.taskFlowItems.length){
+                    for (var k = (vm.taskFlowItems.length - 1); k >= 0; k--) {
+                        if (vm.taskFlowItems[k].flowData.removeOnResult) {
+                            vm.taskFlowItems.splice(k, 1);
+                        }
                     }
-                } else {
-                    vm.taskFlowItems = []; //clears screen
                 }
             }
             clientRenderFlows = clientRenderFlows.map(function (item) {

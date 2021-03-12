@@ -56,10 +56,16 @@ namespace ZenExpressoCore.TaskFlows
                         var result = flowItem.ExecuteResult(inputList, taskFlowResults);
                         Console.WriteLine("The Task Result Message >>"+result.message);
                         taskFlowResults.Add(result);
+                        status = result.status;
+                        message = result.message;
+                        if (result.status != "00")
+                        {
+                            Logger.Error(this,"There was an error >>"+message);
+                            break; 
+                        }
                     }
                 }
-                status = "00";
-                message = "Task Executed Successfully";
+                
             }
             catch (Exception ex)
             {
