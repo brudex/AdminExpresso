@@ -40,7 +40,7 @@
                                     <div class="col-md-2">
                                         <button class="btn btn-sm btn-primary" data-ng-click="vm.addFormControl()">Add Control</button>
                                     </div>
-                                   
+
                                     <div class="col-md-10">
                                         <div class="form-group row">
                                             <div class="col-md-4">
@@ -93,11 +93,11 @@
                                                     <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.fieldName}">
                                                         <input type="text" class="form-control form-control-sm" required="" placeholder="Field Name" data-ng-model="item.fieldName">
                                                     </div>
-                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.placeholder}">
-                                                        <input type="text" class="form-control form-control-sm" required="" placeholder="Place Holder" data-ng-model="item.placeholder">
+                                                    <div class="col-sm-2">
+                                                        <input type="text" class="form-control form-control-sm" required="" placeholder="Place Holder" data-ng-model="item.placeholder" data-ng-class="{'is-invalid':item.error.placeholder}">
                                                     </div>
-                                                    <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.fieldType}">
-                                                        <select class="form-control form-control-sm" data-ng-model="item.fieldType" required="">
+                                                    <div class="col-sm-2">
+                                                        <select class="form-control form-control-sm" data-ng-model="item.fieldType" required="" data-ng-class="{'is-invalid':item.error.fieldType}">
                                                             <option value="">..Field Type..</option>
                                                             <option value="text">Text</option>
                                                             <option value="textarea">Text Area</option>
@@ -113,7 +113,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-2" data-ng-class="{'is-invalid':item.error.selectOptionsDatasource}">
-                                                        <select class="form-control form-control-sm" data-ng-model="item.selectOptionsDatasource" data-ng-options="source as source.dataSourceName for source in vm.dataSources" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect' || item.fieldType=='radio')">
+                                                        <select class="form-control form-control-sm" data-ng-model="item.selectOptionsDatasource" data-ng-options="source.dataSourceName as source.dataSourceName for source in vm.dataSources" data-ng-disabled="!(item.fieldType=='select' || item.fieldType=='multiselect' || item.fieldType=='radio')">
                                                             <option value="">..Data Source..</option>
                                                         </select>
                                                     </div>
@@ -242,7 +242,7 @@
                                 </div>
 
                             </form>
-                        </div> 
+                        </div>
                         <div id="validationScriptsTab" class="tab-pane">
                             <form>
                                 <div class="row">
@@ -274,7 +274,7 @@
 function(control, utils)
 { //put your code in the box below
                                             </code></pre>
-                                                <textarea data-ng-model="vm.script.javacript" name="dropDownOptions"   rows="7" class="form-control"></textarea>
+                                                <textarea data-ng-model="vm.script.javacript" name="dropDownOptions" rows="7" class="form-control"></textarea>
                                             </div>
                                             <div class="col-12">
                                                 <br />
@@ -288,7 +288,7 @@ function(control, utils)
                                         <hr style="border-bottom: 1px solid #8b0000" />
                                         <h4>Validation Scripts</h4>
                                         <table class="table">
-                                           
+
                                             <thead>
                                                 <tr>
                                                     <td>Script Name</td>
@@ -314,7 +314,7 @@ function(control, utils)
                                 </div>
 
                             </form>
-                        </div> 
+                        </div>
                     </div>
                 </div>
 

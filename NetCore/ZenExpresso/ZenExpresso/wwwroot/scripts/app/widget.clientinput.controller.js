@@ -40,9 +40,9 @@
                 vm.controlDataSource = data.data.controlDataSource;
                 vm.onSuccessResult = data.data.onSuccessResult;
                 vm.validationScripts = data.data.validationScripts;
-            } 
+            }
             var obj = { controlName: "Input Form", flowItemType: 'inputForm', flowGroup: 'client' };
-            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources };
+            obj.data = { formControls: vm.formControls, dataSources: vm.dataSources,onSuccessResult:vm.onSuccessResult,validationScripts:vm.validationScripts,controlDataSource: vm.controlDataSource };
             obj.htmlbind = buildHtmlBindView();
             return obj;
         }

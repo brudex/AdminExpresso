@@ -127,6 +127,5 @@
                 }
             }
         }
-       
     }
 })(window.jQuery,window.hljs);

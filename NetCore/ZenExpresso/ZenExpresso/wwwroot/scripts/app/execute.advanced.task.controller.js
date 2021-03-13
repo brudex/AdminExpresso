@@ -46,6 +46,7 @@
                 callback(jsResult.status);
             });
         }
+        
         //recursive function to run thru queued submit scripts synchronously
         function executeOnFormSubmitScripts() {
             var validationScripInfo = getNextValidationScriptInfo();
@@ -202,9 +203,7 @@
             taskResults = response.taskFlowResults;  //value retrieved by other control widgets
             var renderResults = response.taskFlowResults;
             var clientRenderFlows = response.taskFlowItems;  //modified in this function
-            console.log('the response is >>>', response);
             if (response.status === "00") {
-                console.log('Executing callbacks', formSubmitSuccessCallbacks.length);
                 formSubmitSuccessCallbacks.forEach(function (func) {
                     func(response);
                 });
@@ -226,14 +225,17 @@
                     vm.taskFlowItems.push(obj);
                 }
             } else {
-                
                 var clearScreen = true;
-                if (clientRenderFlows.length === 1 && ['javascript', 'successMessage'].indexOf(clientRenderFlows[0].flowItemType) === -1) {
+                if (clientRenderFlows.length === 1 && ['javascript', 'successMessage'].indexOf(clientRenderFlows[0].flowItemType) > -1) {
                     clearScreen = false;
                 }
                 if (clearScreen && vm.taskFlowItems.length){
                     for (var k = (vm.taskFlowItems.length - 1); k >= 0; k--) {
-                        if (vm.taskFlowItems[k].flowData.removeOnResult) {
+                        if (vm.taskFlowItems[k].flowData.onSuccessResult=="removeForm") {
+                            vm.taskFlowItems.splice(k, 1);
+                            continue;
+                        }
+                        if (vm.taskFlowItems[k].flowItemType!="inputForm.html") {
                             vm.taskFlowItems.splice(k, 1);
                         }
                     }

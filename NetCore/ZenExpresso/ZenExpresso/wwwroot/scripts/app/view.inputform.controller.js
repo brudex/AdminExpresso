@@ -26,9 +26,8 @@
             if (vm.taskInfo) {
                 var flowData = vm.taskInfo.flowData;
                 var initialData = null;
-                console.log('The flowData ',flowData);
                 if (flowData.controlDataSource) {
-                    var controlDataSource = flowData.controlDataSource;
+                    var controlDataSource = flowData.controlDataSource; //control identifier of source
                     var taskResult = _.find(vm.taskResults, function (o) { return o.controlIdentifier === controlDataSource; });
                     console.log('The taskResult ',taskResult);
                     if (taskResult && taskResult.status === "00") {
@@ -48,6 +47,9 @@
                     control.fieldLabel = item.fieldLabel;
                     control.fieldName = item.fieldName;
                     control.fieldType = item.fieldType;
+                    if(item.fieldValue){
+                        control.fieldValue=item.fieldValue;
+                    }
                     control.range = item.range;
                     control.required = true;
                     control.regex = item.regex;
@@ -58,11 +60,18 @@
                         }
                     }
                     control.validation = item.validation;
-                    if (item.require != null) {
-                        control.require = item.required;
+                    if (item.required != null) {
+                        control.required = item.required;
                     }
                     if (["select", "multiselect"].indexOf(control.fieldType) > -1) {
-                        control.dataSource = buildSelectOptions(item.selectOptionsDatasource);
+                        if(typeof item.selectOptionsDatasource =='string'){
+                            var dataSource = utils._.filter(flowData.dataSources, function (dt) { return dt.dataSourceName === item.selectOptionsDatasource });
+                            console.log('the found dataSource >>>',dataSource);
+                            if(dataSource.length)
+                            control.dataSource = buildSelectOptions(dataSource[0]);
+                        }else{
+                            control.dataSource = buildSelectOptions(item.selectOptionsDatasource);
+                        }
                         if(control.dataSource.length > 12|| control.fieldType=='multiselect'){
                             activateSelect2.push("."+control.fieldName) ;
                         }
@@ -216,7 +225,6 @@
             });
         }
 
-
         vm.executeSupportTask = function(valid) {
             vm.formSubmitted = true;
             if (validateForm()) {
@@ -246,12 +254,11 @@
         }
 
         function onFormSubmitSuccessCallback() {
-            console.log('The onSuccessResult is >>', vm.taskInfo.flowData);
-            console.log('The onSuccessResult is >>', vm.taskInfo.flowData.onSuccessResult);
             if (vm.taskInfo.flowData.onSuccessResult === "clearData") {
                 vm.formControls.forEach(function(control) {
                     control.fieldValue = '';
                     control.valid = false;
+                    vm.formSubmitted=false;
                 });
             }
         }

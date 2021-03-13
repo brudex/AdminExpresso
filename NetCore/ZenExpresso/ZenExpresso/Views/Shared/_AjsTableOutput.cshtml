@@ -111,13 +111,13 @@
                 <div data-ng-if="control.fieldType=='number'" class="form-group row">
                     <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
                     <div class="col-sm-6">
-                        <input type="number" data-ng-model="control.fieldValue" name="{{control.fieldName}}" class="form-control parsley-validated" data-ng-required="control.required" data-ng-class="{'is-invalid': vm.formSubmitted && !control.valid ,'is-valid': control.valid }">
+                        <input type="number" data-ng-model="control.fieldValue" name="{{control.fieldName}}" class="form-control " data-ng-required="control.required" data-ng-class="{'is-invalid': vm.formSubmitted && !control.valid ,'is-valid': control.valid }">
                     </div>
                 </div>
                 <div data-ng-if="control.fieldType=='text'" class="form-group row">
-                    <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
+                    <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}} </label>
                     <div class="col-sm-6">
-                        <input type="text" data-ng-model="control.fieldValue" name="{{control.fieldName}}" class="form-control parsley-validated" data-ng-required="control.required" data-ng-class="{'is-invalid': vm.formSubmitted && !control.valid ,'is-valid': vm.formSubmitted && control.valid   }">
+                        <input type="text" data-ng-model="control.fieldValue" name="{{control.fieldName}}" class="form-control " data-ng-required="control.required" data-ng-class="{'is-invalid': vm.formSubmitted && !control.valid ,'is-valid': vm.formSubmitted && control.valid }">
                     </div>
                 </div>
                 <div data-ng-if="control.fieldType=='date'" class="form-group row">
