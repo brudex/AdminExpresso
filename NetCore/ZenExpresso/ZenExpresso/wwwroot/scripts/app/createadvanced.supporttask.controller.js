@@ -37,7 +37,7 @@
         function getAllSupportTasks(callback){
             if(vm.supportTasks.length===0){
                 services.getAllSupportTasks(function(response){
-                    if(response.status=="00"){
+                    if(response.status==="00"){
                         vm.supportTasks = response.data;
                         callback(response.data);
                     }
@@ -274,6 +274,10 @@
                     if (response.status === "00") {
                         if (!isEditting) {
                             vm.model = { parameters: [] };
+                            vm.beforeRenderFlows = [];
+                            vm.clientFlows = [];
+                            vm.postActionsFlows = [];
+                            vm.clientResultFlows = [];
                         }
                         utils.alertSuccess(response.message);
                         vm.formSubmitted = false;

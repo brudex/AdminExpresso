@@ -79,7 +79,6 @@
             if (successCallback) {
                formSubmitSuccessCallbacks.push(successCallback);
             }
-            console.log('The Task Result has been submitted>>', JSON.stringify(taskResult));
             if (taskResult.flowItemType === 'inputForm.html') {
                 currentTaskResult = taskResult;
                 vm.formData = taskResult.formData;
@@ -109,7 +108,6 @@
             var clientRenderFlows = BeforeRenderDataStore.getClientRenderFlows();
             taskResults = beforeRenderResults;
             if(clientRenderFlows.length === 0) {
-                console.log('Before Render results length>>>', beforeRenderResults.length);
                 if (beforeRenderResults.length) {
                     var obj = {};
                     obj.supportTaskFlowId = supportTaskInfo.id;
@@ -182,9 +180,7 @@
                     }
                 }
                 recursiveIterator();
-            }
-
- 
+            } 
         }
 
 
@@ -278,7 +274,6 @@
                     vm.taskFlowItems.push(flow);
                 }
             }  
-        } 
-
+        }  
     }
 })(window.jQuery,window.buckets);

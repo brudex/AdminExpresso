@@ -50,6 +50,9 @@ namespace ZenExpressoCore.TaskFlows
                         case "pdfform":
                             flowItem = new PdfFormFillTaskFlowItem(taskFlowItem);
                             break;
+                        case "fileUploadServer":
+                            flowItem = new FileUploadHandlerTaskFlowItem(taskFlowItem);
+                            break;
                     }
                     if (flowItem != null)
                     {

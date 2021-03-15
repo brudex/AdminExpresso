@@ -13,11 +13,11 @@
         vm.formControls = [];
         vm.formSubmitted = false;
         var parentActions = null;
-        var dropZoneCallbackResponse = [];
-        $scope.$on('submitTaskResults', function () {
-            console.log("Submit Task Results triggered>>");
-            vm.executeSupportTask();
-        }); 
+        var dropZoneCallbackResponse = []; 
+
+        //allows function to be called when a submit button is clicked in a form input view
+        DataHolder.subscribeToFormSubmitAction(vm.executeSupportTask); 
+
         vm.init = function(data) {
             vm.taskInfo = data;
             parentActions = DataHolder.getParentFunctions();
@@ -48,16 +48,19 @@
             return scriptParameters;
         }
 
-        vm.executeSupportTask = function() {
+
+        //this functi
+        vm.executeSupportTask = function(submitCallback) {
             var taskInfo = {};
             taskInfo.id = vm.taskInfo.id;
             taskInfo.controlName = vm.taskInfo.controlName;
             taskInfo.flowItemType = vm.taskInfo.flowItemType;
             taskInfo.controlIdentifier = vm.taskInfo.controlIdentifier;
             taskInfo.flowGroup = vm.taskInfo.flowGroup;
+            taskInfo.hasFormData = true;
             vm.executeUploads(vm.taskInfo.flowData.fieldName,function(response) {
-                taskInfo.taskResult = buildPayload(response);
-                parentActions.submitTaskResult(taskInfo);
+                taskInfo.taskResult = buildPayload(response); 
+                submitCallback(taskInfo);
             }); 
         }
 

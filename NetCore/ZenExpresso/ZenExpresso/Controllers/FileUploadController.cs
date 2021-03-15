@@ -7,6 +7,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using ZenExpresso.Helpers;
+using ZenExpressoCore;
 using ZenExpressoCore.Models;
 
 namespace ZenExpresso.Controllers
@@ -24,7 +26,9 @@ namespace ZenExpresso.Controllers
         {
             var response = new ServiceResponse();
             response.status = "00";
-            response.message = Guid.NewGuid().ToString();
+            
+            string batchId = Guid.NewGuid().ToString();
+            response.message = batchId;
             var fileList = new List<FileUploadMeta>();
             foreach (IFormFile source in files)
             {
@@ -41,7 +45,7 @@ namespace ZenExpresso.Controllers
                 }
                 fileList.Add(upload); 
             } 
-          
+            MemDb.Instance.SaveInCache(batchId,fileList);
             return Ok(response);
         }
 

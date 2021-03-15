@@ -21,8 +21,12 @@
                 var initData = JSON.parse(data.flowData);
                 vm.model = initData;
             } else {
-                vm.model = data.data; 
+                vm.model = data.data;  
             }
+            if (typeof vm.model.fileTypes === 'object') {
+                vm.model.fileTypes = vm.model.fileTypes.join(","); //todo check if it works
+            }
+            console.log("the fileUpload Client Model >>", vm.model);
             var obj = { controlName: "File Upload", flowItemType: 'fileUploadClient', flowGroup: currentWidgetOption  };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
@@ -35,12 +39,14 @@
         } 
 
         vm.init = function () {
+            vm.model = { viewOption: 'dropView', allowMultiple: false, fileTypes:""}; 
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
         }
 
         function onModalOpen(event, data) {
             if (typeof data === 'string') {
                 if (data === vm.modalName) {
+                    console.log('Same modal name >>', data);
                     isEditting = false;
                     vm.init();
                 } 

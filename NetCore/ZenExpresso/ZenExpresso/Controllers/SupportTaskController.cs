@@ -52,8 +52,7 @@ namespace ZenExpresso.Controllers
                 {
                     return RedirectToAction("EditAdvancedTask", "SupportTask",new { id = newTaskId});
                 }
-                return RedirectToAction("Index", "Error");
-
+                return RedirectToAction("Index", "Error"); 
             }
             else
             {

@@ -6,6 +6,7 @@
     function DataHolder($http, $window) {
         var subscribedFuncs = [];
         var parentFunctions = {};
+        var formSubmitSubscription = {};
         var dataWareHouse = {
         }
 
@@ -20,6 +21,8 @@
             });
         }
 
+
+
         function getData(key) {
             return dataWareHouse[key];
         }
@@ -33,23 +36,31 @@
 
         function setParentFunctions(actions) {
             parentFunctions = actions;
-            console.log('parent Actions set', parentFunctions);
         }
 
         function getParentFunctions() {
-            console.log('parent Actions set', parentFunctions);
             return parentFunctions;
         }
 
+        function setFormSubmitSubscription(subscriptionFunc ) {
+            formSubmitSubscription = subscriptionFunc;
+        }
+
+        function subscribeToFormSubmitAction(action) {
+            formSubmitSubscription(action);
+        }
+        
 
         return {
             saveData: saveData,
             getData: getData,
-            subscribeToSaveAlerts,
+            subscribeToSaveAlerts: subscribeToSaveAlerts,
             setValue: setValue,
             getValue: getValue,
             getParentFunctions: getParentFunctions,
-            setParentFunctions: setParentFunctions
+            setParentFunctions: setParentFunctions,
+            setFormSubmitSubscription: setFormSubmitSubscription,
+            subscribeToFormSubmitAction: subscribeToFormSubmitAction
         } 
 
 

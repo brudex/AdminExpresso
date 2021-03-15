@@ -13,6 +13,14 @@
         vm.formControls = [];
         vm.formSubmitted = false;
         var parentActions = null;
+        var formSubmitActions = []; 
+        
+
+        DataHolder.setFormSubmitSubscription(function(action) {
+            formSubmitActions.push(action);
+        });
+
+
         vm.init = function (data) {
             vm.taskInfo = data;
             parentActions = DataHolder.getParentFunctions();
@@ -20,6 +28,10 @@
             console.log("The task Info >>",data);
             executeResult();
         };
+
+        function submitInputData(data) {
+            console.log("the submitted input data is >>>", data);
+        }
 
 
         function executeResult() {
@@ -85,14 +97,14 @@
                     vm.formControls.push(control);
                 }
                 var queryData = BeforeRenderDataStore.getQueryData();
-                queryData.forEach(function(item){
+                queryData.forEach(function(item) {
                     var control = {};
                     control.fieldName = item.parameterName;
                     control.fieldType = "hidden";
-                    control.fieldValue= item.parameterValue;
+                    control.fieldValue = item.parameterValue;
                     control.required = false;
                     vm.formControls.push(control);
-                })
+                });
                 if (activateSelect2.length){
                     $(document).ready(function(){
                         var selectItems = activateSelect2.join(', ')
@@ -225,21 +237,55 @@
             });
         }
 
+        //execute all actions form other controls that need to be executed on form submit
+        function executeFormSubmitActions(callback) {
+            var indexIterator = 0;
+            var formInputs = [];
+            function recursiveIterator() {
+                var action = formSubmitActions[indexIterator];
+                action(function(actionData) {
+                    console.log('Received action data is>>', actionData);
+                    if (actionData.taskInfo.hasFormData) {
+                        actionData.taskResult.forEach(function (input) {
+                            formInputs.push(input);
+                        });  
+                    } 
+                    indexIterator += 1;
+                    if (indexIterator < formSubmitActions.length) {
+                        recursiveIterator();
+                    } else {
+                        callback(formInputs);
+                    }
+
+                }); 
+            }
+            recursiveIterator();
+        }
+
         vm.executeSupportTask = function(valid) {
             vm.formSubmitted = true;
             if (validateForm()) {
                 console.log('Form is Valid');
-                var payload = buildPayload();
+                var formInputs = buildPayload();
                 var taskInfo = {};
                 taskInfo.id = vm.taskInfo.id;
                 taskInfo.controlName = vm.taskInfo.controlName;
                 taskInfo.flowItemType = vm.taskInfo.flowItemType;
                 taskInfo.controlIdentifier = vm.taskInfo.controlIdentifier;
                 taskInfo.flowGroup = vm.taskInfo.flowGroup;
-                taskInfo.taskResult = payload;
+                taskInfo.taskResult = formInputs;
                 taskInfo.formData = buildFormDataJson();
                 taskInfo.updateFormData = updateFormData;
-                parentActions.submitTaskResult(taskInfo, onFormSubmitSuccessCallback);
+                if (formSubmitActions.length) {
+                    executeFormSubmitActions(function (resultData) { //returns form inputs array
+                        taskInfo.taskResult = taskInfo.taskResult.concat(resultData);
+                        parentActions.submitTaskResult(taskInfo, onFormSubmitSuccessCallback);
+                    });
+
+                } else {
+                    parentActions.submitTaskResult(taskInfo, onFormSubmitSuccessCallback);
+                }
+               
             }
          }; 
 
@@ -374,9 +420,7 @@
                 return !c.valid;
             }
 
-             var validationResult = !vm.formControls.some(isInvalid);
-            
-            console.log("form is valid >>",validationResult);
+            var validationResult = !vm.formControls.some(isInvalid);
             return validationResult;
         }
 

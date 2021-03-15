@@ -72,8 +72,8 @@
                                              Allowed File Extensions
                                     </label>
                                     <div class="col-4">
-                                        <div class="form-group">
-                                            <select id="select03" data-ng-model="vm.model.fileTypes" data-ng-hide="vm.model.customFileType"
+                                        <div class="form-group" data-ng-hide="vm.model.customFileType">
+                                            <select id="select03" data-ng-model="vm.model.fileTypes" 
                                                     data-toggle="select"
                                                     multiple required=""
                                                     class="form-control">
@@ -92,8 +92,8 @@
                                     <div class="col-4">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="cardDesignOption" id="customExtension" data-ng-model="vm.model.customFileType"  >
-                                            <label class="form-check-label h5" for="customExtension">
-                                               Custom File Extension
+                                            <label class="form-check-label form-label" for="customExtension">
+                                               Custom Extension
                                             </label> 
                                         </div> 
                                     </div>
@@ -135,7 +135,7 @@
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group m-0">
                                                         <div class="custom-file">
-                                                            <input type="file" id="file" class="custom-file-input">
+                                                            <input type="file" disabled="disabled" id="file" class="custom-file-input">
                                                             <label for="file" class="custom-file-label">Choose file</label>
                                                         </div>
                                                     </div>
@@ -157,9 +157,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
-
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button> 
             </div>
         </div>
     </div>
