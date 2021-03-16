@@ -3,14 +3,33 @@
 <div class=" col-md-12" data-ng-Controller="ExecuteAdvancedTaskController as vm">
     <div class="card" data-ng-init="vm.init()">
         <div class="card-header pb-0">
-            <h2>@Model.supportTask.description</h2>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>@Model.supportTask.description</h2>
+                </div>
+                @if (ViewBag.canCreateTask != null && (bool)ViewBag.canCreateTask)
+                {
+                    <div class="col-md-4">
+                        <div class="float-right">
+                            <a class="btn btn-info btn-sm" href="@Url.Action("EditAdvancedTask", new {id = Model.supportTask.id})">Edit</a>
+                            <a class="btn btn-secondary btn-sm" href="@Url.Action("MakeCopy", new {id = Model.supportTask.id})">Make Copy</a>
+                            <a class="btn btn-primary btn-sm" href="@Url.Action("AssignGroups", new {id = Model.supportTask.id})">Assign Users</a>
+                        </div>
+                    </div>
+                } 
+            </div>
+
         </div>
         <div class="card-body">
             <div data-ng-repeat="task in vm.taskFlowItems">
                 <div ng-include="task.flowItemType"></div>
             </div>
-        </div><!--/porlets-content-->
-    </div><!--/block-web-->
-</div><!--/col-md-12-->
+        </div>
+        <!--/porlets-content-->
+    </div>
+    <!--/block-web-->
+</div>
+<!--/col-md-12-->
 
 @await Html.PartialAsync("~/Views/Shared/_AjsTableOutput.cshtml")
