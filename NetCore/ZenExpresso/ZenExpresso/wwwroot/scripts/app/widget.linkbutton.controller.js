@@ -14,9 +14,10 @@
         var editIndex = 0;
         vm.dataSources = [];
         var currentWidgetOption = '';
-        vm.supportTasks =[];
+        vm.supportTasks = [];
+        vm.clickAction = {};
         vm.modalName = 'linkButtonModal';
-        vm.model = {};
+        vm.model = { linkButtons: [], clickActions :[]};
         $scope.$on('modalOpened', onModalOpen);
 
         vm.initDataModel = function (data) {
@@ -48,19 +49,7 @@
                 });
             }
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
-            var dataSources = [];
-            vm.dataSources = [];
-            if (currentWidgetOption === 'client') {
-                dataSources = parentActions.getBeforeRenderDataSources();
-            } else {
-                dataSources = parentActions.getPostActionDataSources();
-            }
-            vm.dataSources.push({key:"static",dataSourceName:"Static file link"});
-            if (dataSources.length) { 
-                dataSources.forEach(function (dt) {
-                    vm.dataSources.push({key:dt.key,dataSourceName:"TaskFlow Output - "+dt.dataSourceName});
-                });
-            }
+            
         }
 
         function onModalOpen(event, data) {
@@ -83,6 +72,57 @@
             }
         }
 
+
+        vm.addButton = function () {
+            vm.model.linkButtons.push(vm.c);
+            vm.linkButton = {};
+        }
+
+        vm.deleteButton = function (index) {
+            vm.model.linkButtons.splice(index, 1);
+        }
+
+        vm.editButton = function (index) {
+            vm.linkButton = vm.model.linkButtons[index];
+            vm.buttonEditIndex = true;
+            vm.buttonEditIndex = index;
+        }
+
+        vm.saveButton = function () {
+            vm.model.linkButtons[vm.buttonEditIndex] = Object.assign({}, vm.linkButton);
+            vm.linkButton = {};
+            vm.buttonEditIndex = -1;
+            vm.isEdittingButton = false;
+        } 
+
+
+        vm.addAction = function () {
+            vm.model.clickActions.push(vm.clickAction);
+            vm.clickAction = {};
+        }
+
+        vm.deleteAction = function (index) {
+            vm.model.clickActions.splice(index, 1);
+        }
+
+        vm.editAction = function (index) {
+            vm.clickAction = vm.model.clickActions[index];
+            vm.isEdittingAction = true;
+            vm.actionEditIndex = index;
+        }
+
+        vm.saveAction = function () {
+            vm.model.clickActions[vm.actionEditIndex] = Object.assign({}, vm.clickAction);
+            vm.clickAction = {};
+            vm.actionEditIndex = -1;
+            vm.isEdittingAction = false;
+        } 
+
+
+
+
+
+
         vm.saveData = function() {
             vm.model.error = {};
             vm.errorMsg = [];
@@ -98,14 +138,20 @@
 
 
         function buildHtmlBindView() {
+
+            var onclickDict = {
+                static: "Open Static Link",
+                supportTask: "Execute Task",
+                javascript: "Execute Javascript" 
+            }
+
+
             var html = '<div class="row">';
             html += '<div class="col-md-10">';
-            html += '<label>Download Link From : ' + vm.model.controlDataSource + ' </label><br/>';
-            if (vm.model.controlDataSource === 'static') {
-                html += '<label>File Link  : ' + vm.model.fileLink + ' </label><br/>';
-            }
-            html += '<label>Download Start Option : ' + vm.model.downloadStart + ' </label><br/>';
-            html += '<label>Open Print Preview : ' + vm.model.printPreview + ' </label><br/>';
+            html += '<label>Button Label : ' + vm.model.buttonLabel + ' </label><br/>';
+            html += '<label>Button Display : ' + vm.model.css + " - "+ vm.model.buttonSize+' </label><br/>';
+            html += '<label>Align Button : ' + vm.model.alignment +' </label><br/>';
+            html += '<label>On Click : ' + onclickDict[vm.model.onClickMode] +' </label><br/>';
             html += '</div>';
             html += '</div><br/>';
             return html;
