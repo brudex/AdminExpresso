@@ -12,7 +12,3 @@ or if its an array notation to pick the item at an array index
 
 # Creating Task Flows 
 Clear items after saving
-
-# Link button
-Ability to run javascript
-Pass data to taskLink onclick

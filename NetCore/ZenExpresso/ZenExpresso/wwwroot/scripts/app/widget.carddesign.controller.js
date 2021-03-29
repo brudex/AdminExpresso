@@ -98,6 +98,7 @@
         }
 
         vm.addRowAction = function () {
+            console.log('Called add row action')
             vm.model.rowActionButtons.push(vm.rowAction);
             vm.rowAction = {}; 
         }
@@ -105,19 +106,6 @@
         vm.deleteRowAction = function (index) {
             vm.model.rowActionButtons.splice(index,1);
         }
-
-        vm.editRowAction = function (index) {
-            vm.rowAction = vm.model.rowActionButtons[index];
-            vm.isEdittingRowAction = true;
-            vm.rowActionEditIndex = index;
-        }
-
-        vm.saveRowAction = function () {
-            vm.model.rowActionButtons[vm.rowActionEditIndex] = Object.assign({}, vm.rowAction);
-            vm.rowAction = {};
-            vm.rowActionEditIndex = -1;
-            vm.isEdittingRowAction = false;
-        } 
 
 
         function buildHtmlBindView() {

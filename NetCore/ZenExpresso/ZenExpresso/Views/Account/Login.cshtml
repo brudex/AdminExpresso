@@ -26,11 +26,12 @@
     <div class="wrapper">
         <div class="login_page">
             <div class="login_content">
-                <div class="border login_heading">
-                    <img src="~/assets/images/zenExpresso.gif" />
+                <div class="border" >
+                    <img src="~/assets/images/medTech.jpg" style="width:200px"/>
 
                 </div>
-                <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                <p></p>
+                <form asp-route-returnurl="@ViewData["ReturnUrl"] " method="post" class="form-horizontal" role="form">
 
                     @Html.AntiForgeryToken()
 @*                     @if (ViewData.ModelState["Error"] != null && ViewData.ModelState["Error"].Errors.Count() > 0) *@
