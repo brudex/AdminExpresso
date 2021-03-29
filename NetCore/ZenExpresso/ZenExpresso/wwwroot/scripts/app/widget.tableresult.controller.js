@@ -40,10 +40,10 @@
 
         vm.init = function () {
             var parentActions = DataHolder.getParentFunctions();
-            if(!vm.supportTasks.length) {
-                parentActions.getAllSupportTasks(function(tasks) {
-                    vm.supportTasks = tasks;
-                });
+            if(!vm.supportTasks.length){
+                parentActions.getAllSupportTasks(function(tasks){
+                    vm.supportTasks=tasks;
+                })
             }
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             var dataSources = [];

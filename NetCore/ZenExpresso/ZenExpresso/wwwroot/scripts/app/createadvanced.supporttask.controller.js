@@ -94,8 +94,7 @@
                 'fileUploadClient': 'FileUploadClientWidgetController',
                 'fileUploadServer': 'FileUploadServerWidgetController',
                 'pdfform': 'PdfFormInputWidgetController',
-                'fileDownload': 'FileDownloadWidgetController',
-                'linkButton': 'LinkButtonWidgetController'
+                'fileDownload': 'FileDownloadWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }

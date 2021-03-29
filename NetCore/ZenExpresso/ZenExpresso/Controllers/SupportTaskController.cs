@@ -125,7 +125,6 @@ namespace ZenExpresso.Controllers
             try
             {
                 SettingsData.HostUrl = $"{Request.Scheme}://{Request.Host.Value}";
-                ViewBag.canCreateTask = User.GetPreviledges().canCreateTask;
                 var supportTask = DbHandler.Instance.GetSupportTaskById(id);
                 if (supportTask == null)
                 {
