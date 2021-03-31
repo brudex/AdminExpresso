@@ -43,7 +43,7 @@ namespace ZenExpressoCore.TaskFlows
             var uploadsFolder =System.IO.Path.Combine(SettingsData.WebRootPath , "uploads");
             var pdfTemplateFile = System.IO.Path.Combine(uploadsFolder, "pdftemplate.pdf");//todo get pdf template location
             var inputMapStr = jsonFlowData["inputMap"].ToStringOrEmpty();
-            var fontStylePath = System.IO.Path.Combine(SettingsData.WebRootPath,"fonts", "Roboto-Bold.ttf");
+            var fontStylePath = System.IO.Path.Combine(SettingsData.WebRootPath,"fonts", "Roboto-Light.ttf");
             try
             {
                 if (string.IsNullOrEmpty(fileDateFormat))
@@ -91,7 +91,7 @@ namespace ZenExpressoCore.TaskFlows
                  }
                  if (!string.IsNullOrEmpty(fieldValue))
                  {
-                     pdfFormField.Value.SetValue(fieldValue, font, 12f);
+                     pdfFormField.Value.SetValue(fieldValue, font, 10f);
                  } 
             }
 
