@@ -17,7 +17,6 @@ using iText.Kernel.Pdf.Xobject;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 
 namespace ZenExpressoInstall
 {
@@ -176,7 +175,7 @@ namespace ZenExpressoInstall
             // If value is positive, the text distance under the bars. If zero or negative,
             // the text distance above the bars.
             qrCode.SetBaseline(10);
-            qrCode.SetSize(12);
+            qrCode.SetSize(10);
             qrCode.SetCode("A123");
             qrCode.SetCodeType(Barcode128.CODE128);
             // Get the number of rectangles constituting the barcode
@@ -190,6 +189,7 @@ namespace ZenExpressoInstall
                 annotation.GetRectangle().ToRectangle().GetWidth() / size.GetWidth());
             // Draw the barcode on the XObject
             qrCode.PlaceBarcode(barcodeCanvas, ColorConstants.BLACK, ColorConstants.BLACK);
+             
             // Set appearance to the newly generated one
             annotation.SetAppearance(PdfName.N, newAppearance.GetPdfObject());
             pdfDoc.Close();

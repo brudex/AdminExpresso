@@ -94,7 +94,6 @@ namespace ZenExpressoCore.TaskFlows
                      pdfFormField.Value.SetValue(fieldValue, font, 10f);
                  } 
             }
-
             string barCode = fieldData["barCode"].ToStringOrEmpty();
             if (!string.IsNullOrEmpty(barCode))
             {

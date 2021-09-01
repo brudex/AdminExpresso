@@ -30,7 +30,7 @@
 
             getMenuList: getData('api/SetupApi/GetMenuList'),
             addMenu: postData('api/SetupApi/SaveMenu'),
-            deleteMenu: postData('api/SetupApi/DeleteDataSource'),
+            deleteMenu: postData('api/SetupApi/DeleteMenu'),
             getUsersList: getData('api/SetupApi/GetUsersList'),
 
             getDataSources: getData('api/SetupApi/GetDataSources'),
