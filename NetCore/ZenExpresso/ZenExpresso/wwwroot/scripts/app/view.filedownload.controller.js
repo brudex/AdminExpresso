@@ -113,8 +113,7 @@
             link.click();
             link.remove();
         }
-
-         
+ 
         vm.openPrintPreview = function (link) {
             console.log("Opening link >>>", link);
             $window.printJS(link);

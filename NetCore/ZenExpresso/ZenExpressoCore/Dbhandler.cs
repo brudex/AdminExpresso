@@ -26,7 +26,7 @@ namespace ZenExpressoCore
         DbHandler()
         {
             DefaultConnection = SettingsData.DefaultConnection;
-            Console.WriteLine("Connection string>>"+DefaultConnection);
+            Console.WriteLine("Default connection >"+DefaultConnection);
         }
 
         public static DbHandler Instance

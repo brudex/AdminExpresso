@@ -10,7 +10,7 @@ namespace ZenExpresso.Controllers
     [Route("api/[controller]/[action]")]
     public class SetupApiController : Controller
     {
-        /// GET: Settings
+        // GET: Settings
         [HttpGet]
         public ServiceResponse GetMenuList()
         {
@@ -19,12 +19,8 @@ namespace ZenExpresso.Controllers
             response.status = "00";
             response.message = "Success";
             response.data = list;
-            var arr = new int[2];
-           // arr.Length;
             return response;
         }
-
-        
 
         [HttpPost]
         public ServiceResponse SaveMenu([FromBody]JObject data)
@@ -39,7 +35,8 @@ namespace ZenExpresso.Controllers
             response.message = "Success";
             return response;
         }
- 
+
+
         [HttpPost]
         public ServiceResponse DeleteMenu([FromBody]JObject data)
         { 
