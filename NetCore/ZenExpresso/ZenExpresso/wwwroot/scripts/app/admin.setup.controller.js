@@ -25,9 +25,8 @@
 
         vm.deleteAdmin = function (admin) {
             utils.alertConfirm("Delete", "Confirm Delete", function() {
-                
                 var payload = admin;
-                services.deleteMenu(payload, function(response) {
+                services.deleteAdmin(payload, function(response) {
                     if (response.status === "00") {
                         vm.searchResults = response.data;
                         utils.alertSuccess("", response.message);
