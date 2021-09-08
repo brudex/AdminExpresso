@@ -1,5 +1,6 @@
 ﻿@{
     var userPreviledges = User.GetPreviledges();
+   
 }
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -7,7 +8,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>@ViewBag.Title - MedTech Pharmaceutical</title>
+    <title>@ViewBag.Title - USSD Amdin</title>
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap" rel="stylesheet" />
@@ -77,12 +78,14 @@
                     <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
 
                         <span class="avatar-title rounded bg-primary">
-                            <img src="~/assets/images/medTech.jpg" alt="s-logo" />
+                            <img src="~/assets/images/logo.jpg" alt="s-logo" />
+
                         </span>
 
                     </span>
 
-                    <span class="d-none d-lg-block">MEDTECH</span>
+                    <span class="d-none d-lg-block">Pass</span>
+
                 </a>
 
                 <!-- // END Navbar Brand -->
@@ -163,14 +166,17 @@
                         <!-- <img class="sidebar-brand-icon" src="~/images/illustration/student/128/white.svg" alt="Luma"> -->
                         <span class="avatar avatar-xl sidebar-brand-icon h-auto">
 
+
                             <span class="avatar-title rounded ">
-                                <img src="~/assets/images/medTech.jpg"
+                                <img src="~/assets/images/logo.jpg"
                                      class="img-fluid"
                                      alt="logo" />
+
                             </span>
+
                         </span>
 
-                        <span>MedTech</span>
+                        <span>TM1 Admin</span>
                     </a>
                     @await Html.PartialAsync("_MenuPartial2")
                 </div>
@@ -250,12 +256,16 @@
     <script src="~/scripts/app/widget.fileuploadserver.controller.js"></script>
     <script src="~/scripts/app/widget.pdfforminput.controller.js"></script>
     <script src="~/scripts/app/widget.filedownload.controller.js"></script>
+    <script src="~/scripts/app/widget.linkbutton.controller.js"></script>
+
     <script src="~/scripts/app/view.tableresult.controller.js"></script>
     <script src="~/scripts/app/view.cardresult.controller.js"></script>
     <script src="~/scripts/app/view.inputform.controller.js"></script>
     <script src="~/scripts/app/vexecute.script.controller.js"></script>
     <script src="~/scripts/app/view.successmessage.controller.js"></script>
     <script src="~/scripts/app/view.filedownload.controller.js"></script>
+    <script src="~/scripts/app/view.linkbutton.controller.js"></script>
+
     <script src="~/js/toastr.js"></script>
 
 

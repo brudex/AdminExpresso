@@ -19,7 +19,9 @@
         vm.parameter = {};
         vm.supportTasks =[];
         var isEditting = false;
+        vm.insertIndex=-1;
         var flowsIncrementer = {}
+         
 
         var broadcastFunctions = {
             getFlowCounterIndex: getFlowCounterIndex,
@@ -33,6 +35,8 @@
         vm.trustAsHtml = function (html) {
             return $sce.trustAsHtml(html);
         }
+
+
 
         function getAllSupportTasks(callback){
             if(vm.supportTasks.length===0){
@@ -94,7 +98,8 @@
                 'fileUploadClient': 'FileUploadClientWidgetController',
                 'fileUploadServer': 'FileUploadServerWidgetController',
                 'pdfform': 'PdfFormInputWidgetController',
-                'fileDownload': 'FileDownloadWidgetController'
+                'fileDownload': 'FileDownloadWidgetController',
+                'linkButton': 'LinkButtonWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }
@@ -103,7 +108,6 @@
         //Called on page load when editting a task
         function addInitialFlow(data) {
             var controller = getControllerByFlowItemType(data.flowItemType);
-            console.log('The controller', controller);
             var dataModel = controller.initDataModel(data);
             addFlow(dataModel);
         }
@@ -116,18 +120,35 @@
                      if (data.flowItemType === 'inputForm') {
                          vm.model.inputFormPresent = true;
                      }
-                    vm.clientFlows.push(data);
+                     if(vm.insertIndex >-1){
+                        vm.clientFlows.splice(vm.insertIndex,0,data);
+                     }else{
+                        vm.clientFlows.push(data);
+                     }
                     break;
                 case "beforeRender":
-                    vm.beforeRenderFlows.push(data);
+                    if(vm.insertIndex >-1){
+                        vm.beforeRenderFlows.splice(vm.insertIndex,0,data);
+                    }else{
+                        vm.beforeRenderFlows.push(data);
+                    }
                     break;
                 case "postAction":
-                    vm.postActionsFlows.push(data);
+                    if(vm.insertIndex > -1){
+                        vm.postActionsFlows.splice(vm.insertIndex,0,data);
+                    }else{
+                        vm.postActionsFlows.push(data);
+                    }
                     break;
                 case "clientResult":
-                    vm.clientResultFlows.push(data);
+                    if(vm.insertIndex > -1){
+                        vm.clientResultFlows.splice(vm.insertIndex,0,data);
+                    }else{
+                        vm.clientResultFlows.push(data);
+                    }
                     break;
             }
+            vm.insertIndex=-1;
         }
 
         function editFlowAtIndex(data,index) {
@@ -179,18 +200,25 @@
             $("#" + data.modalName).modal("hide");
         }
 
-        vm.onModalOpen = function(modalName) {
+        //Open WidgetModal clicked on the side bar on in Widget Options Modal
+        vm.onModalOpen = function(modalName,insertIndex) {
             $scope.$broadcast('modalOpened', modalName);
+            if(insertIndex==-1){
+                vm.insertIndex=-1;
+            }else{
+                if(vm.insertIndex > -1){
+                    vm.closeWidgetModal();
+                }
+            }
         }
-         
+
         vm.widgetOptions = function (group) {
             switch (group) {
             case "client":
             case "clientRender":
                 {
-                     
-                     $('.clientInput').prop('disabled', false);
-                     $('.clientResult').prop('disabled', true);
+                    $('.clientInput').prop('disabled', false);
+                    $('.clientResult').prop('disabled', true);
                     $('.server-widgets').hide();
                     $('.client-widgets').slideDown();
                 }
@@ -209,9 +237,8 @@
                 break;
             case "clientResult":
                 {
-                     
-                     $('.clientInput').prop('disabled', true);
-                     $('.clientResult').prop('disabled', false);
+                    $('.clientInput').prop('disabled', true);
+                    $('.clientResult').prop('disabled', false);
                     $('.server-widgets').hide();
                     $('.client-widgets').slideDown();
                 }
@@ -222,7 +249,7 @@
 
 
         //build payload for final saving
-        function buildPayload() {             
+        function buildPayload() {
             var payload =  Object.assign({}, vm.model);
             payload.beforeRenderFlows = vm.beforeRenderFlows;
             payload.clientFlows = vm.clientFlows;
@@ -261,7 +288,21 @@
             eventData.flowItem = itemToEdit;
             eventData.editIndex = index;
             eventData.modalName = controller.modalName;
+            eventData.insertIndex = vm.insertIndex;
             $scope.$broadcast('modalOpened', eventData);
+        }
+
+
+        vm.insertFlowItemAtIndex = function (index) {
+            vm.insertIndex = index;
+            console.log('insertFlowItemAtIndex Opening .. widgetSelectModal ');
+            $('#widgetSelectModal').modal('show');
+            $scope.$broadcast('modalOpened', "widgetSelectModal");
+        }
+
+
+        vm.closeWidgetModal = function(){
+            $('#widgetSelectModal').modal('hide');
         }
 
         vm.submitSupportTask = function (formValid) {
@@ -308,7 +349,7 @@
                 if (response.status === "00") {
                     vm.topMenus = response.data;
                 }
-            }); 
+            });
         }
         loadTopMenus();
         DataHolder.subscribeToSaveAlerts(vm.saveWidgetData);

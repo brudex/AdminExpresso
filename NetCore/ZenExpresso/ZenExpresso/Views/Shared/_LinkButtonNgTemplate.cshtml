@@ -1,0 +1,19 @@
+﻿<script type="text/ng-template" id="linkButton.html">
+    <div data-ng-Controller="LinkButtonViewController as vm">
+        <div data-ng-init="vm.init(task)"></div>
+        <p>
+            <span data-ng-repeat="button in vm.model.buttons">
+                <span data-ng-if="button.onClickMode=='static'">
+                    <a class="ml-2 {{button.css}}" target="_blank" data-ng-href="{{button.link}}">{{button.buttonLabel}}</a>
+                </span>
+            <span data-ng-if="button.onClickMode=='supportTask'">
+                    <a class="ml-2 {{button.css}}" data-ng-href="{{button.link}}">{{button.buttonLabel}}</a>
+                </span>
+            <span data-ng-if="button.onClickMode=='javascript'">
+                    <button class="ml-2 {{button.css}}" data-ng-href="{{button.link}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
+                </span>
+            </span>
+
+        </p>
+    </div>
+</script>

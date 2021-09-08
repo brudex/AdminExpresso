@@ -27,20 +27,4 @@
         </li> 
     </ul> 
 }
-
-
-
-@* @foreach (var supportMenuModel in Model) *@
-@* { *@
-@*     <li> *@
-@*         <a href="javascript:void(0);"> <i class="fa fa-tasks"></i>@supportMenuModel.menuName<span class="plus"><i class="fa fa-plus"></i></span></a> *@
-@*         <ul> *@
-@*             @foreach (var subMenu in supportMenuModel.SubMenus) *@
-@*             { *@
-@*                 <li> *@
-@*                     <a href="@Url.Action("ExecuteTask", "SupportTask",new {id=subMenu.taskId})"> <span>&nbsp;</span> <i class="fa fa-tasks"></i> <b>@subMenu.taskName</b> </a> *@
-@*                 </li> *@
-@*             } *@
-@*         </ul> *@
-@*     </li> *@
-@* } *@
+ 

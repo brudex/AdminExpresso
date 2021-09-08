@@ -1,0 +1,332 @@
+﻿<div class="modal fade  " id="linkButtonModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="LinkButtonWidgetController as vm">
+        <div class="modal-content">
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="modal-title" id="myModalLabel">Buttons Control</h5>
+                        </div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 5px">
+                <form autocomplete="off">
+                    <input type="hidden" value="" autocomplete="off" />
+                    <div class="row">
+                        <label class="col-sm-3 form-label col-form-label pt-0">Alignment</label>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="custom-control custom-radio">
+                                        <input id="alignLeft" name="alignment" type="radio" class="custom-control-input" checked="checked" value="left">
+                                        <label for="alignLeft" data-ng-model="vm.model.alignment" class="custom-control-label"> Button(s) Left</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="custom-control custom-radio">
+                                        <input id="alignCenter" data-ng-model="vm.model.alignment" name="alignment" type="radio" class="custom-control-input" value="center">
+                                        <label for="alignCenter" class="custom-control-label"> Button(s) Center</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="custom-control custom-radio">
+                                        <input id="alignRight" data-ng-model="vm.model.alignment" name="alignment" type="radio" class="custom-control-input" value="right">
+                                        <label for="alignRight" class="custom-control-label"> Button(s) Right</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card  ">
+                        <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                            <a href="#buttonActionTab" data-toggle="tab" class="active" role="tab">Button Actions</a>
+                            <a href="#buttonDisplayTab" data-toggle="tab" role="tab">Button Display </a>
+                        </div>
+                        <div class="card-body  tab-content text-70">
+                            <div id="buttonDisplayTab" class="tab-pane ">
+                                <div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label">Button Label </label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control form-control-sm" data-ng-model="vm.linkButton.buttonLabel">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label">Button Action </label>
+                                                <div class="col-sm-7">
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.linkButton.onClickAction" data-ng-options="item.actionName as item.actionName for item in vm.model.clickActions">
+                                                        <option value="">..Select Action To Execute onClick..</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label ">Button Size </label>
+                                                <div class="col-sm-7">
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.linkButton.buttonSize">
+                                                        <option value="">..Select Size..</option>
+                                                        <option value="btn-lg">Large</option>
+                                                        <option value="btn-md">Medium</option>
+                                                        <option value="btn-sm">Small</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label">Css Class </label>
+                                                <div class="col-sm-7">
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.linkButton.css">
+                                                        <option value="">..Select Css Class..</option>
+                                                        <option value="btn-primary">btn-primary</option>
+                                                        <option value="btn-success">btn-success</option>
+                                                        <option value="btn-warning">btn-warning</option>
+                                                        <option value="btn-link">btn-link</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label "></label>
+                                                <div class="col-sm-7">
+                                                    <button class="btn btn-primary btn-sm btn-block" data-ng-show="vm.isEdittingButton" data-ng-click="vm.saveButton()">Save </button>
+                                                    <button class="btn btn-primary btn-sm btn-block" data-ng-hide="vm.isEdittingButton" data-ng-click="vm.addButton()">Add </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+
+                                                <th>
+                                                    Button Label
+                                                </th>
+                                                <th>
+                                                    Button Action
+                                                </th>
+                                                <th>
+                                                    Button Size
+                                                </th>
+                                                <th>
+                                                    Css Class
+                                                </th>
+                                                <th>
+                                                    ..
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="item in vm.model.linkButtons">
+
+                                                <td data-ng-bind="item.buttonLabel">
+                                                    Button Label
+                                                </td>
+
+                                                <td data-ng-bind="item.onClickAction">
+                                                    onClickAction
+                                                </td>
+                                                <td data-ng-bind="item.buttonSize">
+                                                    buttonSize
+                                                </td>
+                                                <td data-ng-bind="item.css">
+                                                    Css
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-ng-click="vm.deleteButton($index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary btn-sm" data-ng-click="vm.editButton($index)">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div id="buttonActionTab" class="tab-pane active">
+
+                                <div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label ">Action Name </label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control form-control-sm" data-ng-model="vm.clickAction.actionName">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 control-label col-form-label">On Click </label>
+                                                <div class="col-sm-7">
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.clickAction.onClickMode">
+                                                        <option value="">..Select ..</option>
+                                                        <option value="static">Goto Url</option>
+                                                        <option value="supportTask">Execute Task</option>
+                                                        <option value="javascript">Execute Javascript</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class=" row">
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group row" data-ng-show="vm.clickAction.onClickMode=='static'">
+                                                <label class="col-sm-5 col-form-label ">Enter Url </label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control form-control-sm" placeholder="http://example.com/index.html" data-ng-model="vm.clickAction.staticLink">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" data-ng-show="vm.clickAction.onClickMode=='supportTask'">
+                                                <label class="col-sm-5 col-form-label"> Task ID </label>
+                                                <div class="col-sm-7">
+                                                    <select type="text" data-toggle="select" class="form-control form-control-sm" data-ng-model="vm.clickAction.taskId" data-ng-options="item.id as item.taskName for item in vm.supportTasks">
+                                                        <option value="">[Select One..]</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" data-ng-show="vm.clickAction.onClickMode=='supportTask'">
+                                        <div class="col-md-12">
+                                            <label class="form-label col-form-label">Enter Json To Pass To Task If Any</label>
+                                            <textarea class="form-control" rows="7" data-ng-model="vm.clickAction.taskData"></textarea>
+                                            <br>
+                                        </div>
+
+                                    </div>
+                                    <div class=" row" data-ng-show="vm.clickAction.onClickMode=='javascript'">
+                                        <div class="col-md-12">
+                                            <label class="col-form-label form-label">Enter Javascript Code <small>Will be wrapped in a function</small></label>
+                                            <pre style="padding: 0"><code data-language="javascript">/**Your code will be embedded in a function with the following arguments **/
+//utils=utils.alertSuccess, utils.alertError,utils.alertConfirm, utils.sweetAlert, utils.toastr, utils._ (lodash)
+ function( utils)
+{ //put your code in the box below
+                                            </code></pre>
+                                            <textarea class="form-control" rows="7" data-ng-model="vm.clickAction.javascript"></textarea>
+                                            <br>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label form-label"></label>
+                                                <div class="col-sm-7">
+                                                    <button class="btn btn-sm btn-primary btn-block" data-ng-hide="vm.isEdittingAction" data-ng-click="vm.addAction()">Add Action</button>
+                                                    <button class="btn btn-sm btn-primary btn-block" data-ng-show="vm.isEdittingAction" data-ng-click="vm.saveAction()">Save Action</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Action Name
+                                                </th>
+                                                <th>
+                                                    OnClick
+                                                </th>
+
+                                                <th>
+                                                    ..
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="item in vm.model.clickActions">
+                                                <td data-ng-bind="item.actionName">
+                                                    actionName
+                                                </td>
+
+                                                <td>
+                                                    <span data-ng-show="item.onClickMode=='static'">
+                                                       Goto Url : {{item.staticLink}}
+                                                   </span>
+                                                    <span data-ng-show="item.onClickMode=='supportTask'">
+                                                      Execute Task : {{item.taskId}}
+                                                   </span>
+                                                    <span data-ng-if="item.onClickMode=='javascript'">
+                                                        Execute Javascript : <code>{{item.javascript.trim().substring(0,10)}} ..</code> 
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-ng-click="vm.deleteAction($index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary btn-sm" data-ng-click="vm.editAction($index)">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
