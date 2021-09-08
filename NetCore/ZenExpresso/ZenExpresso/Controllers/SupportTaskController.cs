@@ -50,7 +50,13 @@ namespace ZenExpresso.Controllers
                int newTaskId = task.CreateCopy(User.Identity.Name);
                 if(newTaskId > 0)
                 {
-                    return RedirectToAction("EditAdvancedTask", "SupportTask",new { id = newTaskId});
+                    if (task.IsAdvancedTask())
+                    {
+                        return RedirectToAction("EditAdvancedTask", "SupportTask", new { id = newTaskId });
+
+                    }
+                    return RedirectToAction("EditSupportTask", "SupportTask", new { id = newTaskId });
+
                 }
                 return RedirectToAction("Index", "Error"); 
             }

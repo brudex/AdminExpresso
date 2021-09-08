@@ -9,13 +9,13 @@
 <div class="row" ng-app="app">
 
     <input type="hidden" value="@Model.supportTask.id" id="__supportTaskId" />
-    @if (Model.supportTask.taskType == ZenExpressoCore.Constants.TaskType.BasicTaskFlow)
+    @if (Model.supportTask.taskType == ZenExpressoCore.Constants.TaskType.AdvancedTaskFlow)
     {
-        @await Html.PartialAsync("_ExecuteBasicTask", Model.supportTask)
+        @await Html.PartialAsync("_ExecuteAdvancedTask", Model)
     }
     else
     {
-        @await Html.PartialAsync("_ExecuteAdvancedTask", Model)
+        @await Html.PartialAsync("_ExecuteBasicTask", Model.supportTask)
     }
 
 

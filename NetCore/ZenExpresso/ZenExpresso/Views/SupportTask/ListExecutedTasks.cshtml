@@ -6,41 +6,96 @@
 }
 
 <div class="row">
-     
-    <div class="col-lg-12">
-        <section class="panel default blue_title h2">
-            <div class="panel-heading">@ViewBag.Title </div>
-            <div class="panel-body">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <td>Task Name</td>
-                        <td>Description</td>
-                        <td>Parameters Passed</td>
-                        <td>TopLevelMenu</td>
-                        <td>Executed By</td>
-                        <td>Response Status</td>
-                        <td>Date Executed</td> 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var task in Model)
-                    {
-                        <tr>
-                            <td>@task.taskName</td>
-                            <td>@task.taskDescription</td>
-                            <td>@task.parameterValues</td>
-                            <td>@task.topMenu</td>
-                            <td>@task.executedBy</td>
-                            <td>@task.responseStatus</td>
-                            <td>@task.dateExecuted</td> 
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
-            <div></div>
-        </section>
+
+    <div class="col-lg-12 card">
+
+        <div class="card-header pb-0">
+            <h3>@ViewBag.Title</h3>
+        </div> 
+
+        <div class="card-body m-0">
+
+           
+                <div class="table-responsive">
+                    <div style="overflow-x:scroll">
+                        <table class="table" width="100%" id="taskListTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Task Name
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        TopLevelMenu
+                                    </th>
+                                    <th>
+                                        Executed By
+                                    </th>
+                                    <th>
+                                        Response Status
+                                    </th>
+                                    <th>
+                                        Date Executed
+                                    </th>
+                                    <th>
+                                        Parameters Passed
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var task in Model)
+                                {
+                                    <tr>
+                                        <td>@task.taskName</td>
+                                        <td>@task.taskDescription</td>
+                                        <td>@task.topMenu</td>
+                                        <td>@task.executedBy</td>
+                                        <td>@task.responseStatus</td>
+                                        <td>@task.dateExecuted</td>
+                                        <td>
+                                            <span>
+                                                @task.parameterValues
+                                            </span>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                  
+
+                </div>
+            </div> 
+
+         
     </div>
 </div>
 
+@section MyScripts
+{
+    
+<script>
+    $(document).ready(function () {
+        $('#taskListTable').DataTable({
+            dom: 'Bfrtip',
+            "pageLength": 25,
+            buttons: [
+                {
+                    extend: 'copyHtml5'
+                },
+                {
+                    extend: 'excelHtml5'
+                },
+                {
+                    extend: 'csv'
+                }
+            ],
+            colReorder: true
+        });
+    })
+   
+</script>
+}

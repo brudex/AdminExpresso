@@ -1,0 +1,111 @@
+﻿ 
+<div class="modal fade  " id="sqlModal" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-8"> <h5 class="modal-title" id="myModalLabel">Enter Sql Script</h5></div>
+            </div>
+            <div class="modal-body">
+                <textarea style="border:1px solid blue" data-ng-model="vm.model.sqlScript" name="sqlCode" cols="10" rows="15" class="form-control"></textarea>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="form-label  col-form-label h4">Query Parameters</h5>
+                        <div class="alert alert-danger col-md-6" data-ng-show="vm.errorParameter.length">
+                            <ul>
+                                <li data-ng-repeat="item in vm.errorParameter">{{item}}</li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-3 form-label  col-form-label">Field Label</div>
+                                <div class="col-md-2 form-label  col-form-label">Field Name</div>
+                                <div class="col-md-2 form-label  col-form-label">Field Type</div>
+                                <div class="col-md-3 form-label  col-form-label">
+                                    <span data-ng-show="vm.parameter.parameterType=='regex'"> Regex Value</span>
+                                    <span data-ng-show="vm.parameter.parameterType=='dropdown'"> Drop down</span>
+                                </div>
+                                <div class="col-md-2"></div>
+                        </div>
+                        <div class="row"> 
+                                <div class="col-3">
+                                    <input type="text" value="" placeholder="Parameter Label" class="form-control input-sm" data-ng-model="vm.parameter.parameterLabel"/>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" value="" placeholder="Parameter Name" class="form-control input-sm" data-ng-model="vm.parameter.parameterName"/>
+                                </div>
+                                <div class="col-2">
+                                    <select type="text" value="" class="form-control input-sm" data-ng-model="vm.parameter.parameterType">
+                                        <option value="">Select one..</option>
+                                        <option value="text">Text</option>
+                                        <option value="number">Numeric</option>
+                                        <option value="date">Date</option>
+                                        <option value="regex">Regex</option>
+                                        <option value="dropdown">Dropdown</option>
+                                    </select>
+                                </div>
+                                <div class="col-3" data-ng-show="vm.parameter.parameterType=='regex' || vm.parameter.parameterType=='dropdown'" >
+                                    <input type="text" data-ng-show="vm.parameter.parameterType=='regex'" value="" placeholder="Regular Expression Validator" class="form-control input-sm" data-ng-model="vm.parameter.parameterRegex"/>
+                                    <input type="text" data-ng-show="vm.parameter.parameterType=='dropdown'" value="" placeholder="Drop down options" class="form-control input-sm" data-ng-model="vm.parameter.optionsList"/>
+                                </div> 
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary btn-sm float-left" data-ng-click="vm.addSqlParameter()">Add</button>
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <br />
+                                <table class="table table-sm table-responsive">
+                                    <tbody>
+                                    <tr data-ng-repeat="item in vm.model.parameters">
+                                        <td><span data-ng-bind="item.parameterLabel"></span></td>
+                                        <td><span data-ng-bind="item.parameterName"></span></td>
+                                        <td><span data-ng-bind="item.parameterType"></span></td>
+                                        <td>
+                                            <span data-ng-show="item.parameterType=='regex'" data-ng-bind="item.parameterRegex"></span>
+                                            <span data-ng-show="item.parameterType=='dropdown'" data-ng-bind="item.optionsList"></span>
+                                        </td>
+                                        <td><button class="btn btn-xs btn-danger" data-ng-click="vm.removeSqlParameter($index)">Delete</button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 
+ 
+
+<div class="modal fade  " id="jsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+             
+            <div class="modal-header">
+                <div class="col-8"> <h5 class="modal-title">Enter Javascript</h5></div>
+            </div>
+            <div class="modal-body">
+                <pre style="padding: 0"><code data-language="javascript">
+    //Your code will be embedded in a function with the following arguemnents
+    //result : result from Server
+    //utils.alertSuccess , utils.alertError, utils.sweetAlert, utils.alertConfirm, utils.toastr, utils._
+    //renderDataTable(objectArray) available as params
+    function(result,utils,renderDataTable)
+    {  //put your code in the box below
+                      </code></pre>
+                <textarea data-ng-model="vm.model.jsScript" name="sqlCode" cols="7" rows="15" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -15,7 +15,6 @@
                     <table class="table" data-ng-attr-id="{{ vm.tableId }}"></table>
                 </div>
             </div>
-
             <div data-ng-if="vm.viewSettings.useNormalTable" class="table-responsive" data-ng-attr-id="{{vm.tableModel.tableId}}" data-toggle="lists">
                 <div class="card-header" data-ng-if="vm.tableModel.searchable">
                     <form class="form-inline">
@@ -119,6 +118,18 @@
                     <div class="col-sm-6">
                         <input type="text" data-ng-model="control.fieldValue" name="{{control.fieldName}}" class="form-control " data-ng-required="control.required" data-ng-class="{'is-invalid': vm.formSubmitted && !control.valid ,'is-valid': vm.formSubmitted && control.valid }">
                     </div>
+                </div>
+                <div data-ng-if="control.fieldType=='readonly'" class="form-group row">
+                    <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}} </label>
+                    <div class="col-sm-6">
+                        <span class="font-weight-bolder" data-ng-bind="control.fieldValue"></span>
+                     </div>
+                </div>
+                <div data-ng-if="control.fieldType=='imageview'" class="form-group row">
+                    <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}} </label>
+                    <div class="col-sm-6">
+                        <img ng-src="{{control.fieldValue}}" class="rounded" alt="{{control.fieldValue}}" style="max-width:300px;height:auto;">
+                     </div>
                 </div>
                 <div data-ng-if="control.fieldType=='date'" class="form-group row">
                     <label class="col-sm-3 form-label col-form-label ">{{control.fieldLabel}}</label>

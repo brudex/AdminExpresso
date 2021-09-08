@@ -402,7 +402,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                var list = connection.Query<ExecutedTasks>("select top 10000 * from ExecutedTasks order by id desc");
+                var list = connection.Query<ExecutedTasks>("select top 1000 * from ExecutedTasks order by id desc");
                 return list.ToList();
             }
         }
