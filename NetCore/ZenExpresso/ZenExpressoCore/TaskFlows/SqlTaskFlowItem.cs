@@ -29,6 +29,10 @@ namespace ZenExpressoCore.TaskFlows
         protected List<dynamic> ExecuteSql(string sql)
         {
             List<dynamic> result = null;
+            Console.WriteLine("Sql>>"+sql); //todo validate datasource in the ui b4 saving
+            Console.WriteLine("_dataSource>>"+_dataSource);
+            Console.WriteLine("_dbusername>>"+_dbusername);
+            Console.WriteLine("_dbPass>>"+_dbusername);
             result = DbHandler.Instance.ExecuteTaskScript(sql, _dataSource, _dbusername, _dbPass);
             return result;
         }

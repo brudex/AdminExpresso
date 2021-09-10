@@ -197,7 +197,7 @@ namespace ZenExpressoCore
                     }
                     else
                     {
-                        string conString = $"User ID={userId};Password={pass};Host={dataSource.serverIp};Port={dataSource.serverPort};Database={dataSource.defaultDatabase};Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;";
+                        string conString = $"Server={dataSource.serverIp};Port={dataSource.serverPort};Database={dataSource.defaultDatabase};User Id={userId};Password={pass};";
                         connection = new NpgsqlConnection(conString);
                         connection.Open();
                     }

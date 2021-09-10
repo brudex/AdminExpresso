@@ -12,6 +12,7 @@
         vm.taskResults = [];
         vm.formControls = [];
         vm.formSubmitted = false;
+        vm.readOnlyFieldsOnly = true;
         var parentActions = null;
         var formSubmitActions = []; 
         
@@ -90,6 +91,9 @@
                         if(control.fieldValue=='Ghanaian'){
                             control.fieldValue="Ghana";
                         }
+                    }
+                    if(control.fieldType !== 'readonly' && control.fieldType!=='imageview'){
+                            vm.readOnlyFieldsOnly=false;
                     }
                     if(["date"].indexOf(control.fieldType) > -1) {
                         hasDateField = true;
