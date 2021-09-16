@@ -77,11 +77,26 @@
             return array;
         }
 
-        function getPostActionDataSources() {
+        function getPostActionDataSources(flowType) {
             var array = [];
-            vm.postActionsFlows.forEach(function (item) {
-                array.push({ key: item.controlIdentifier, dataSourceName: item.controlIdentifier, inputFormat: item.flowItemType, isFlowItem: true });
-            });
+            if (flowType) {
+                vm.postActionsFlows.forEach(function (item) {
+                    console.log('Iterating post action flows>>>', item);
+                    if (item.flowItemType === flowType) {
+                        array.push({
+                            key: item.controlIdentifier,
+                            dataSourceName: item.controlIdentifier,
+                            inputFormat: item.flowItemType,
+                            isFlowItem: true
+                        });
+                    } 
+                });
+            } else {
+                vm.postActionsFlows.forEach(function (item) {
+                    array.push({ key: item.controlIdentifier, dataSourceName: item.controlIdentifier, inputFormat: item.flowItemType, isFlowItem: true });
+                });
+            }
+            
             return array;
         }
 
@@ -99,7 +114,8 @@
                 'fileUploadServer': 'FileUploadServerWidgetController',
                 'pdfform': 'PdfFormInputWidgetController',
                 'fileDownload': 'FileDownloadWidgetController',
-                'linkButton': 'LinkButtonWidgetController'
+                'linkButton': 'LinkButtonWidgetController',
+                'excelCsvProcessing': 'ExcelCsvWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }
@@ -225,14 +241,18 @@
                 break;
             case "beforeRender":
                 {
+                       
                     $('.server-widgets').slideDown();
                     $('.client-widgets').hide(); 
+                     $('.postAction').prop('disabled', true); 
                 }
                 break;
             case "postAction":
                 {
+                   
                     $('.server-widgets').slideDown();
                     $('.client-widgets').hide();
+                    $('.postAction').prop('disabled', false);
                 }
                 break;
             case "clientResult":

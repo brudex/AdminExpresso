@@ -21,11 +21,13 @@
         @await Html.PartialAsync("_TabularOutputWidget")
         @await Html.PartialAsync("_CardOutputWidget")
         @await Html.PartialAsync("_SuccessMessageOutputWidget")
+
         
 
         @* Server Widgets *@
         @await Html.PartialAsync("_SqlScriptWidget", Model.GetDataSources())
         @await Html.PartialAsync("_RestApiWidget")
+        @await Html.PartialAsync("_ExcelCsvProcessorWidget")
         @await Html.PartialAsync("_DataTransformationWidget")
         @await Html.PartialAsync("_MergeTablesWidget")
         @await Html.PartialAsync("_ExportDataWidget")

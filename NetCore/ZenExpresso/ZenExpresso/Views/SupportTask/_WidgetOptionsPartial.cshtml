@@ -13,7 +13,7 @@
                         </button> Buttons
                         </li>
                         <li class="list-group-item">
-                            <button class="badge badge-primary btn " data-toggle="modal" data-target="#fileUploadClientModal" data-ng-click="vm.onModalOpen('fileUploadClientModal',@Model)">
+                            <button class="badge badge-primary btn clientInput" data-toggle="modal" data-target="#fileUploadClientModal" data-ng-click="vm.onModalOpen('fileUploadClientModal',@Model)">
                             <i class="fa fa-plus"></i>
                         </button> File Upload
                         </li>
@@ -59,9 +59,14 @@
                         </button> Rest Request
                         </li>
                         <li class="list-group-item">
-                            <button class="badge badge-success btn " data-toggle="modal" data-target="#fileUploadServerModal" data-ng-click="vm.onModalOpen('fileUploadServerModal',@Model)">
-                            <i class="fa fa-plus"></i>
-                        </button> File Upload Handler
+                            <button class="badge badge-success btn postAction " data-toggle="modal" data-target="#fileUploadServerModal" data-ng-click="vm.onModalOpen('fileUploadServerModal',@Model)">
+                                <i class="fa fa-plus"></i>
+                            </button> File Upload Handler
+                        </li>
+                        <li class="list-group-item">
+                            <button class="badge badge-success btn postAction" data-toggle="modal" data-target="#excelCsvModal" data-ng-click="vm.onModalOpen('excelCsvModal',@Model)">
+                                <i class="fa fa-plus"></i>
+                            </button> Excel Csv Reader
                         </li>
                         <li class="list-group-item">
                             <button class="badge badge-success btn " data-toggle="modal" data-target="#pdfFormInputModal" data-ng-click="vm.onModalOpen('pdfFormInputModal',@Model)">

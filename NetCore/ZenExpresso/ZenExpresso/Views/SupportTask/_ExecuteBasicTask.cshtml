@@ -38,46 +38,49 @@
                     {
                         if (scriptParam.parameterType == "number")
                         {
-                            <div class="form-group row" data-ng-class="{'has-error': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }">
+                            <div class="form-group row" >
                                 <label class="col-sm-3 form-label  col-form-label">@scriptParam.parameterLabel</label>
                                 <div class="col-sm-6">
-                                    <input type="number" data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName" class="form-control parsley-validated" required="">
+                                    <input  type="number" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }" data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName" class="form-control parsley-validated" required="">
                                 </div>
                             </div>
                         }
                         else if (scriptParam.parameterType == "regex")
                         {
-                            <div class="form-group row" data-ng-class="{'has-error': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }">
+                            <div class="form-group row" >
                                 <label class="col-sm-3 form-label  col-form-label">@scriptParam.parameterLabel</label>
                                 <div class="col-sm-6">
-                                    <input type="text" data-ng-model="vm.model.@scriptParam.parameterName" ng-pattern="/@scriptParam.parameterRegex/" name="@scriptParam.parameterName" class="form-control parsley-validated" required="">
+                                    <input type="text" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }" data-ng-model="vm.model.@scriptParam.parameterName" ng-pattern="/@scriptParam.parameterRegex/" name="@scriptParam.parameterName" class="form-control parsley-validated" required="">
                                 </div>
                             </div>
                         }
                         else if (scriptParam.parameterType == "text")
                         {
-                            <div class="form-group row" data-ng-class="{'has-error': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }">
+                            <div class="form-group row" >
                                 <label class="col-sm-3 form-label  col-form-label">@scriptParam.parameterLabel</label>
                                 <div class="col-sm-6">
-                                    <input type="text" data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName" class="form-control parsley-validated" required="">
+                                    <input type="text" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }" data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName" class="form-control parsley-validated" required="">
                                 </div>
                             </div>
+
                         }
                         else if (scriptParam.parameterType == "date")
                         {
-                            <div class="form-group row" data-ng-class="{'has-error': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }">
+                            <div class="form-group row" >
                                 <label class="col-sm-3 form-label  col-form-label ">@scriptParam.parameterLabel</label>
                                 <div class="col-sm-6">
-                                    <input type="text" data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName" class="form-control " jquerydatepicker required="">
+                                    <input type="text" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }" data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName" class="form-control flatpickr-input active" jquerydatepicker required="">
                                 </div>
                             </div>
+                             
+
                         }
                         else if (scriptParam.parameterType == "dropdown")
                         {
-                            <div class="form-group row" data-ng-class="{'has-error': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }">
+                            <div class="form-group row" >
                                 <label class="col-sm-3 form-label  col-form-label">@scriptParam.parameterLabel</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control" required data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName">
+                                    <select data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm.@scriptParam.parameterName.$invalid }" class="form-control" required data-ng-model="vm.model.@scriptParam.parameterName" name="@scriptParam.parameterName">
                                         @foreach (var selectOption in scriptParam.GetSelectOptions())
                                         {
                                             <option value="@selectOption">@selectOption</option>
@@ -101,3 +104,5 @@
         </div><!--/porlets-content-->
     </div><!--/block-web-->
 </div><!--/col-md-12-->
+
+ 

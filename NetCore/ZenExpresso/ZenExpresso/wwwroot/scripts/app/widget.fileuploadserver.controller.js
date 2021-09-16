@@ -1,4 +1,4 @@
-﻿(function ($,hljs) {
+﻿(function ($) {
     'use strict';
     angular
         .module('app')
@@ -36,7 +36,13 @@
         } 
 
         vm.init = function () {
+            console.log('Init Called on fileUpload server');
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
+            vm.model = { fileNameLogic: 'sameName', fieldSelect: "all" }; 
+            var parentActions = DataHolder.getParentFunctions();
+            var controlIndex = parentActions.getFlowCounterIndex('excelCsvProcessing');
+            vm.model.controlIdentifier = 'fileUploadServer' + controlIndex;
+            console.log('File Upload server model is >>>', vm.model);
         }
 
         function onModalOpen(event, data) {
@@ -63,7 +69,7 @@
         vm.saveData = function() {
             vm.model.error = {};
             vm.errorMsg = [];
-            var obj = { controlName: "File Upload Server", flowItemType: 'fileUploadServer', flowGroup: currentWidgetOption };
+            var obj = { controlName: "File Upload Server", flowItemType: 'fileUploadServer', flowGroup: currentWidgetOption, controlIdentifier: vm.model.controlIdentifier };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
@@ -72,10 +78,7 @@
             DataHolder.saveData(obj.flowItemType, obj);  
             vm.model = { viewOption: 'dropView' ,allowMultiple: false}; 
         }
-
-        
          
-      
 
         function buildHtmlBindView() {
 
@@ -94,4 +97,4 @@
         }
 
     }
-    })(window.jQuery,window.hljs);
+    })(window.jQuery);

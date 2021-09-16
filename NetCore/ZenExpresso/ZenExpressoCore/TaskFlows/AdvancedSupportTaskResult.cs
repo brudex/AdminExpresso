@@ -53,6 +53,9 @@ namespace ZenExpressoCore.TaskFlows
                         case "fileUploadServer":
                             flowItem = new FileUploadHandlerTaskFlowItem(taskFlowItem);
                             break;
+                        case "excelCsvProcessing":
+                            flowItem = new ExcelCsvReaderTaskFlowItem(taskFlowItem, ref taskFlowItems);
+                            break;
                     }
                     if (flowItem != null)
                     {
@@ -74,7 +77,7 @@ namespace ZenExpressoCore.TaskFlows
             {
                 status = "07";
                 Logger.Error(this, ex);
-                message = ex.Message;
+                message = ex.Message + "\n"+ex.StackTrace;
             }
         }
 

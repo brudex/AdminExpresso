@@ -158,5 +158,13 @@
                 }  
             });
         }
+        function initFlatPickrDateControl() {
+            $(document).ready(function () {
+                $(".flatpickr-input").flatpickr({ dateFormat: "Y-m-d" });
+            });
+        }
+
+        initFlatPickrDateControl();
+
     }
 })(window.jQuery);

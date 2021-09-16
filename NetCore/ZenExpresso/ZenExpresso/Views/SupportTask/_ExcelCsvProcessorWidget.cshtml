@@ -1,0 +1,181 @@
+﻿<div class="modal fade  " id="excelCsvModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="ExcelCsvWidgetController as vm">
+        <div class="modal-content">
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="modal-title" id="myModalLabel">Excel Csv Control</h5>
+                        </div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 5px">
+                <form autocomplete="off">
+                    <input type="hidden" value="" autocomplete="off" />
+                <div class="row">
+                    <label class="col-sm-3 form-label col-form-label pt-0">File Type</label>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="custom-control custom-radio">
+                                    <input id="excelFileType"  data-ng-model="vm.model.fileType" name="fileType" type="radio" class="custom-control-input" value="excel" data-ng-checked="true">
+                                    <label for="excelFileType" class="custom-control-label">Excel File</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="custom-control custom-radio">
+                                    <input id="csvFileType" data-ng-model="vm.model.fileType" name="fileType" type="radio" class="custom-control-input" value="csv">
+                                    <label for="csvFileType" class="custom-control-label">Csv File</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group input-group-sm mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">File Source</div>
+                                    </div>
+                                    <select class="form-control form-control-sm" data-ng-model="vm.model.fileSource">
+                                        <option value="_none_">__None__</option>
+                                        <option data-ng-repeat="item in vm.fileSources" value="{{item.key}}">{{item.dataSourceName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="card  ">
+                        <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                            <a href="#defineColumns" data-toggle="tab" class="active" role="tab">Define Columns</a>
+                            <a href="#singleRowProcessing" data-toggle="tab" role="tab">Data Processing </a>
+                        </div>
+                        <div class="card-body  tab-content text-70">
+                            <div id="defineColumns" class="tab-pane active ">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label">Column Name  </label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control form-control-sm" data-ng-model="vm.column.title">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label">Map to Parameter </label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control form-control-sm" placeholder="No WhiteSpace" data-ng-model="vm.column.parameter">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group row">
+                                                <button class="btn btn-primary btn-sm "   data-ng-click="vm.addColumn()">Add </button>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <br />
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Column Name
+                                                </th>
+                                                <th>
+                                                    Parameter Mapping
+                                                </th>
+                                                <th>
+                                                    ..
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="item in vm.model.columns">
+                                                <td data-ng-bind="item.title">
+                                                    Column title
+                                                </td>
+                                                <td data-ng-bind="item.parameter">
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-ng-click="vm.deleteColumn($index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div id="singleRowProcessing" class="tab-pane">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="form-group row">
+                                                <label class="col-sm-6 col-form-label form-label ">Input Each Row Into </label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.dataProcessing.flowName">
+                                                        <option value="">Input Data Source</option>
+                                                        <option data-ng-repeat="item in vm.dataSources" value="{{item.key}}">{{item.dataSourceName}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group row">
+                                                <button class="btn btn-primary btn-sm " data-ng-click="vm.addRowProcessing()">Add </button>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Flow 
+                                                </th>
+                                                <th>
+                                                    ..
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="item in vm.model.dataProcessing">
+                                                <td data-ng-bind="item.flowName">
+                                                    actionName
+                                                </td> 
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-ng-click="vm.deleteRowProcessing($index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>  
+                        </div> 
+                    </div>
+                </form> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
