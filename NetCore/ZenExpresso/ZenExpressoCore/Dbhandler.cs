@@ -91,7 +91,8 @@ namespace ZenExpressoCore
                 var p1 = Predicates.Field<TaskFlowItem>(f => f.supportTaskFlowId, Operator.Eq, supportTaskFlowId);
                 var p2 = Predicates.Field<TaskFlowItem>(f => f.flowGroup, Operator.Eq, flowGroup);
                 var predicate = Predicates.Group(GroupOperator.And, p1, p2);
-                var list = connection.GetList<TaskFlowItem>(predicate);
+                var sort = new Sort(){PropertyName = "Id",Ascending = true};
+                var list = connection.GetList<TaskFlowItem>(predicate,new List<ISort>(){sort});
                 return list.ToList();
             }
         }

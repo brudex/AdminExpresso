@@ -25,8 +25,19 @@
 
             </div>
             <div class="modal-body" style="padding-bottom: 5px">
-
+                <div class="form-group row">
+                    <div class="col-8"> 
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="deferTaskFlowItemExecution"  data-ng-model="vm.model.skipExecution">
+                            <label class="form-check-label form-label" for="deferTaskFlowItemExecution">
+                                Skip Execution 
+                            </label> 
+                        </div> 
+                    </div>
+                </div>
                 <div class="card p-relative o-hidden mb-0">
+                    
+                  
                     <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
                         <a href="#restbody1" class="active" data-toggle="tab" role="tab">Request Body</a>
                         <a href="#restheader" data-toggle="tab" role="tab" class="">Request Headers</a>
@@ -44,7 +55,7 @@
                                     </div>
                                 </div>
 
-                                <hr style="border-bottom: 1px solid #8b0000" />
+                                <hr style="border-bottom: 1px solid #8b0000"/>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
@@ -85,7 +96,7 @@
                                     <h5>Request Body</h5>
                                     <textarea cols="10" rows="10" class="form-control" data-ng-model="vm.model.body"></textarea>
                                 </div>
-                                <br />
+                                <br/>
                                 <div class="row" data-ng-show="vm.formControls.length">
                                     <div class="col-md-12">
 
@@ -94,18 +105,18 @@
                                         <table class="table ">
 
                                             <thead>
-                                                <tr>
-                                                    <th>Parameter Label</th>
-                                                    <th>Parameter Name</th>
-                                                    <th>Parameter Type</th>
-                                                </tr>
+                                            <tr>
+                                                <th>Parameter Label</th>
+                                                <th>Parameter Name</th>
+                                                <th>Parameter Type</th>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-ng-repeat="item in vm.formControls">
-                                                    <td><span data-ng-bind="item.fieldLabel"></span></td>
-                                                    <td><span class="font-weight-bold text-danger" data-ng-bind="item.fieldName"></span></td>
-                                                    <td><span data-ng-bind="item.fieldType"></span></td>
-                                                </tr>
+                                            <tr data-ng-repeat="item in vm.formControls">
+                                                <td><span data-ng-bind="item.fieldLabel"></span></td>
+                                                <td><span class="font-weight-bold text-danger" data-ng-bind="item.fieldName"></span></td>
+                                                <td><span data-ng-bind="item.fieldType"></span></td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -123,7 +134,7 @@
                                         <input type="text" class="form-control parsley-validated" placeholder="Password" data-ng-model="vm.model.basicAuth.password">
                                     </div>
                                 </div>
-                                <hr style="border-bottom: 1px solid #8b0000" />
+                                <hr style="border-bottom: 1px solid #8b0000"/>
                                 <div class="form-group row">
                                     <label></label>
                                     <div class="col-sm-3">

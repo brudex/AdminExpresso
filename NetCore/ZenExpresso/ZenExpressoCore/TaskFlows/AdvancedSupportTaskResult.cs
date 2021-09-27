@@ -35,6 +35,10 @@ namespace ZenExpressoCore.TaskFlows
                 {
                     Console.WriteLine("Executing Task >>"+taskFlowItem.controlName+ "-"+taskFlowItem.flowItemType);
                      ITaskExecutor flowItem = null;
+                     if (taskFlowItem.SkipExecution())
+                     {
+                         continue;
+                     }
                     switch (taskFlowItem.flowItemType)
                     {
                         case "javascriptProcess":

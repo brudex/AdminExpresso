@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewBag.Title - USSD Amdin</title>
     <!-- Prevent the demo from appearing in search engines -->
-    <meta name="robots" content="noindex"/>
+    <meta name="robots" content="noindex" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap" rel="stylesheet" />
     <!-- Preloader -->
     <link type="text/css" href="~/vendor/spinkit.css" rel="stylesheet" />
@@ -31,13 +31,13 @@
     <!-- Flatpickr -->
     <link type="text/css" href="~/css/flatpickr.css" rel="stylesheet">
     <link type="text/css" href="~/css/flatpickr-airbnb.css" rel="stylesheet">
-    <link type="text/css" href="~/css/dropzone.css" rel="stylesheet">
+    <link href="~/assets/plugins/dropzone/dropzone.css" rel="stylesheet" />
     <link type="text/css" href="~/vendor/select2/select2.min.css" rel="stylesheet">
     <link type="text/css" href="~/css/select2.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/cr-1.5.3/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/cr-1.5.3/datatables.min.css" />
     <link type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet">
     <link type="text/css" href="~/assets/plugins/spinjs/spin.css" rel="stylesheet" />
-    </head>
+</head>
 
 <body class="layout-app ">
     <div class="preloader">
@@ -74,18 +74,12 @@
 
                 <a href="/"
                    class="navbar-brand mr-16pt d-lg-none">
-
                     <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
-
                         <span class="avatar-title rounded bg-primary">
                             <img src="~/assets/images/logo.jpg" alt="s-logo" />
-
                         </span>
-
                     </span>
-
                     <span class="d-none d-lg-block">Pass</span>
-
                 </a>
 
                 <!-- // END Navbar Brand -->
@@ -204,7 +198,9 @@
     <script src="~/vendor/material-design-kit.js"></script>
     <script src="~/vendor/flatpickr/flatpickr.min.js"></script>
     <script src="~/vendor/select2/select2.min.js"></script>
-    <script src="~/js/select2.js"></script>
+<script src="~/js/select2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js" integrity="sha512-oQq8uth41D+gIH/NJvSJvVB85MFk1eWpMK6glnkg6I7EdMqC1XVkW7RxLheXwmFdG03qScCM7gKS/Cx3FYt7Tg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @* <script src="~/assets/plugins/dropzone/dropzone.min.js"></script> *@
     <!-- App JS -->
     <script src="~/js/app.js"></script>
     <!-- Preloader -->
@@ -265,6 +261,7 @@
     <script src="~/scripts/app/vexecute.script.controller.js"></script>
     <script src="~/scripts/app/view.successmessage.controller.js"></script>
     <script src="~/scripts/app/view.filedownload.controller.js"></script>
+    <script src="~/scripts/app/view.fileupload.controller.js"></script>
     <script src="~/scripts/app/view.linkbutton.controller.js"></script>
     <script src="~/js/toastr.js"></script>
 

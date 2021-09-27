@@ -16,8 +16,7 @@
         vm.formControls = [];
         var currentWidgetOption = '';
         $scope.$on('modalOpened', onModalOpen);
-
-
+         
         vm.initDataModel = function (data) {
             currentWidgetOption = data.flowGroup;
             if (data.flowData && typeof data.flowData==='string') {

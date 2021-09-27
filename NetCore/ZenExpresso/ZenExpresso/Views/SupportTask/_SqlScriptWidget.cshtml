@@ -23,44 +23,48 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> 
-
                 </div>
                 <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="col-8"> 
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="skipSqlTaskFlowItemExecution"  data-ng-model="vm.model.skipExecution">
+                                <label class="form-check-label form-label" for="skipSqlTaskFlowItemExecution">
+                                    Skip Execution 
+                                </label> 
+                            </div> 
+                        </div>
+                    </div>
                     <div class="card p-relative o-hidden mb-0">
-                       
-                                <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
-                                    <a href="#home" class="active" data-toggle="tab" role="tab">Sql Query</a>
-                                    <a href="#menu1" data-toggle="tab" role="tab">Select Data Source</a>
-                                </div>
-                            
-
+                        <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                            <a href="#home" class="active" data-toggle="tab" role="tab">Sql Query</a>
+                            <a href="#menu1" data-toggle="tab" role="tab">Select Data Source</a>
+                        </div> 
                         <div class="card-body tab-content">
                             <div id="home" class="tab-pane active">
                                 <form autocomplete="off">
-                                    <input type="hidden" value="" autocomplete="off" />
+                                    <input type="hidden" value="" autocomplete="off"/>
                                     <h4>Sql Query</h4>
                                     <textarea data-ng-model="vm.model.sqlQuery" name="sqlCode" cols="10" rows="8" class="form-control"></textarea>
-                                    <br />
+                                    <br/>
                                     <div class="row" data-ng-show="vm.formControls.length">
-                                        <div class="col-md-12">
-
-
-                                            <h5>Available Input FieldNames</h5> 
+                                        <div class="col-md-12"> 
+                                            <h5>Available Input FieldNames</h5>
                                             <table class="table ">
 
                                                 <thead>
-                                                    <tr>
-                                                        <th>Parameter Label</th>
-                                                        <th>Parameter Name</th>
-                                                        <th>Parameter Type</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th>Parameter Label</th>
+                                                    <th>Parameter Name</th>
+                                                    <th>Parameter Type</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr data-ng-repeat="item in vm.formControls">
-                                                        <td><span data-ng-bind="item.fieldLabel"></span></td>
-                                                        <td><span class="font-weight-bold" data-ng-bind="item.fieldName"></span></td>
-                                                        <td><span data-ng-bind="item.fieldType"></span></td>
-                                                    </tr>
+                                                <tr data-ng-repeat="item in vm.formControls">
+                                                    <td><span data-ng-bind="item.fieldLabel"></span></td>
+                                                    <td><span class="font-weight-bold" data-ng-bind="item.fieldName"></span></td>
+                                                    <td><span data-ng-bind="item.fieldType"></span></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
 
@@ -71,7 +75,7 @@
                             </div>
                             <div id="menu1" class="tab-pane fade">
                                 <form autocomplete="off">
-                                    <input type="hidden" value="" autocomplete="off" />
+                                    <input type="hidden" value="" autocomplete="off"/>
                                     <div class="row">
                                         <label class="col-3 control-label">Sql Data Source</label>
                                         <div class="col-7">
@@ -84,7 +88,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <br />
+                                    <br/>
                                     <div class="row">
                                         <label class="col-3 control-label">Database Credentials</label>
                                         <div class="col-2" data-ng-class="{'has-error':vm.model.error.dbusername }">
@@ -102,7 +106,7 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
 

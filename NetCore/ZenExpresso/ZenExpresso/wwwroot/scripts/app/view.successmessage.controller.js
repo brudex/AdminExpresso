@@ -19,6 +19,7 @@
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
             console.log("The task info>>", vm.taskInfo);
+            console.log("The task results>>", vm.taskResults);
             executeResult();
         };
 
@@ -55,14 +56,15 @@
 
         function executeResult() {
             if (vm.taskResults.length) {
-                var result = vm.taskResults[0];
+                var result = vm.taskResults[vm.taskResults.length-1];
+                console.log("the result.data in successmessage>>", result);
                  if (result.status === "00") {
                     var data = result.data;
                     if (_.isArray(data)) {
                         if (data.length === 1) {
                             showAlertMessage(data[0]);
                         } else {
-                            showErrorResult();
+                            showAlertMessage(result);
                         }
 
                     } else {

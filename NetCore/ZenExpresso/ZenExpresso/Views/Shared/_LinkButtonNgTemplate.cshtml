@@ -6,14 +6,17 @@
                 <span data-ng-if="button.onClickMode=='static'">
                     <a class="ml-2 {{button.css}}" target="_blank" data-ng-href="{{button.link}}">{{button.buttonLabel}}</a>
                 </span>
-            <span data-ng-if="button.onClickMode=='supportTask'">
+                <span data-ng-if="button.onClickMode=='supportTask'">
                     <a class="ml-2 {{button.css}}" data-ng-href="{{button.link}}">{{button.buttonLabel}}</a>
                 </span>
-            <span data-ng-if="button.onClickMode=='javascript'">
-                    <button class="ml-2 {{button.css}}" data-ng-href="{{button.link}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
+                <span data-ng-if="button.onClickMode=='javascript'">
+                    <button class="ml-2 {{button.css}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
+                </span>
+                <span data-ng-if="button.onClickMode=='submit'">
+                    <button class="ml-2 {{button.css}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
                 </span>
             </span>
-
+            
         </p>
     </div>
 </script>

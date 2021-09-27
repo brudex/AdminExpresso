@@ -23,9 +23,8 @@
             },
             submitTaskResult: submitTaskResult,
             setFormData: function (formData) { vm.formData = formData; } 
-        };
+        }; 
 
-        console.log('broadcastFunctions', broadcastFunctions);
         DataHolder.setParentFunctions(broadcastFunctions);
         vm.init = function() {
             executeOnRender(); 

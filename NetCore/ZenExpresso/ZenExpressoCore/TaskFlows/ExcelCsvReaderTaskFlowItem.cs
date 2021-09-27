@@ -13,6 +13,8 @@ namespace ZenExpressoCore.TaskFlows
     {
         private List<TaskFlowItem> _taskFlowItems;
         private List<string> errors;
+        private int _processedRowsCount;
+
         public ExcelCsvReaderTaskFlowItem(TaskFlowItem flowItem, ref List<TaskFlowItem> taskFlowItems) : base(flowItem)
         {
             _taskFlowItems = taskFlowItems;
@@ -63,12 +65,7 @@ namespace ZenExpressoCore.TaskFlows
                     //  - OpenXml Excel files (2007 format; *.xlsx, *.xlsb)
                     int index = 0;
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
-                    {
-                        // Choose one of either 1 or 2:
-
-                        // 1. Use the reader methods
-                        do
-                        {
+                    { 
                             while (reader.Read())
                             {
                                 if (index == 0)
@@ -97,7 +94,6 @@ namespace ZenExpressoCore.TaskFlows
                                        scriptParameter.parameterName = fieldName;
                                        scriptParameter.parameterValue = value;
                                        scriptParameters.Add(scriptParameter);
-
                                     }
                                     resultJArray.Add(jobject);
                                     foreach (var dataProcessor in dataProcessors)
@@ -106,13 +102,17 @@ namespace ZenExpressoCore.TaskFlows
                                             dataProcessor["flowName"].ToStringOrEmpty(), resultSequence);
                                     }
                                 }
+                                index++;
                             }
-                        } while (reader.NextResult());
                     }
-
                 }
                 response.data = resultJArray;
-                response.message = string.Join("\n<br/>", errors); 
+                response.message = "Now of rows Processed : " + _processedRowsCount;
+                if (errors.Count>0)
+                {
+                    response.message += "\n<br/>";
+                    response.message += string.Join("\n<br/>", errors);
+                }
             }
             catch (Exception ex)
             {
@@ -157,7 +157,10 @@ namespace ZenExpressoCore.TaskFlows
                 {
                     errors.Add(result.message);
                     Logger.Error(this, "There was an error >>" + result.message);
-
+                }
+                else
+                {
+                    _processedRowsCount += 1;
                 }
             } 
         }
@@ -171,7 +174,6 @@ namespace ZenExpressoCore.TaskFlows
                 errors.Add($"File source ${fileSource} not found. Cannot read file");
                 return "";
             }
-
             if (resultItem.status == "00")
             {
                 var files = (List<string>) resultItem.data;
@@ -179,7 +181,6 @@ namespace ZenExpressoCore.TaskFlows
                 {
                     return files[0];
                 }
-
             }
             else
             {

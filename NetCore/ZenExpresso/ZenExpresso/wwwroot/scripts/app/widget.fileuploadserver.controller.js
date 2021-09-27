@@ -17,14 +17,13 @@
 
         vm.initDataModel = function (data) {
             currentWidgetOption = data.flowGroup;
-            console.log('vm.initDataModel server upload', data); 
             if (data.flowData && typeof data.flowData === 'string') {
                 var initData = JSON.parse(data.flowData);
                 vm.model = initData;
             } else {
                 vm.model = data.data; 
             }
-            var obj = { controlName: "File Upload Server", flowItemType: 'fileUploadServer', flowGroup: currentWidgetOption  };
+            var obj = { controlName: "File Upload Server", flowItemType: 'fileUploadServer', flowGroup: currentWidgetOption, controlIdentifier: vm.model.controlIdentifier   };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
@@ -36,13 +35,11 @@
         } 
 
         vm.init = function () {
-            console.log('Init Called on fileUpload server');
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
             vm.model = { fileNameLogic: 'sameName', fieldSelect: "all" }; 
             var parentActions = DataHolder.getParentFunctions();
             var controlIndex = parentActions.getFlowCounterIndex('excelCsvProcessing');
             vm.model.controlIdentifier = 'fileUploadServer' + controlIndex;
-            console.log('File Upload server model is >>>', vm.model);
         }
 
         function onModalOpen(event, data) {

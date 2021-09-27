@@ -6,7 +6,8 @@
     function DataHolder($http, $window) {
         var subscribedFuncs = [];
         var parentFunctions = {};
-        var formSubmitSubscription = {};
+        var formSubmitSubscription = null;
+        var subscriptionsHolder= [];
         var dataWareHouse = {
         }
 
@@ -44,10 +45,18 @@
 
         function setFormSubmitSubscription(subscriptionFunc ) {
             formSubmitSubscription = subscriptionFunc;
+            subscriptionsHolder.forEach(function(action) {
+                formSubmitSubscription(action);
+            });
+            subscriptionsHolder = []; 
         }
 
         function subscribeToFormSubmitAction(action) {
-            formSubmitSubscription(action);
+            if (formSubmitSubscription) {
+                formSubmitSubscription(action);
+            } else {
+                subscriptionsHolder.push(action);
+            } 
         }
         
 

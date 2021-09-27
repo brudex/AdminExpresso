@@ -14,27 +14,20 @@
         vm.formSubmitted = false;
         vm.readOnlyFieldsOnly = true;
         var parentActions = null;
-        var formSubmitActions = []; 
-        
+        var formSubmitActions = [];  
 
-        DataHolder.setFormSubmitSubscription(function(action) {
+        DataHolder.setFormSubmitSubscription(function (action) {
+            console.log('Form submit Action added');
             formSubmitActions.push(action);
-        });
-
+        }); 
 
         vm.init = function (data) {
             vm.taskInfo = data;
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
-            console.log("The task Info >>",data);
             executeResult();
         };
-
-        function submitInputData(data) {
-            console.log("the submitted input data is >>>", data);
-        }
-
-
+         
         function executeResult() {
             if (vm.taskInfo) {
                 var flowData = vm.taskInfo.flowData;
@@ -68,7 +61,7 @@
                     control.regex = item.regex;
                     if (initialData) {
                         control.fieldValue = initialData[item.fieldName];
-                        if(control.fieldType=="number"){
+                        if(control.fieldType==="number"){
                             control.fieldValue = Number(control.fieldValue);
                         }
                     }
@@ -246,16 +239,19 @@
             var indexIterator = 0;
             var formInputs = [];
             function recursiveIterator() {
+                console.log('The form submitt acctions>>>', formSubmitActions);
                 var action = formSubmitActions[indexIterator];
                 action(function(actionData) {
                     console.log('Received action data is>>', actionData);
-                    if (actionData.taskInfo.hasFormData) {
+                    if (actionData.hasFormData) {
                         actionData.taskResult.forEach(function (input) {
                             formInputs.push(input);
                         });  
                     } 
                     indexIterator += 1;
                     if (indexIterator < formSubmitActions.length) {
+                        console.log('Recalling Iterator>>', indexIterator);
+                        console.log('Recalling Iterator>>', formSubmitActions.length);
                         recursiveIterator();
                     } else {
                         callback(formInputs);
@@ -288,8 +284,7 @@
 
                 } else {
                     parentActions.submitTaskResult(taskInfo, onFormSubmitSuccessCallback);
-                }
-               
+                } 
             }
          }; 
 
@@ -568,5 +563,5 @@
         
     }
 
-
+     
 })(window.jQuery, window.hljs);

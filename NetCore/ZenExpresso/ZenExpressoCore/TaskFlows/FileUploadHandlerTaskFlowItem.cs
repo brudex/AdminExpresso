@@ -34,8 +34,8 @@ namespace ZenExpressoCore.TaskFlows
             response.message = "FileUpload Successful";
             var jsonFlowData = JObject.Parse(flowData);
             var processedFiles = new List<string>();
-          
             string fieldSelect = jsonFlowData["fieldSelect"].ToStringOrEmpty();
+            bool saveFiles = jsonFlowData["saveFiles"].ToBoolean();
             List<ScriptParameter> fileUploadFields= new List<ScriptParameter>();
             if (fieldSelect == "all")
             {
@@ -46,32 +46,36 @@ namespace ZenExpressoCore.TaskFlows
                 var handlerFields = jsonFlowData["handlerFields"].ToStringOrEmpty().Split(new string[] {","},StringSplitOptions.RemoveEmptyEntries);
                 fileUploadFields = inputList.Where(f => f.parameterType == "fileupload" && handlerFields.Contains(f.parameterName)).ToList();
             }
-            
             foreach (var fileUploadField in fileUploadFields)
             {
-                var fileUploadCache = MemDb.Instance.GetFromCache<List<FileUploadMeta>>(fileUploadField.parameterName);
-                
+                var fileUploadCache = MemDb.Instance.GetFromCache<List<FileUploadMeta>>(fileUploadField.parameterValue);
                 foreach (var fileUploadMeta in fileUploadCache)
                 {
-                    string destFolder = jsonFlowData["destFolder"].ToStringOrEmpty();
-                    string destinationFile = GenerateDestFileName(fileUploadMeta.SourceFileName,jsonFlowData);
-                    string destinationPathAndFile = GetDestPathAndFilename(destFolder,destinationFile);
-
                     string sourceFile = GetSourcePathAndFilename(fileUploadMeta.DestFileName);
-                    if (System.IO.File.Exists(destinationPathAndFile))
+                    if (saveFiles)
                     {
-                        destinationFile = AddTimeStampToFileName(destinationFile);
-                        destinationPathAndFile = GetDestPathAndFilename(destFolder,destinationFile); 
+                            string destFolder = jsonFlowData["destFolder"].ToStringOrEmpty();
+                            string destinationFile = GenerateDestFileName(fileUploadMeta.SourceFileName,jsonFlowData);
+                            string destinationPathAndFile = GetDestPathAndFilename(destFolder,destinationFile);
+                            if (System.IO.File.Exists(destinationPathAndFile))
+                            {
+                                destinationFile = AddTimeStampToFileName(destinationFile);
+                                destinationPathAndFile = GetDestPathAndFilename(destFolder,destinationFile); 
+                            }
+                            try
+                            {
+                                CopyFileToFinalDestination(sourceFile, destinationPathAndFile);
+                                processedFiles.Add(destinationPathAndFile);
+                            }
+                            catch (Exception ex)
+                            {
+                                _errorsSb.Append(ex.Message + "\n\n" + ex.InnerException);
+                                Logger.Error(this, ex);
+                            }
                     }
-                    try
+                    else
                     {
-                        CopyFileToFinalDestination(sourceFile, destinationPathAndFile);
-                        processedFiles.Add(destinationFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        _errorsSb.Append(ex.Message + "\n\n" + ex.InnerException);
-                        Logger.Error(this, ex);
+                        processedFiles.Add(sourceFile);
                     }
                 }
               
@@ -141,6 +145,7 @@ namespace ZenExpressoCore.TaskFlows
                     break; 
                 case "uuid":
                     retFileName = Guid.NewGuid().ToString();
+                    retFileName += fileExtension;
                     break;
                 case "fileNameUuid":
                     retFileName = $"{fileNameOnly}_{Guid.NewGuid().ToString()}";

@@ -102,7 +102,7 @@ namespace ZenExpressoCore
         {
             if (jt != null)
             {
-                var str = jt.ToString();
+                var str = jt.ToString().ToLower();
                 return str.Equals("true");
             }
             return false;

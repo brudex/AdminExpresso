@@ -28,6 +28,16 @@ namespace ZenExpressoCore.TaskFlows
         public string flowData { get; set; }
         public string flowGroup { get; set; }
 
+        public bool SkipExecution()
+        {
+            var jsonFlowData = JObject.Parse(flowData);
+            if (jsonFlowData["skipExecution"].ToBoolean() == true)
+            {
+                return true;
+            }
+
+            return false;
+        }
         
 
         public static TaskFlowItem CreateTaskFlow(JToken jTaskFlow,string flowGroup)
