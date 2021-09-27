@@ -1,0 +1,24 @@
+﻿<script type="text/ng-template" id="fileUploadClient.html">
+    <div data-ng-Controller="FileUploadViewController as vm">
+    <div data-ng-init="vm.init(task)"></div>
+        <div data-ng-show="vm.taskInfo.flowData.viewOption === 'dropView'">
+           <form class="dropzone w-100 mb-24pt dz-clickable"  enctype="multipart/form-data" data-ng-attr-id="{{ vm.taskInfo.flowData.fieldName }}">
+                  <div class="dz-default dz-message">
+                    <button class="btn btn-secondary dz-button" type="button">Drop files here to upload</button>
+                </div>
+           </form>
+        </div>
+
+        <div class="col-md-12 col-xl-12 form-group row" data-ng-show="vm.taskInfo.flowData.viewOption === 'formControlView'">
+            <label class="col-sm-3 form-label col-form-label text-50"> {{vm.taskInfo.flowData.fieldLabel}}</label>
+            <div class="col-sm-6 col-md-6">
+                <div class="form-group m-0">
+                    <div class="custom-file">
+                        <input type="file"  class="custom-file-input" data-ng-attr-id="{{ vm.taskInfo.flowData.fieldName }}">
+                        <label  class="custom-file-label">Choose file</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
