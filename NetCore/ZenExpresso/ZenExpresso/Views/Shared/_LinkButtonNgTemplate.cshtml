@@ -10,13 +10,12 @@
                     <a class="ml-2 {{button.css}}" data-ng-href="{{button.link}}">{{button.buttonLabel}}</a>
                 </span>
                 <span data-ng-if="button.onClickMode=='javascript'">
-                    <button class="ml-2 {{button.css}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
+                    <button data-ng-class="{'disabled': button.disabled }" class="ml-2 {{button.css}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
                 </span>
                 <span data-ng-if="button.onClickMode=='submit'">
-                    <button class="ml-2 {{button.css}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
+                    <button data-ng-class="{'disabled': button.disabled }" class="ml-2 {{button.css}}" data-ng-click="button.onClick()">{{button.buttonLabel}}</button>
                 </span>
             </span>
-            
         </p>
     </div>
 </script>

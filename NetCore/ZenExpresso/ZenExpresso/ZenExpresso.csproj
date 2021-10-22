@@ -32,7 +32,6 @@
 		<PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
 		<PackageReference Include="itext7" Version="7.1.14" />
   </ItemGroup>
-
     <ItemGroup>
 	    <Content Update="log4net.config">
 		    <CopyToOutputDirectory>Always</CopyToOutputDirectory>

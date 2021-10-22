@@ -65,10 +65,12 @@ namespace ZenExpressoCore.TaskFlows
                     //  - OpenXml Excel files (2007 format; *.xlsx, *.xlsb)
                     int index = 0;
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
-                    { 
+                    {
                             while (reader.Read())
                             {
-                                if (index == 0)
+                                try
+                                {
+                                      if (index == 0)
                                 {
                                     for (var k = 0; k < columns.Count; k++)
                                     {
@@ -87,13 +89,17 @@ namespace ZenExpressoCore.TaskFlows
                                     var scriptParameters = new List<ScriptParameter>();
                                     for (var k = 0; k < columns.Count; k++)
                                     {
-                                        var value = reader.GetValue(k).ToString();
+                                        var readerValue = reader.GetValue(k);
+                                        var value="";
+                                        if(readerValue != null){
+                                             value = readerValue.ToString();
+                                        }
                                         string fieldName = colNameIndex[k];
                                         jobject[fieldName] = value;
-                                       var scriptParameter = new ScriptParameter();
-                                       scriptParameter.parameterName = fieldName;
-                                       scriptParameter.parameterValue = value;
-                                       scriptParameters.Add(scriptParameter);
+                                        var scriptParameter = new ScriptParameter();
+                                        scriptParameter.parameterName = fieldName;
+                                        scriptParameter.parameterValue = value;
+                                        scriptParameters.Add(scriptParameter);
                                     }
                                     resultJArray.Add(jobject);
                                     foreach (var dataProcessor in dataProcessors)
@@ -102,12 +108,17 @@ namespace ZenExpressoCore.TaskFlows
                                             dataProcessor["flowName"].ToStringOrEmpty(), resultSequence);
                                     }
                                 }
-                                index++;
+                                   index++;
+                                }
+                                catch (System.Exception ex)
+                                {
+                                     errors.Add(ex.Message);
+                                }
                             }
                     }
                 }
                 response.data = resultJArray;
-                response.message = "Now of rows Processed : " + _processedRowsCount;
+                response.message = "Processed Rows: " + _processedRowsCount;
                 if (errors.Count>0)
                 {
                     response.message += "\n<br/>";
@@ -126,7 +137,7 @@ namespace ZenExpressoCore.TaskFlows
         }
 
         private void ExecuteTaskFlowItemOnRow(List<ScriptParameter> inputList, string flowName, List<TaskFlowResult> resultSequence)
-        { 
+        {
             var allowedFlows = new[] {"sqlQuery", "rest", "restApi"};
             var insertTaskFlow = _taskFlowItems.FirstOrDefault(t => t.controlIdentifier == flowName);
             if (insertTaskFlow == null)
@@ -140,7 +151,7 @@ namespace ZenExpressoCore.TaskFlows
             }
             ITaskExecutor flowItem = null;
             switch (insertTaskFlow.flowItemType)
-            { 
+            {
                 case "sqlQuery":
                     flowItem = new SqlTaskFlowItem(insertTaskFlow);
                     break;
@@ -152,7 +163,6 @@ namespace ZenExpressoCore.TaskFlows
             if (flowItem != null)
             {
                 var result = flowItem.ExecuteResult(inputList, resultSequence);
-                 
                 if (result.status != "00")
                 {
                     errors.Add(result.message);
@@ -162,7 +172,7 @@ namespace ZenExpressoCore.TaskFlows
                 {
                     _processedRowsCount += 1;
                 }
-            } 
+            }
         }
 
         private string GetFileDataSource(List<TaskFlowResult> resultSequence,string fileSource)

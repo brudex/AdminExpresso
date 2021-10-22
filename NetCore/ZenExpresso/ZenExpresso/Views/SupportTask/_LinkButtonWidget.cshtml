@@ -55,8 +55,8 @@
                     </div>
                     <div class="card  ">
                         <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
-                            <a href="#buttonActionTab" data-toggle="tab" class="active" role="tab">Button Actions</a>
-                            <a href="#buttonDisplayTab" data-toggle="tab" role="tab">Button Display </a>
+                            <a href="#buttonActionTab" data-toggle="tab" class="active" role="tab">Configure Actions</a>
+                            <a href="#buttonDisplayTab" data-toggle="tab" role="tab">Add Buttons </a>
                         </div>
                         <div class="card-body  tab-content text-70">
                             <div id="buttonDisplayTab" class="tab-pane ">
@@ -98,7 +98,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group row">
-                                                <label class="col-sm-5 col-form-label">Css Class </label>
+                                                <label class="col-sm-5 col-form-label">Css Class</label>
                                                 <div class="col-sm-7">
                                                     <select class="form-control form-control-sm" data-ng-model="vm.linkButton.css">
                                                         <option value="">..Select Css Class..</option>
@@ -114,6 +114,10 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group row">
+                                                <label class="col-sm-5 col-form-label" for="buttonsDisableOnClick">Disable On Click</label>
+                                                <div class="col-sm-7">
+                                                      <input class="form-check-input ng-pristine ng-valid" type="checkbox" name="buttonsDisableOnClick" id="buttonsDisableOnClick" data-ng-model="vm.linkButton.disableOnClick">
+                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

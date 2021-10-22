@@ -77,7 +77,6 @@
                     taskInfo.taskResult = taskInfo.taskResult.concat(resultData);
                     parentActions.submitTaskResult(taskInfo);
                 });
-
             } else {
                 parentActions.submitTaskResult(taskInfo);
             }
@@ -149,13 +148,24 @@
                     vm.model.buttons.push(button);
                 } else if (action.onClickMode === 'javascript') {
                     var actionFunc = buildJsActionFunction(button, action);
-                    button.onClick = actionFunc;
+                    button.onClick = function(){
+                        actionFunc();
+                        if(button.disableOnClick){
+                            button.disabled=true;
+                        }
+                    }
                     vm.model.buttons.push(button);
                 }
                 else if (action.onClickMode === 'submit') {
-                    button.onClick = submitCurrentTask;
+                    button.onClick = function(){
+                        if(button.disableOnClick){
+                            button.disabled=true;
+                        }
+                        submitCurrentTask();
+                    }
                     vm.model.buttons.push(button);
                 }
+                
             });
         }
 
