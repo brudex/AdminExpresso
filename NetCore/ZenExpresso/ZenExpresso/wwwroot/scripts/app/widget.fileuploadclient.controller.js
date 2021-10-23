@@ -26,7 +26,6 @@
             if (typeof vm.model.fileTypes === 'object') {
                 vm.model.fileTypes = vm.model.fileTypes.join(","); //todo check if it works
             }
-            console.log("the fileUpload Client Model >>", vm.model);
             var obj = { controlName: "File Upload", flowItemType: 'fileUploadClient', flowGroup: currentWidgetOption  };
             obj.data = vm.model;
             obj.htmlbind = buildHtmlBindView();

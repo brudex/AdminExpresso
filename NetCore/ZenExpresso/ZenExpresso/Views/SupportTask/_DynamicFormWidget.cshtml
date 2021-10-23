@@ -1,0 +1,126 @@
+﻿<div class="modal fade" id="dynamicFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" data-ng-controller="DynamicFormWidgetController as vm">
+            <div class="modal-header row pb-0">
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="modal-title" id="myModalLabel">Dynamic Form Design</h5>
+                        </div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                
+                <div class="card  ">
+                    <div class="card-body  text-70">
+                        <div id="restbody" class="tab-pane active">
+                            <form autocomplete="off">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label form-label">Title/Description </label>
+                                    <div class="col-sm-6">
+                                        <input type="text" value="" placeholder="Title/Description" class="form-control form-control-sm" data-ng-model="vm.model.description" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label form-label">On Success Response</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control form-control-sm" data-ng-model="vm.model.onSuccessResult">
+                                            <option value="clearData">Clear Form Data</option>
+                                            <option value="keep">Keep Form and Input</option>
+                                            <option value="removeForm">Remove Form</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label form-label">Data Source</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control form-control-sm" data-ng-model="vm.model.controlDataSource" data-ng-options="item for item in vm.dataSources">
+                                            <option value="_none_">__None__</option>
+                                        </select>
+                                    </div> 
+                                </div> 
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label form-label">Data Source Format</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control form-control-sm" data-ng-model="vm.model.dataSourceFormat">
+                                            <option value="">__Select one__</option>
+                                            <option value="array">Json Array</option>
+                                            <option value="object">Json Object</option>
+                                         </select>
+
+                                        <div class="row" data-ng-show="vm.model.dataSourceFormat=='array'">
+                                            <div class="col-12">
+                                                <label class="form-label col-form-label">Return Data in the following format</label>
+                                                <pre style="padding: 0"><code data-language="javascript">
+    [{
+    "fieldLabel":  "Field Label",
+    "fieldName":  "gender",
+    "fieldValue":  "male",
+    "required":true,
+    "validation" "email", //number,phone,regex,range(add property for range="5,6")
+    "fieldType":  "select", //e.g. text,number,textarea,fileupload,readonly,imageview,date,checkbox,select,multiselect
+    "selectOptionsDatasource":  [ //optional field only for select field types
+    "Male","Female"
+    ]
+    }]
+</code></pre>
+                                            </div>
+                                        </div>
+                                        <div class="row" data-ng-show="vm.dataSourceFormat=='object'">
+                                            <div class="col-12">
+                                                <label class="form-label col-form-label">Return any javascript object</label>
+                                                <pre style="padding: 0"><code data-language="javascript">//Example
+    {
+    "gender":"Male",
+    "fullName" :"John Doe",
+    "age":23
+    }
+</code></pre>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" data-ng-show="vm.model.dataSourceFormat=='object'">
+                                            <div class="col-8"> 
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="readOnlyFields" data-ng-model="vm.model.readOnlyFields">
+                                                    <label class="form-check-label form-label" for="readOnlyFields">
+                                                        Read only fields
+                                                    </label> 
+                                                </div> 
+                                            </div>
+                                        </div> 
+                                         
+
+                                    </div>
+                                    
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-ng-click="vm.saveFormInputControls()">Save </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,8 +9,8 @@
 <div class="row" ng-app="app">
     <div class="col-md-12" data-ng-Controller="CreateAdvancedTaskController as vm">
         @await Html.PartialAsync("_AdvancedSuppotTaskForm")
-
         @await Html.PartialAsync("_FormInputWidget")
+        @await Html.PartialAsync("_DynamicFormWidget")
         @await Html.PartialAsync("_FileUploadClientWidget")
         @await Html.PartialAsync("_FileUploadServerWidget")
         @await Html.PartialAsync("_FileDownloadWidget")

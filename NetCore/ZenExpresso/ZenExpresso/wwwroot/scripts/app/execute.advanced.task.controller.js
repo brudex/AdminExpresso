@@ -104,7 +104,9 @@
 
         function executeOnRender() {
             var beforeRenderResults = BeforeRenderDataStore.getBeforeRenderResults();
+            console.log('The before Render Results >>>', beforeRenderResults);
             var clientRenderFlows = BeforeRenderDataStore.getClientRenderFlows();
+            console.log('The before Render Results >>>', clientRenderFlows);
             taskResults = beforeRenderResults;
             if(clientRenderFlows.length === 0) {
                 if (beforeRenderResults.length) {

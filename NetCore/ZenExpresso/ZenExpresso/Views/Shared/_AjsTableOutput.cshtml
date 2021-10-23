@@ -195,7 +195,6 @@
 
                 <div data-ng-if="control.fieldType=='richtext'" class="form-group row" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm[control.fieldName].$invalid }">
                     <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
-
                 </div>
             </div>
             <div class="form-group row" data-ng-hide="vm.readOnlyFieldsOnly">
@@ -208,8 +207,6 @@
     </div>
 </script>
 
-
- 
 
 <script type="text/ng-template" id="cardResult.html">
     <div data-ng-Controller="CardViewResultController as vm">
@@ -369,3 +366,6 @@
 
 <partial name="_LinkButtonNgTemplate.cshtml" />
 <partial name="_FileUploadNgTemplate.cshtml" />
+<partial name="_DynamicFormNgTemplate.cshtml" />
+
+ 

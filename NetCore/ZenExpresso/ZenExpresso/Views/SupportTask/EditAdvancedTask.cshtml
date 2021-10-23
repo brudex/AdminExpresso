@@ -11,6 +11,7 @@
         <div data-ng-init="vm.init(@Model.id)"></div>
 
         @await Html.PartialAsync("_AdvancedSuppotTaskForm")
+        @await Html.PartialAsync("_DynamicFormWidget")
         @await Html.PartialAsync("_FormInputWidget")
         @await Html.PartialAsync("_PdfFormInputWidget")
         @await Html.PartialAsync("_FileUploadClientWidget")

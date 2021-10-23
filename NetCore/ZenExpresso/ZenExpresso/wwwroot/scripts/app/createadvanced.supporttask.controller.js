@@ -115,7 +115,8 @@
                 'pdfform': 'PdfFormInputWidgetController',
                 'fileDownload': 'FileDownloadWidgetController',
                 'linkButton': 'LinkButtonWidgetController',
-                'excelCsvProcessing': 'ExcelCsvWidgetController'
+                'excelCsvProcessing': 'ExcelCsvWidgetController',
+                'dynamicForm': 'DynamicFormWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }
