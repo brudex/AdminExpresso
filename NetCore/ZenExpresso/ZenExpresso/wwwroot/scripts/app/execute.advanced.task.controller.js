@@ -78,7 +78,7 @@
             if (successCallback) {
                formSubmitSuccessCallbacks.push(successCallback);
             }
-            if (taskResult.flowItemType === 'inputForm.html') {
+            if (taskResult.flowItemType === 'inputForm.html' ) {
                 currentTaskResult = taskResult;
                 vm.formData = taskResult.formData;
                 executeOnFormSubmitScripts(); 
