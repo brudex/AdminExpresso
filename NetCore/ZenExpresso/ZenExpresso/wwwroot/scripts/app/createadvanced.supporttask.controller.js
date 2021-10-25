@@ -332,8 +332,7 @@
                 vm.errorMsg = [];
                 var payload = buildPayload();
                 services.createAdvancedTask(payload, function (response) {
-                    console.log('Response from createAdvancedTask', response);
-                    if (response.status === "00") {
+                     if (response.status === "00") {
                         if (!isEditting) {
                             vm.model = { parameters: [] };
                             vm.beforeRenderFlows = [];

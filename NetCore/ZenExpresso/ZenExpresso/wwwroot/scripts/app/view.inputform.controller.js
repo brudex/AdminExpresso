@@ -4,6 +4,7 @@
         .module("app")
         .controller("InputFormViewController", InputFormViewController);
     InputFormViewController.$inject = ["BeforeRenderDataStore", "brudexutils", "$window", "DataHolder", "$scope"];
+
     function InputFormViewController(BeforeRenderDataStore, utils, $window, DataHolder, $scope) {
         var vm = this;
         var _ = utils._;
@@ -14,32 +15,30 @@
         vm.formSubmitted = false;
         vm.readOnlyFieldsOnly = true;
         var parentActions = null;
-        var formSubmitActions = [];  
+        var formSubmitActions = [];
 
-        DataHolder.setFormSubmitSubscription(function (action) {
-            console.log('Form submit Action added');
+        DataHolder.setFormSubmitSubscription(function(action) {
             formSubmitActions.push(action);
-        }); 
+        });
 
-        vm.init = function (data) {
+        vm.init = function(data) {
             vm.taskInfo = data;
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
             executeResult();
         };
-         
+
         function executeResult() {
             if (vm.taskInfo) {
                 var flowData = vm.taskInfo.flowData;
                 var initialData = null;
                 if (flowData.controlDataSource) {
                     var controlDataSource = flowData.controlDataSource; //control identifier of source
-                    var taskResult = _.find(vm.taskResults, function (o) { return o.controlIdentifier === controlDataSource; });
-                    console.log('The taskResult ',taskResult);
+                    var taskResult = _.find(vm.taskResults, function(o) { return o.controlIdentifier === controlDataSource; });
                     if (taskResult && taskResult.status === "00") {
                         if (_.isArray(taskResult.data)) {
                             initialData = taskResult.data.length ? taskResult.data[0] : null;
-                            console.log('The initialData ',initialData);
+                            console.log('The initialData ', initialData);
                         } else {
                             initialData = taskResult.data;
                         }
@@ -53,15 +52,15 @@
                     control.fieldLabel = item.fieldLabel;
                     control.fieldName = item.fieldName;
                     control.fieldType = item.fieldType;
-                    if(item.fieldValue){
-                        control.fieldValue=item.fieldValue;
+                    if (item.fieldValue) {
+                        control.fieldValue = item.fieldValue;
                     }
                     control.range = item.range;
                     control.required = true;
                     control.regex = item.regex;
                     if (initialData) {
                         control.fieldValue = initialData[item.fieldName];
-                        if(control.fieldType==="number"){
+                        if (control.fieldType === "number") {
                             control.fieldValue = Number(control.fieldValue);
                         }
                     }
@@ -70,25 +69,27 @@
                         control.required = item.required;
                     }
                     if (["select", "multiselect"].indexOf(control.fieldType) > -1) {
-                        if(typeof item.selectOptionsDatasource =='string'){
-                            var dataSource = utils._.filter(flowData.dataSources, function (dt) { return dt.dataSourceName === item.selectOptionsDatasource });
-                            console.log('the found dataSource >>>',dataSource);
-                            if(dataSource.length)
-                            control.dataSource = buildSelectOptions(dataSource[0]);
-                        }else{
+                        if (typeof item.selectOptionsDatasource == 'string') {
+                            var dataSource = utils._.filter(flowData.dataSources, function(dt) { return dt.dataSourceName === item.selectOptionsDatasource });
+                            console.log('the found dataSource >>>', dataSource);
+                            if (dataSource.length) {
+                                control.dataSource = buildSelectOptions(dataSource[0]);
+
+                            }
+                        } else {
                             control.dataSource = buildSelectOptions(item.selectOptionsDatasource);
                         }
-                        if(control.dataSource.length > 12|| control.fieldType=='multiselect'){
-                            activateSelect2.push("."+control.fieldName) ;
+                        if (control.dataSource.length > 12 || control.fieldType == 'multiselect') {
+                            activateSelect2.push("." + control.fieldName);
                         }
-                        if(control.fieldValue=='Ghanaian'){
-                            control.fieldValue="Ghana";
+                        if (control.fieldValue == 'Ghanaian') {
+                            control.fieldValue = "Ghana";
                         }
                     }
-                    if(control.fieldType !== 'readonly' && control.fieldType!=='imageview'){
-                            vm.readOnlyFieldsOnly=false;
+                    if (control.fieldType !== 'readonly' && control.fieldType !== 'imageview') {
+                        vm.readOnlyFieldsOnly = false;
                     }
-                    if(["date"].indexOf(control.fieldType) > -1) {
+                    if (["date"].indexOf(control.fieldType) > -1) {
                         hasDateField = true;
                     }
                     vm.formControls.push(control);
@@ -102,12 +103,13 @@
                     control.required = false;
                     vm.formControls.push(control);
                 });
-                if (activateSelect2.length){
-                    $(document).ready(function(){
-                        var selectItems = activateSelect2.join(', ')
+                if (activateSelect2.length) {
+                    $(document).ready(function() {
+                        var selectItems = activateSelect2.join(', ');
+                        console.log('Activating Select2');
                         $(selectItems).select2({
                             placeholder: '[Select one]'
-                          });
+                        });
                     });
                 }
                 if (hasDateField) {
@@ -122,14 +124,20 @@
                 return dataSource;
             }
             var dt = selectOptionsDatasource;
-            if (dt.inputFormat === "delimited") {
+            if (dt.isFlowItem) {
+                var task = utils._.filter(vm.taskResults, function(item) { return item.controlIdentifier === dt.dataSourceName });
+                if (task.length) {
+                    console.log('Task zero data', task[0].data);
+                    buildDropSelectOptions(task[0].data);
+                }
+            } else if (dt.inputFormat === "delimited") {
                 var arr = dt.dropDownOptions.split(/[.,\n;]/);
-                arr.forEach(function (txt) {
+                arr.forEach(function(txt) {
                     dataSource.push({ label: txt, value: txt });
                 });
             } else if (dt.inputFormat === "csv") {
                 var rows = dt.dropDownOptions.split(/[\n]+/);
-                rows.forEach(function (txt) {
+                rows.forEach(function(txt) {
                     var arr = txt.split(/[ ;,.]+/);
                     if (arr.length > 1) {
                         dataSource.push({ label: arr[0], value: arr[1] });
@@ -146,17 +154,11 @@
                 } catch (e) {
                     console.log("Error in ", e);
                 }
-            } else if (dt.inputFormat === "rest") {
-                var task = utils._.filter(vm.taskResults, function (item) { return item.controlIdentifier === dt.dataSourceName });
-                if (task.length) {
-                    buildDropSelectOptions(task[0].data);
-                }
-
             }
             return dataSource;
 
             function buildDropSelectOptions(array) {
-                array.forEach(function (obj) {
+                array.forEach(function(obj) {
                     if (typeof obj === 'string') {
                         dataSource.push({ label: obj, value: obj });
                         return;
@@ -169,14 +171,12 @@
                     props.forEach(function(p) {
                         if (keyprops.indexOf(p) > -1) {
                             keyfield = p;
-                        }
-                        else if (p.indexOf("id") > 0) {
+                        } else if (p.indexOf("id") > 0) {
                             keyfield = p;
                         }
                         if (labelprops.indexOf(p) > -1) {
                             labelfield = p;
-                        }
-                        else if (p.indexOf("id") > 0) {
+                        } else if (p.indexOf("id") > 0) {
                             labelfield = p;
                         }
                     });
@@ -186,8 +186,7 @@
                     if (keyfield === "") {
                         if (props.length > 1) {
                             keyfield = props[1];
-                        }
-                        else {
+                        } else {
                             keyfield = props[0];
                         }
                     }
@@ -198,7 +197,7 @@
 
         function buildPayload() {
             var scriptParameters = [];
-            vm.formControls.forEach(function (control) {
+            vm.formControls.forEach(function(control) {
                 var parameter = {};
                 parameter.parameterLabel = control.fieldLabel;
                 parameter.parameterName = control.fieldName;
@@ -217,19 +216,19 @@
 
         function buildFormDataJson() {
             var formData = {};
-            vm.formControls.forEach(function (control) {
+            vm.formControls.forEach(function(control) {
                 formData[control.fieldName] = control.fieldValue;
                 if (["select", "multiselect"].indexOf(control.fieldType) > -1) {
-                     if (control.fieldType === 'multiselect') {
-                        formData[control.fieldName]  = JSON.stringify(control.fieldValue);
+                    if (control.fieldType === 'multiselect') {
+                        formData[control.fieldName] = JSON.stringify(control.fieldValue);
                     }
                 }
             });
             return formData;
         }
 
-        function updateFormData(scriptParameters,formData) {
-            scriptParameters.forEach(function (parameter) {
+        function updateFormData(scriptParameters, formData) {
+            scriptParameters.forEach(function(parameter) {
                 parameter.parameterValue = formData[parameter.parameterName];
             });
         }
@@ -238,26 +237,25 @@
         function executeFormSubmitActions(callback) {
             var indexIterator = 0;
             var formInputs = [];
+
             function recursiveIterator() {
                 console.log('The form submitt acctions>>>', formSubmitActions);
                 var action = formSubmitActions[indexIterator];
                 action(function(actionData) {
                     console.log('Received action data is>>', actionData);
                     if (actionData.hasFormData) {
-                        actionData.taskResult.forEach(function (input) {
+                        actionData.taskResult.forEach(function(input) {
                             formInputs.push(input);
-                        });  
-                    } 
+                        });
+                    }
                     indexIterator += 1;
                     if (indexIterator < formSubmitActions.length) {
-                        console.log('Recalling Iterator>>', indexIterator);
-                        console.log('Recalling Iterator>>', formSubmitActions.length);
+
                         recursiveIterator();
                     } else {
                         callback(formInputs);
                     }
-
-                }); 
+                });
             }
             recursiveIterator();
         }
@@ -277,16 +275,16 @@
                 taskInfo.formData = buildFormDataJson();
                 taskInfo.updateFormData = updateFormData;
                 if (formSubmitActions.length) {
-                    executeFormSubmitActions(function (resultData) { //returns form inputs array
+                    executeFormSubmitActions(function(resultData) { //returns form inputs array
                         taskInfo.taskResult = taskInfo.taskResult.concat(resultData);
                         parentActions.submitTaskResult(taskInfo, onFormSubmitSuccessCallback);
                     });
 
                 } else {
                     parentActions.submitTaskResult(taskInfo, onFormSubmitSuccessCallback);
-                } 
+                }
             }
-         }; 
+        };
 
         function validateEmail(email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -303,15 +301,15 @@
                 vm.formControls.forEach(function(control) {
                     control.fieldValue = '';
                     control.valid = false;
-                    vm.formSubmitted=false;
+                    vm.formSubmitted = false;
                 });
             }
         }
 
-        function isWithinRange(val,min,max){
-            if(_.isNumeric(min) && _.isNumeric(max)){
-                console.log('MinMax >'+min +" >>"+max);
-                if (val>= Number(min) && val <= Number(max)) {
+        function isWithinRange(val, min, max) {
+            if (_.isNumeric(min) && _.isNumeric(max)) {
+                console.log('MinMax >' + min + " >>" + max);
+                if (val >= Number(min) && val <= Number(max)) {
                     return true;
                 }
             }
@@ -324,97 +322,97 @@
                 var fieldType = vm.formControls[p].fieldType;
                 var control = vm.formControls[p];
                 switch (fieldType) {
-                case "textarea":
-                case "text":
-                {
-                    if(control.required) {
-                        if (!_.isEmpty(control.fieldValue)) {
-                            vm.formControls[p].valid = validateInput(vm.formControls[p]);
-                            console.log("Called Validate Input");
-                        } else {
-                            vm.formControls[p].valid = false;
-                        }
-                    }else {
-                        if (_.isEmpty(control.fieldValue)) {
-                            vm.formControls[p].valid = true;
-                        } else {
-                            vm.formControls[p].valid = validateInput(vm.formControls[p]);
-                        }
-                    }
-                    break;
-                }
-                case "number":
-                {
-                    if (control.required) {
-                        if(_.isNumber(vm.formControls[p].fieldValue)){
-                            vm.formControls[p].valid = validateInput(vm.formControls[p]);
-                        }else{
-                            vm.formControls[p].valid = false;
-                        }
-                    } else {
-                        vm.formControls[p].valid = false;
-                        if (control.fieldValue == null || control.fieldValue == "") {
-                            vm.formControls[p].valid = true;
-                            continue;
-                        }
-                        if (_.isNumeric(control.fieldValue)) {
-                            vm.formControls[p].valid = validateInput(vm.formControls[p]);;
-                        }
-                    }
-                    break;
-                }
-                case "date":
-                {
-                    if (control.required) {
-                        if (/^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])$/.test(control.fieldValue)) {
-                            control.valid = true;
-                        } else {
-                            control.valid = false;
-                        }
-                    } else {
-                        if (!_.isEmpty(control.fieldValue)) {
-                            if (/^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])$/.test(control.fieldValue)) {
-                                control.valid = true;
+                    case "textarea":
+                    case "text":
+                        {
+                            if (control.required) {
+                                if (!_.isEmpty(control.fieldValue)) {
+                                    vm.formControls[p].valid = validateInput(vm.formControls[p]);
+                                } else {
+                                    vm.formControls[p].valid = false;
+                                }
                             } else {
-                                control.valid = false;
+                                if (_.isEmpty(control.fieldValue)) {
+                                    vm.formControls[p].valid = true;
+                                } else {
+                                    vm.formControls[p].valid = validateInput(vm.formControls[p]);
+                                }
                             }
-                        } else {
-                            control.valid = true;
+                            break;
                         }
-                    }
-                    break;
-                }
-                case "select":
-                {
-                    if (control.required) {
-                        if (!_.isEmpty(control.fieldValue)) {
-                            control.valid = true;
-                        } else {
-                            control.valid = false;
+                    case "number":
+                        {
+                            if (control.required) {
+                                if (_.isNumber(vm.formControls[p].fieldValue)) {
+                                    vm.formControls[p].valid = validateInput(vm.formControls[p]);
+                                } else {
+                                    vm.formControls[p].valid = false;
+                                }
+                            } else {
+                                vm.formControls[p].valid = false;
+                                if (control.fieldValue == null || control.fieldValue == "") {
+                                    vm.formControls[p].valid = true;
+                                    continue;
+                                }
+                                if (_.isNumeric(control.fieldValue)) {
+                                    vm.formControls[p].valid = validateInput(vm.formControls[p]);;
+                                }
+                            }
+                            break;
                         }
-                    } else {
-                        control.valid = true;
-                    }
-                    break;
-                }
-                case "multiselect":
-                {
-                    if (control.required) {
-                        if (!_.isEmpty(control.fieldValue)) {
-                            control.valid = true;
-                        } else {
-                            control.valid = false;
+                    case "date":
+                        {
+                            if (control.required) {
+                                if (/^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])$/.test(control.fieldValue)) {
+                                    control.valid = true;
+                                } else {
+                                    control.valid = false;
+                                }
+                            } else {
+                                if (!_.isEmpty(control.fieldValue)) {
+                                    if (/^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])$/.test(control.fieldValue)) {
+                                        control.valid = true;
+                                    } else {
+                                        control.valid = false;
+                                    }
+                                } else {
+                                    control.valid = true;
+                                }
+                            }
+                            break;
                         }
-                    } else {
-                        control.valid = true;
-                    }
-                    break;
-                }
-                default:
+                    case "select":
+                        {
+                            if (control.required) {
+                                if (!_.isEmpty(control.fieldValue)) {
+                                    control.valid = true;
+                                } else {
+                                    control.valid = false;
+                                }
+                            } else {
+                                control.valid = true;
+                            }
+                            break;
+                        }
+                    case "multiselect":
+                        {
+                            if (control.required) {
+                                if (!_.isEmpty(control.fieldValue)) {
+                                    control.valid = true;
+                                } else {
+                                    control.valid = false;
+                                }
+                            } else {
+                                control.valid = true;
+                            }
+                            break;
+                        }
+                    default:
                         control.valid = true;
                 }
 
             }
+
             function isInvalid(c) {
                 return !c.valid;
             }
@@ -427,129 +425,128 @@
         function validateInput(control) {
             var validationResult = { valid: false, message: "" };
             switch (control.validation) {
-            case "_none_":
-            {
-                validationResult.valid = true;
-                break;
-            }
-            case "text":
-            {
-                validationResult.valid = true;
-                console.log("Control fieldValue is >>", control.fieldValue);
-                if (_.isEmpty(control.fieldValue)) {
-                    validationResult.valid = false;
-                    validationResult.message = "This field is required";
-                }
-                break;
-            }
-            case "number":
-            {
-                validationResult.valid = true;
-                if (!_.isNumber(control.fieldValue)) {
-                    validationResult.valid = false;
-                    validationResult.message = "This field must be numeric";
-                }
-                break;
-            }
-            case "range":
-                {
-                    console.log('Range validation encountered >>>>',control);
-                    validationResult.valid = true;
-                    if (_.isNumber(control.fieldValue)) {
-                        var range = control.range.split(",");
-                        validationResult.valid = isWithinRange(control.fieldValue,range[0],range[1]);
-                        if(!validationResult.valid){
-                            validationResult.message = "Field must be withing "+range[0] +" and " +range[1];
-                        }
-                    }else{
-                        validationResult.message = "This field must be numeric";
+                case "_none_":
+                    {
+                        validationResult.valid = true;
+                        break;
                     }
-                    break;
-                }
-            case "email":
-            {
-                validationResult.valid = true;
-                if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(control.fieldValue)) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = false;
-                    validationResult.message = "Invalid Email";
-                }
-                break;
-            }
-            case "phone":
-            {
-                validationResult.valid = true;
-                if (/^((2)(3)(3)\d{9})$/.test(control.fieldValue) || /^((0)\d{9})$/.test(control.fieldValue) ) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = false;
-                    validationResult.message = "Invalid phone number";
-                }
-                break;
-            }
-            case "regex":
-            {
-                var regex = new RegExp(control.regex);
-                if (regex.test(control.fieldValue)) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = true;
-                    validationResult.message = "Invalid input";
-                }
-                break;
-            }
-            case "account":
-            {
-                if (/^(\d{10})$/.test(control.fieldValue)) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = false;
-                    validationResult.message = "Invalid phone number";
-                }
-            }
-            case "accountOrEmail":
-            {
-                if (validateEmail(control.fieldValue) || /^(\d{10})$/.test(control.fieldValue)) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = false;
-                    validationResult.message = "Invalid phone number or email";
-                }
-                break;
-            }
-            case "accountOrPhone":
-            {
-                if (/^((2)(3)(3)\d{9})$/.test(control.fieldValue) || /^(\d{10})$/.test(control.fieldValue)) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = false;
-                    validationResult.message = "Invalid account or phone number";
-                }
-            }
-            case "phoneOrEmail":
-            {
-                if (validateEmail(control.fieldValue) || /^((2)(3)(3)\d{9})$/.test(control.fieldValue)) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = false;
-                    validationResult.message = "Invalid phone number or email";
-                }
-                break; 
-            }
-            case "accountOrPhoneOrEmail":
-            {
-                if (validateEmail(control.fieldValue) ||
-                    validatePhone(control.fieldValue) ||
-                    /^(\d{10})$/.test(control.fieldValue)) {
-                    validationResult.valid = true;
-                } else {
-                    validationResult.valid = false;
-                    validationResult.message = "Invalid account, phone or email";
-                }
-                break;
+                case "text":
+                    {
+                        validationResult.valid = true;
+                        if (_.isEmpty(control.fieldValue)) {
+                            validationResult.valid = false;
+                            validationResult.message = "This field is required";
+                        }
+                        break;
+                    }
+                case "number":
+                    {
+                        validationResult.valid = true;
+                        if (!_.isNumber(control.fieldValue)) {
+                            validationResult.valid = false;
+                            validationResult.message = "This field must be numeric";
+                        }
+                        break;
+                    }
+                case "range":
+                    {
+                        console.log('Range validation encountered >>>>', control);
+                        validationResult.valid = true;
+                        if (_.isNumber(control.fieldValue)) {
+                            var range = control.range.split(",");
+                            validationResult.valid = isWithinRange(control.fieldValue, range[0], range[1]);
+                            if (!validationResult.valid) {
+                                validationResult.message = "Field must be withing " + range[0] + " and " + range[1];
+                            }
+                        } else {
+                            validationResult.message = "This field must be numeric";
+                        }
+                        break;
+                    }
+                case "email":
+                    {
+                        validationResult.valid = true;
+                        if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = false;
+                            validationResult.message = "Invalid Email";
+                        }
+                        break;
+                    }
+                case "phone":
+                    {
+                        validationResult.valid = true;
+                        if (/^((2)(3)(3)\d{9})$/.test(control.fieldValue) || /^((0)\d{9})$/.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = false;
+                            validationResult.message = "Invalid phone number";
+                        }
+                        break;
+                    }
+                case "regex":
+                    {
+                        var regex = new RegExp(control.regex);
+                        if (regex.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = true;
+                            validationResult.message = "Invalid input";
+                        }
+                        break;
+                    }
+                case "account":
+                    {
+                        if (/^(\d{10})$/.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = false;
+                            validationResult.message = "Invalid phone number";
+                        }
+                    }
+                case "accountOrEmail":
+                    {
+                        if (validateEmail(control.fieldValue) || /^(\d{10})$/.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = false;
+                            validationResult.message = "Invalid phone number or email";
+                        }
+                        break;
+                    }
+                case "accountOrPhone":
+                    {
+                        if (/^((2)(3)(3)\d{9})$/.test(control.fieldValue) || /^(\d{10})$/.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = false;
+                            validationResult.message = "Invalid account or phone number";
+                        }
+                    }
+                case "phoneOrEmail":
+                    {
+                        if (validateEmail(control.fieldValue) || /^((2)(3)(3)\d{9})$/.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = false;
+                            validationResult.message = "Invalid phone number or email";
+                        }
+                        break;
+                    }
+                case "accountOrPhoneOrEmail":
+                    {
+                        if (validateEmail(control.fieldValue) ||
+                            validatePhone(control.fieldValue) ||
+                            /^(\d{10})$/.test(control.fieldValue)) {
+                            validationResult.valid = true;
+                        } else {
+                            validationResult.valid = false;
+                            validationResult.message = "Invalid account, phone or email";
+                        }
+                        break;
 
-            }
+                    }
             }
             console.log("The Validation result >>>", validationResult);
             return validationResult.valid;
@@ -560,8 +557,8 @@
                 $(".flatpickr-input").flatpickr({ dateFormat: "Y-m-d" });
             });
         }
-        
+
     }
 
-     
+
 })(window.jQuery, window.hljs);
