@@ -1,8 +1,9 @@
 ﻿@model List<ZenExpressoCore.Models.ExecutedTasks>
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Home ";
 }
-<div class="">
+<div>
  @if (Model.Any())
  {
      <div class="row">
@@ -15,51 +16,42 @@
                  </div>
                  <div class="porlets-content">
 
-                     @for (int k = 0; k <= Model.Count; k += 3)
-                     {
+                         @for (int k = 0; k <= Model.Count; k += 3)
+                         {
 
-                         <div class="row">
+                             <div class="row card-group-row mb-lg-8pt">
 
-                             <div class="col-md-12">
-
-                                 @for (int i = k; i < k + 3; i++)
-                                 {
-                                     var index = k + i;
-                                     if (index < Model.Count)
+                                     @for (int i = k; i < k + 3; i++)
                                      {
-                                         var item = Model[index];
-                                         <div class="col-md-4 col-sm-4">
-                                             <div class="block-update-card">
-                                                 <div class="v-status">
-                                                 </div>
-                                                 <img class="pull-left media-object update-card-MDimentions" src="~/assets/images/icon-recent.png" alt="Table Result"/>
-                                                 <div class="media-body update-card-body">
-                                                     <div style="padding-left: 5px">
-                                                         <h4 class="media-heading"> @item.taskDescription </h4>
-                                                         <p>
-                                                             <div class="col-lg-7 col-md-7 col-sm-7 pull-left" style="padding-left: 0">
-                                                                 <span class="pull-left"> <strong>@item.dateExecuted.ToString("dd MMM HH:mm")</strong> </span>
-                                                             </div>
-                                                             <div class="col-lg-5 col-md-5 col-sm-5 pull-left">
-                                                                 <a class="btn btn-sm btn-success" href="@Url.Action("ExecuteTask", "SupportTask", new {id = item.taskId})">Execute</a>
-                                                             </div>
-                                                             <span class="label label-primary">@item.topMenu</span>
-                                                         </p>
+                                         var index = k + i;
+                                         if (index < Model.Count)
+                                         {
+                                             var item = Model[index];
+                                              
+                                             <div class="col-4 ">
+                                                 <div class="card posts-card border-1 border-left-3 border-left-success">
+                                                     <div class="posts-card__content d-flex align-items-center flex-wrap">
+                                                         <div class="avatar avatar-lg mr-3">
+                                                             <a href=""><img src="~/assets/images/icon-recent.png" alt="avatar" class="avatar-img rounded"></a>
+                                                         </div>
+                                                         <div class="posts-card__title flex d-flex flex-column">
+                                                             <a href="@Url.Action("ExecuteTask", "SupportTask", new {id = item.taskId})" class="card-title">@item.taskDescription</a>
+                                                             <small class="text-50">@item.dateExecuted.ToString("dd MMM HH:mm")</small>
+                                                         </div>
+                                                         <br />
+                                                         <small class="badge badge-pill badge-info">@item.topMenu</small>
                                                      </div>
                                                  </div>
                                              </div>
-                                         </div>
+                                         }
                                      }
-                                 }
                              </div>
+                             <div class="row"></div>
+                             <p></p>
+                         }
 
-                         </div>
-                         <div class="row"></div>
-                         <p></p>
-                     }
-
-                 </div><!--/porlets-content-->
-             </div><!--/block-web-->
+                     </div><!--/porlets-content-->
+                 </div><!--/block-web-->
          </div><!--/col-md-12-->
      </div>
 
@@ -80,11 +72,7 @@
 
              </div>
          </div>
-         <div class="row">
-             <div class="col-md-6 h4">
-                 ASPD Application Support Made Easy
-             </div>
-         </div>
+          
 
      </div>
  }

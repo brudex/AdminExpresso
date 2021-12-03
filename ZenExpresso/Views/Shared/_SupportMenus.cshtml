@@ -1,16 +1,30 @@
 ﻿@model List<ZenExpressoCore.Models.SupportMenuModel>
+<div class="sidebar-heading"> Menu</div>
 @foreach (var supportMenuModel in Model)
-{
-    <li>
-        <a href="javascript:void(0);"> <i class="fa fa-tasks"></i>@supportMenuModel.menuName<span class="plus"><i class="fa fa-plus"></i></span></a>
-        <ul>
-            @foreach (var subMenu in supportMenuModel.SubMenus)
-            {
-                <li>
-                     <a href="@Url.Action("ExecuteTask", "SupportTask",new {id=subMenu.taskId})"> <span>&nbsp;</span> <i class="fa fa-tasks"></i> <b>@subMenu.taskName</b> </a>
-                </li>
-            }
-        </ul>
-    </li>
+{ 
+    <ul class="sidebar-menu">
+
+        <li class="sidebar-menu-item">
+            <a class="sidebar-menu-button js-sidebar-collapse"
+               data-toggle="collapse"
+               href="#enterprise_menu">
+                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">donut_large</span>
+                @supportMenuModel.menuName
+                <span class="ml-auto sidebar-menu-toggle-icon"></span>
+            </a>
+            <ul class="sidebar-submenu collapse sm-indent"
+                id="enterprise_menu">
+                @foreach (var subMenu in supportMenuModel.SubMenus)
+                {
+                    <li class="sidebar-menu-item">
+                        <a class="sidebar-menu-button"
+                           href="@Url.Action("ExecuteTask", "SupportTask",new {id=subMenu.taskId})">
+                            <span class="sidebar-menu-text">@subMenu.taskName</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li> 
+    </ul> 
 }
  

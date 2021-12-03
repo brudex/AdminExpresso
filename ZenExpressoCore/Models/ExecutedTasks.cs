@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using ZenExpressoCore.TaskFlows;
 
 namespace ZenExpressoCore.Models
 {
@@ -8,7 +10,7 @@ namespace ZenExpressoCore.Models
         public ExecutedTasks()
         {}
 
-        public ExecutedTasks(JObject values, SupportTask supportTask, SupportTaskResult taskResult)
+        public ExecutedTasks(JObject values, SupportTask supportTask, ServiceResponse taskResult)
         {
             parameterValues = values.ToString();
             taskId = supportTask.id;
@@ -17,6 +19,19 @@ namespace ZenExpressoCore.Models
             taskDescription = supportTask.description;
             topMenu = supportTask.topLevelMenu;
             responseStatus = taskResult.status; 
+        }
+
+       
+
+        public ExecutedTasks(List<TaskFlowItem> values, SupportTask supportTask, ServiceResponse taskResult)
+        {
+            parameterValues = values.ToJsonString();
+            taskId = supportTask.id;
+            dateExecuted = DateTime.Now;
+            taskName = supportTask.taskName;
+            taskDescription = supportTask.description;
+            topMenu = supportTask.topLevelMenu;
+            responseStatus = taskResult.status;
         }
         public int id { get; set; }
         public int taskId { get; set; }

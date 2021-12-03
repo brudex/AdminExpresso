@@ -6,12 +6,12 @@ using ZenExpressoCore.Models;
 
 namespace ZenExpressoCore.TaskFlows
 {
-    public class JavascriptTaskFlowItem : TaskFlowItem
+    public class JavascriptTaskFlowItem : TaskFlowItem, ITaskExecutor
     {
         public JavascriptTaskFlowItem(TaskFlowItem flowItem) : base(flowItem)
         {}
 
-        public new TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
+        public TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
         {
             var result =new TaskFlowResult();
             StringBuilder sb = new StringBuilder();

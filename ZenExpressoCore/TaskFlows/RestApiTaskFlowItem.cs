@@ -1,30 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BrudexFoundations;
-using Jint;
 using Newtonsoft.Json.Linq;
 using ZenExpressoCore.Models;
 
 namespace ZenExpressoCore.TaskFlows
 {
-   public class RestApiTaskFlowItem : TaskFlowItem
-   {
-       
-
+   public class RestApiTaskFlowItem : TaskFlowItem, ITaskExecutor
+    {
+        
        public RestApiTaskFlowItem(TaskFlowItem flowItem) : base(flowItem)
        { 
        }
-
-
-       
-
-        public new TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
+          
+        public  TaskFlowResult ExecuteResult(List<ScriptParameter> inputList, List<TaskFlowResult> resultSequence)
         {
+            var response = new TaskFlowResult();
+            response.flowItemType = flowItemType;
+            response.description = description;
+            response.controlIdentifier = controlIdentifier;
 
-            flowData = TaskFlowUtilities.InterpolateParams(flowData, inputList);
+            flowData = TaskFlowUtilities.InterpolateParams(flowData, inputList,"\\\"");
             if (resultSequence.Any())
             {
                 List<PlaceHolder> placeHolders = TaskFlowUtilities.ExtractPlaceHolders(flowData);
@@ -32,28 +28,45 @@ namespace ZenExpressoCore.TaskFlows
             }
             var jsonFlowData = JObject.Parse(flowData);
             JArray headers = (JArray)jsonFlowData["headers"];
-            string restUrl = jsonFlowData["url"].ToStringOrEmpty();
-            string requestBody = "";
+            string restUrl = jsonFlowData["resturl"].ToStringOrEmpty();
+            string method = jsonFlowData["method"].ToStringOrEmpty();
+            string contentType = jsonFlowData["contentType"].ToStringOrEmpty();
             var restHandler = RestHandler.Instance;
             foreach (var jToken in headers)
             {
-                restHandler.AddCustomHeader(jToken["key"].ToStringOrEmpty(), jToken["value"].ToStringOrEmpty());
+                restHandler.AddCustomHeader(jToken["headerKey"].ToStringOrEmpty(), jToken["headerValue"].ToStringOrEmpty());
             }
             RestPostResponse restResponse = null;
-            if (jsonFlowData["method"].ToStringOrEmpty() == "POST")
+            if (jsonFlowData["method"].ToStringOrEmpty() != "GET")
             {
-                requestBody = jsonFlowData["body"].ToStringOrEmpty();
-               restResponse= restHandler.DoPostGetString(restUrl, requestBody);
+                var requestBody = jsonFlowData["body"].ToStringOrEmpty();
+                restResponse= restHandler.DoPostGetString(restUrl, requestBody,method,contentType);
             }
             else
             {
                 restResponse = restHandler.DoGetString(restUrl);
             }
-            var response = new TaskFlowResult();
+            
             try
-            { 
-                response.status = "00";
-                response.data = restResponse;
+            {
+
+                if (restResponse.IsSuccessStatus())
+                {
+                    response.status = "00";
+                    if (restResponse.IsArrayResult())
+                    {
+                        response.data = restResponse.ToJArray();
+                    }
+                    else
+                    {
+                        response.data = restResponse.ToJOject();
+                    }
+                }
+                else
+                {
+                    response.status = "03";
+                    response.message = "Error!! Status:"+restResponse.Status + ", Response Content :"+ restResponse.content;
+                } 
             }
             catch (Exception ex)
             {
@@ -61,8 +74,7 @@ namespace ZenExpressoCore.TaskFlows
                 Logger.Error(this, ex);
                 response.message = ex.Message;
             }
-            return response; 
-
+            return response;  
          }
 
         

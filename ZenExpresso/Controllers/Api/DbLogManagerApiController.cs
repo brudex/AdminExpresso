@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using ZenExpressoCore;
 using ZenExpressoCore.Helpers;
@@ -8,7 +8,9 @@ using ZenExpressoCore.Models;
 
 namespace ZenExpresso.Controllers.Api
 {
-    public class DbLogManagerApiController : ApiController
+
+    [Route("api/[controller]/[action]")]
+    public class DbLogManagerApiController : Controller
     {
         [HttpPost]
         public IEnumerable<string> ConnectDbListDatabases([FromBody]JObject value)

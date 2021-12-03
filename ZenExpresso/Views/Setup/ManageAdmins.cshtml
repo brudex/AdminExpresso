@@ -1,44 +1,39 @@
 ﻿@{
     ViewBag.Title = "Setup Admins";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row" ng-app="app">
-    <div class="col-md-12" data-ng-Controller="AdminSetupController as vm" data-ng-init="vm.init()">
-        <div class="block-web">
-            <div class="header">
-                <div class="actions">
-                </div>
-                <h3 class="content-header">@ViewBag.Title </h3>
-            </div>
-            <div class="porlets-content">
-                <form name="addAdminForm" method="POST" class="form-horizontal group-border-dashed" parsley-validate="" novalidate="" data-ng-submit="vm.addAdmin(addAdminForm.$valid)">
-                    <div class="form-group">
-                        <div class="col-sm-4" data-ng-class="{'has-error': addAdminForm.userName.$invalid }">
-                            <input type="text" data-ng-model="vm.model.userName" name="userName" class="form-control parsley-validated" required="" placeholder="User Name">
-                        </div>
-                        <div class="col-sm-4" data-ng-class="{'has-error': addAdminForm.fullName.$invalid }">
-                            <input type="text" data-ng-model="vm.model.fullName" name="fullName" class="form-control parsley-validated" required="" placeholder="Full Name">
-                        </div>
-                        <div class="col-sm-4">
-                            <button type="submit" class="btn btn-success ">Add</button>
-                        </div>
+    <div class="card col-md-12" data-ng-Controller="AdminSetupController as vm" data-ng-init="vm.init()">
+        <div class="card-header pb-0">
+            <h3>@ViewBag.Title </h3>
+        </div>
+        <div class="card-body">
+            <form name="addAdminForm" method="POST" class="was-validated" parsley-validate="" novalidate="" data-ng-submit="vm.addAdmin(addAdminForm.$valid)">
+                <div class="form-group row">
+                    <div class="col-sm-4" data-ng-class="{'is-invalid': addAdminForm.userName.$invalid }">
+                        <input type="text" data-ng-model="vm.model.userName" name="userName" class="form-control" required="" placeholder="User Name">
                     </div>
-                    <!--/form-group-->
-                </form>
-
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-2"></label>
-
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-sm-6 h4 ">List of Admins </label>
-                                <table id="example" class="display table table-condensed" width="100%">
+                    <div class="col-sm-4" data-ng-class="{'is-invalid': addAdminForm.fullName.$invalid }">
+                        <input type="text" data-ng-model="vm.model.fullName" name="fullName" class="form-control" required="" placeholder="Full Name">
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-success ">Add</button>
+                    </div>
+                </div> 
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                                <label class="h4 ">List of Admins </label>
+                                <table class=" table mb-0 thead-border-top-0  was-validated table-responsive">
                                     <thead>
-                                        <tr>
-                                            <th class="col-sm-4">User Name</th>
-                                            <th class="col-sm-4">Full Name</th>
-                                            <th class="col-sm-1"></th>
+                                        <tr class="col-md-12">
+                                            <th>User Name</th>
+                                            <th>Full Name</th>
+                                            <th>Can Create task</th>
+                                            <th>Can Create User</th>
+                                            <th>Can Create Admin</th>
+                                            <th>Can Manage Logs</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,22 +41,48 @@
                                             <td data-ng-bind="item.userName"></td>
                                             <td data-ng-bind="item.fullName"></td>
                                             <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input id="canCreateTask" type="checkbox" checked="" data-ng-model="item.canCreateTask" class="custom-control-input">
+                                                    <label for="canCreateTask" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input data-ng-model="item.canCreateUser" id="canCreateUser" type="checkbox" checked="" class="custom-control-input">
+                                                    <label for="canCreateUser" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input data-ng-model="item.canCreateAdmin" id="canCreateAdmin" type="checkbox" checked="" class="custom-control-input">
+                                                    <label for="canCreateAdmin" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input  data-ng-model="item.canManageLogs" id="canManageLogs" type="checkbox" checked="" class="custom-control-input">
+                                                    <label for="canManageLogs" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+                                            <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-xs btn-danger action-view" data-ng-click="vm.deleteAdmin(item)"><i class="fa fa-trash"></i>Delete</button>
+                                                    <button type="button" class="btn btn-sm btn-success action-view" data-ng-click="vm.setPreviledges(item)"><i class="fa fa-user-check"></i>Save</button>
+                                                    <button type="button" class="btn btn-sm btn-danger action-view" data-ng-click="vm.deleteAdmin(item)"><i class="fa fa-trash"></i>Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            
                         </div>
                     </div>
 
-                </div>
+                 
+                <!--/form-group-->
+            </form>
 
-            </div><!--/porlets-content-->
-
-        </div>
+        </div><!--/porlets-content-->
         <!--/block-web-->
     </div><!--/col-md-12-->
 </div>

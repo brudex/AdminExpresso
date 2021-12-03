@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using DapperExtensions;
-
+using LazyCache;
 using ZenExpressoCore;
 using ZenExpressoCore.Models;
 
@@ -19,12 +19,12 @@ namespace ZenExpresso.Helpers
     {
         static MemDb instance = null;
         static readonly object padlock = new object();
-        private readonly string DefaultConnection;
-
+         
         private static List<DedicatedAdmin> _dedicatedAdmins;
         private static List<TopMenu> _topMenus;
         private static List<SupportTaskLite> _supportTasksList;
         private static List<DataSource> _dataSources;
+        private IAppCache _cache ;
 
         MemDb()
         { 
@@ -53,10 +53,11 @@ namespace ZenExpresso.Helpers
         public void Init()
         {
             _dedicatedAdmins = DbHandler.Instance.GetList<DedicatedAdmin>();
-            _topMenus = DbHandler.Instance.GetList<TopMenu>();
+            _topMenus = DbHandler.Instance.GetTopMenus();
             _supportTasksList = DbHandler.Instance.GetSupportTaskWithGroupsAssigned();
             _dataSources = DbHandler.Instance.GetList<DataSource>();
-
+            _cache = new CachingService();
+            SetupInitialAdmin();
         }
 
 
@@ -106,8 +107,29 @@ namespace ZenExpresso.Helpers
            return _dataSources.FirstOrDefault(x=>x.dataSourceName==dataSourceName);
         }
 
+        public void SaveInCache(string key, object item,int saveDurationInMinutes=2)
+        {
+            _cache.Add(key, item, DateTimeOffset.Now.AddMinutes(saveDurationInMinutes));
+        }
+        public T GetFromCache<T>(string key) 
+        {
+           return _cache.Get<T>(key);
+        }
 
 
+        public void SetupInitialAdmin()
+        { 
+
+            var admins = DbHandler.Instance.GetList<DedicatedAdmin>();
+            if (admins.Count == 0)
+            {
+                var admin = new DedicatedAdmin();
+                admin.userName = "brudexgh@gmail.com";
+                admin.fullName = "Nana Safo";
+                DbHandler.Instance.Save(admin);
+            }
+
+        }
 
 
     }

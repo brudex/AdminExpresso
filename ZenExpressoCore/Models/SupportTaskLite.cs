@@ -31,7 +31,6 @@ namespace ZenExpressoCore.Models
             }
             if (_assignedGroups != null)
             {
-                
                 foreach (var assignedGroup in _assignedGroups)
                 {
                     var groupType = assignedGroup["groupType"].ToString();

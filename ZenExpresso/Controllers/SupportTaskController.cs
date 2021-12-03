@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using ZenExpresso.Helpers;
+using ZenExpresso.Models;
 using ZenExpressoCore;
 using ZenExpressoCore.Models;
+using ZenExpressoCore.TaskFlows;
 
 namespace ZenExpresso.Controllers
 {
-    [System.Web.Mvc.Authorize]
+    
     public class SupportTaskController : Controller
     {
        // [DedicatedAdminsAllowed]
@@ -33,21 +34,54 @@ namespace ZenExpresso.Controllers
             if (task != null)
             {
                 return View(task);
-//                if (task.createdBy != User.Identity.Name)
-//                {
-//                    Session["data"] = "Task cannot be edited by any other than the creator";
-//                    return RedirectToAction("Index", "Error");
-//                }
             }
             else
-            {
-                Session["data"] = "Task not found";
+            { 
                 return RedirectToAction("Index", "Error");
             }
         }
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        public ActionResult MakeCopy(int id)
+        {
+            var task = DbHandler.Instance.GetSupportTaskById(id);
+            if (task != null)
+            {
+               int newTaskId = task.CreateCopy(User.Identity.Name);
+                if(newTaskId > 0)
+                {
+                    if (task.IsAdvancedTask())
+                    {
+                        return RedirectToAction("EditAdvancedTask", "SupportTask", new { id = newTaskId });
+
+                    }
+                    return RedirectToAction("EditSupportTask", "SupportTask", new { id = newTaskId });
+
+                }
+                return RedirectToAction("Index", "Error"); 
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        [DedicatedAdminsAllowed]
+        public ActionResult EditAdvancedTask(int id)
+        {
+            var task = DbHandler.Instance.GetSupportTaskById(id);
+            if (task != null)
+            {
+                return View(task); 
+            }
+            else
+            { 
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        [DedicatedAdminsAllowed]
+        [HttpGet]
         public ActionResult ListTasks()
         {
             var tasks = DbHandler.Instance.GetAllSupportTasks();
@@ -56,20 +90,20 @@ namespace ZenExpresso.Controllers
 
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult DeleteTask(int id)
         {
             var task = DbHandler.Instance.GetSupportTaskById(id);
             if (task == null)
             {
-                throw new HttpException(404, "Item Not Found");
+                return new StatusCodeResult(404);
             }
             return View(task);
         }
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpPost]
-        public ActionResult DeleteTask([FromBody]SupportTask data)
+        [HttpPost]
+        public ActionResult DeleteTask([FromForm]SupportTask data)
         {
             var deleted = DbHandler.Instance.DeleteSupportTaskById(data.id);
             if (deleted)
@@ -82,7 +116,7 @@ namespace ZenExpresso.Controllers
         }
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult AssignGroups(int id)
         {
             var supportTask = DbHandler.Instance.GetSupportTaskById(id);
@@ -90,37 +124,57 @@ namespace ZenExpresso.Controllers
         }
 
 
-        
-        [System.Web.Mvc.HttpGet]
+
+        [HttpGet]
         public ActionResult ExecuteTask(int id)
         {
             try
             {
+                SettingsData.HostUrl = $"{Request.Scheme}://{Request.Host.Value}";
+                ViewBag.canCreateTask = User.GetPreviledges().canCreateTask;
                 var supportTask = DbHandler.Instance.GetSupportTaskById(id);
                 if (supportTask == null)
                 {
                     Logger.Error(this, "Task not found>>>" + id);
-                    throw new HttpException(404, "Task Not Found");
+                    return new StatusCodeResult(404);
                 }
                 else if (!supportTask.IsAuthorizedUser(User))
                 {
                     Logger.Error(this, "Unauthorized>>" + id);
-                    throw new HttpException(403, "UnAuthorized ");
+                    return new StatusCodeResult(403);
                 }
-                return View(supportTask);
+                var queryData = Request.Query["data"];
+                //ClientInputTaskFlowItem.CreateTaskFlow
+                var viewModel = new TaskResultViewModel();
+                viewModel.supportTask = supportTask;
+                if (supportTask.taskType == Constants.TaskType.AdvancedTaskFlow)
+                {
+                    string staffId = User.Identity.Name;
+                    List<TaskFlowItem> taskFlowItems = supportTask.GetFlowItemsForAdvancedTask("beforeRender");
+                    List<TaskFlowItem> clientRenderFlowItems = supportTask.GetFlowItemsForAdvancedTask("clientRender");
+                    var taskResult = new AdvancedSupportTaskResult(supportTask, taskFlowItems);
+                    var inputTaskFlow =new ClientInputTaskFlowItem(queryData);
+                    taskResult.ExecuteResult(inputTaskFlow);
+                    var executedTask = new ExecutedTasks(taskFlowItems, supportTask, taskResult);
+                    executedTask.executedBy = staffId;
+                    DbHandler.Instance.Save(executedTask);
+                    viewModel.taskResult = taskResult;
+                    viewModel.queryData = inputTaskFlow.GetClientInputs().ToJsonString();
+                    viewModel.clientRenderFlows = clientRenderFlowItems;
+                    return View(viewModel);
+                }
+                return View(viewModel);
             }
             catch (Exception ex)
             {
                 Logger.Error(this, "Unauthorized>>" , ex);
                 return RedirectToAction("Index","Home");
-            }
-             
-          
+            } 
         }
 
 
         [DedicatedAdminsAllowed]
-        [System.Web.Mvc.HttpGet]
+        [HttpGet]
         public ActionResult ListExecutedTasks()
         { 
             var list = DbHandler.Instance.GetExecutedTasks();

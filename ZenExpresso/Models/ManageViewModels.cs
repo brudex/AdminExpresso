@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
+using Microsoft.AspNetCore.Identity;
+ 
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ZenExpresso.Models
 {
@@ -18,7 +18,7 @@ namespace ZenExpresso.Models
     public class ManageLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }
-        public IList<AuthenticationDescription> OtherLogins { get; set; }
+        //public IList<AuthenticationDescription> OtherLogins { get; set; }
     }
 
     public class FactorViewModel

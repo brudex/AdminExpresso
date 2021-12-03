@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using ZenExpresso.Helpers;
 using ZenExpressoCore;
 using ZenExpressoCore.Helpers;
 using ZenExpressoCore.Models;
 using ZenExpressoCore.TaskFlows;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace ZenExpresso.Controllers.Api
 {
-    public class SupportTaskApiController : ApiController
+    [Route("api/[controller]/[action]")]
+    public class SupportTaskApiController : Controller
     {      
         [HttpPost]
         public ServiceResponse CreateSupportTask([FromBody]JObject value)
@@ -52,7 +55,7 @@ namespace ZenExpresso.Controllers.Api
 
 
         [HttpPost]
-        public ServiceResponse CreateAdancedSupportTask([FromBody]JObject value)
+        public ServiceResponse CreateAdvancedSupportTask([FromBody]JObject value)
         {
             var response = new ServiceResponse();
             var task = new SupportTask();
@@ -61,14 +64,15 @@ namespace ZenExpresso.Controllers.Api
             task.description = value["description"].ToStringOrEmpty();
             task.topLevelMenu = value["topLevelMenu"].ToStringOrEmpty();
             task.taskType = "AdvancedTaskFlow";
+            task.id = value["id"].ToInteger();
             var beforeRenderFlows = (JArray)value["beforeRenderFlows"];
-            var clientFlows = (JArray)value["beforeRenderFlows"];
+            var clientFlows = (JArray)value["clientFlows"];
             var postActionsFlows = (JArray)value["postActionsFlows"];
             var clientResultFlows = (JArray)value["clientResultFlows"];
             var taskFlowItems = new List<TaskFlowItem>();
             foreach (var flow in beforeRenderFlows)
             {
-                taskFlowItems.Add(TaskFlowItem.CreateTaskFlow(flow,"beforRender"));
+                taskFlowItems.Add(TaskFlowItem.CreateTaskFlow(flow,"beforeRender"));
             }
             foreach (var flow in clientFlows)
             {
@@ -82,7 +86,21 @@ namespace ZenExpresso.Controllers.Api
             {
                 taskFlowItems.Add(TaskFlowItem.CreateTaskFlow(flow,"clientResult"));
             }
-            task.CreateAdvancedFlows(taskFlowItems);
+          
+            int id = task.SaveAdvancedTaskFlow();
+            if (id > 0)
+            {
+                task.CreateAdvancedFlows(taskFlowItems);
+                response.status = "00";
+                response.message = "Data saved successfully";
+                MemDb.Instance.ReloadSupportTasksInMemory();
+            }
+            else
+            {
+                response.status = "03";
+                response.message = "Data successfully updated";
+                response.message = "Error Saving Data";
+            }
             return response;
         }
 
@@ -128,14 +146,24 @@ namespace ZenExpresso.Controllers.Api
         {
             var taskId = value["taskId"].ToInteger();
             var supportTask = DbHandler.Instance.GetSupportTaskById(taskId);
-           
             var response = new ServiceResponse();
             if (supportTask != null)
             {
-                supportTask.dbusername = supportTask.dbusername.Decrypt();
-                supportTask.dbPass = supportTask.dbPass.Decrypt();
-                response.status = "00";
-                response.data = supportTask;
+                if (supportTask.IsAdvancedTask())
+                { 
+                    dynamic data = new System.Dynamic.ExpandoObject();
+                    data.supportTask = supportTask;
+                    data.taskFlows = DbHandler.Instance.GetAdvancedTaskFlowItems(taskId);
+                    response.status = "00";
+                    response.data = data;
+                }
+                else
+                { 
+                    supportTask.dbusername = supportTask.dbusername.Decrypt();
+                    supportTask.dbPass = supportTask.dbPass.Decrypt();
+                    response.status = "00";
+                    response.data = supportTask;
+                }
             }
             else
             {
@@ -195,20 +223,21 @@ namespace ZenExpresso.Controllers.Api
         {
             var taskId = value["taskId"].ToInteger();
             var supportTask = DbHandler.Instance.GetSupportTaskById(taskId);
-            if (supportTask != null)
+            if (supportTask != null && supportTask.taskType == "AdvancedTaskFlow")
             {
+                var taskResultDto = new AdvancedTaskResultDto() { status = "00", message = "Task Successfully" };
                 string staffId = User.Identity.Name;
-                List<TaskFlowItem> taskFlowItems=new List<TaskFlowItem>();
-                if (supportTask.taskType == "AdvancedTaskFlow")
-                {
-                      taskFlowItems = supportTask.GetFlowItemsForAdvancedTask();
-                }
+                List<TaskFlowItem> taskFlowItems = supportTask.GetFlowItemsForAdvancedTask("postAction");
+                taskResultDto.taskFlowItems = supportTask.GetFlowItemsForAdvancedTask("clientResult");
                 var taskResult = new AdvancedSupportTaskResult(supportTask, taskFlowItems);
-                taskResult.ExecuteResult();
+                taskResult.ExecuteResult(new ClientInputTaskFlowItem(value));
+                taskResultDto.status = taskResult.status;
+                taskResultDto.message = taskResult.message;
+                taskResultDto.taskFlowResults = taskResult.taskFlowResults;
                 var executedTask = new ExecutedTasks(value, supportTask, taskResult);
                 executedTask.executedBy = staffId;
                 DbHandler.Instance.Save(executedTask);
-                return taskResult;
+                return taskResultDto;
             }
             var response = new ServiceResponse() { status = "05", message = "Task not found" };
             return response;
@@ -219,7 +248,7 @@ namespace ZenExpresso.Controllers.Api
 
         [HttpGet]
         public ServiceResponse ListTasks()
-        { 
+        {
             var tasks = DbHandler.Instance.GetAllSupportTasks();
             var response = new ServiceResponse();
             response.status = "00";
@@ -237,14 +266,13 @@ namespace ZenExpresso.Controllers.Api
                 PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "ZENITH.ZENITHBANK.COM.GH");
                 GroupPrincipal qbeGroup = new GroupPrincipal(ctx);
                 PrincipalSearcher srch = new PrincipalSearcher(qbeGroup);
-
                 foreach (var found in srch.FindAll())
                 {
-
                     if (found.ContextType == ContextType.Domain)
                     {
-                        if (found.DisplayName != null)
+                        if (found.DisplayName != null){
                             list.Add(found.DisplayName);
+                        }
                     }
                 }
             }
@@ -260,6 +288,7 @@ namespace ZenExpresso.Controllers.Api
 
 
         [HttpGet]
+        [HttpGet("{id:int}")]
         public ServiceResponse TaskGroups(int id)
         { 
             var groups = DbHandler.Instance.GetTaskAssignedGroupsByTaskId(id);
@@ -276,8 +305,8 @@ namespace ZenExpresso.Controllers.Api
             return response;
         }
 
-        
 
-       
+
+ 
     }
 }

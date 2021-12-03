@@ -2,55 +2,48 @@
 
 @{
     ViewBag.Title = "Manage Support Menus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
 
 <div class="row" ng-app="app">
-    <div class="col-md-12" data-ng-Controller="MenuSetupController as vm" data-ng-init="vm.init()">
+    <div class="card col-md-12" data-ng-Controller="MenuSetupController as vm" data-ng-init="vm.init()">
         <div class="block-web">
-            <div class="header">
-                <div class="actions">
-
-                </div>
-                <h3 class="content-header">@ViewBag.Title </h3>
+            <div class="card-header pb-0">
+                 
+                <h3 class="">@ViewBag.Title </h3>
             </div>
-            <div class="porlets-content">
-                <form name="addMenuForm" method="POST" class="form-horizontal group-border-dashed" parsley-validate="" novalidate="" data-ng-submit="vm.addMenu(addMenuForm.$valid)">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Menu Name</label>
-                        <div class="col-sm-4" data-ng-class="{'has-error': addMenuForm.menuName.$invalid }">
-                            <input type="text" data-ng-model="vm.model.menuName" name="menuName" class="form-control parsley-validated" required="">
+            <div class="card-body">
+                <form name="addMenuForm" method="POST" class="" parsley-validate="" novalidate="" data-ng-submit="vm.addMenu(addMenuForm.$valid)">
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-label col-form-label">Menu Name</label>
+                        <div class="col-sm-4">
+                            <input data-ng-class="{'is-invalid': addMenuForm.menuName.$invalid }" type="text" data-ng-model="vm.model.menuName" name="menuName" class="form-control parsley-validated" required="">
                         </div>
                         <div class="col-sm-4">
                             <button type="submit" class="btn btn-success ">Add</button>
                         </div>
                     </div>
                     <!--/form-group-->
-                </form>
-
-
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-offset-1 col-sm-2 control-label"></label>
-
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-label col-form-label"></label>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-sm-6 h4 ">List of Menus </label>
-                                <table id="example" class="display table table-condensed" width="100%">
+                                <label class="h4 ">List of Menus </label>
+                                <table class="table" width="100%">
                                     <thead>
                                         <tr>
-                                            <th class="col-sm-4">Menu Name</th>
+                                            <th class="col-sm-2">Menu Name</th>
                                             <th class="col-sm-1"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat="item in vm.list">
-
                                             <td data-ng-bind="item.menuName"></td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-xs btn-danger action-view" data-ng-click="vm.deleteMenu(item)"><i class="fa fa-eye"></i>Delete</button>
+                                                    <button type="button" class="btn btn-sm btn-danger action-view" data-ng-click="vm.deleteMenu(item)"><i class="fa fa-eye"></i>Delete</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -58,9 +51,12 @@
                                 </table>
                             </div>
                         </div>
+                        
                     </div>
+                </form>
 
-                </div>
+
+                
 
             </div><!--/porlets-content-->
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
@@ -32,11 +33,25 @@ namespace ZenExpressoCore
             return v;
         }
 
+        public static string ToJsonString<T>(this List<T> TItems) where T: class
+        {
+            return JsonConvert.SerializeObject(TItems);
+        }
+
+        public static string ToJsonString<T>(this T TItem) where T : class
+        {
+            return JsonConvert.SerializeObject(TItem);
+        }
+
 
         public static string ToStringOrEmpty(this JToken jt)
         {
             try
             {
+                if (jt == null)
+                {
+                    return "";
+                }
                 var str = jt.ToString();
                 return str;
             }
@@ -87,7 +102,7 @@ namespace ZenExpressoCore
         {
             if (jt != null)
             {
-                var str = jt.ToString();
+                var str = jt.ToString().ToLower();
                 return str.Equals("true");
             }
             return false;
@@ -140,17 +155,7 @@ namespace ZenExpressoCore
             return response;
         }
 
-//        public static string ToBase64(this string plainText)
-//        {
-//            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-//            return System.Convert.ToBase64String(plainTextBytes);
-//        }
-//
-//        public static string FromBase64(this string base64EncodedData)
-//        {
-//            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-//            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-//        }
+ 
 
 
     }

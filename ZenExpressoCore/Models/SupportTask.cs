@@ -38,8 +38,37 @@ namespace ZenExpressoCore.Models
         {
             foreach (var taskFlowItem in flowItems)
             {
+                taskFlowItem.supportTaskFlowId = id;
                 DbHandler.Instance.Save(taskFlowItem);
             }
+        }
+
+        public int CreateCopy(string createdBy)
+        {
+            string sql = string.Format(@"declare @taskToDuplicate int;
+                declare @newTaskId int;
+                            declare @createdByUser varchar(100);
+                set @taskToDuplicate = {0};
+                            set @createdByUser = '{1}';
+                            INSERT INTO[dbo].[SupportTask] ([taskName],[description],[taskType],[taskResultType],[dbusername],[topLevelMenu],[dbPass]
+                               ,[sqlScript],[jsScript],[createdBy],[createdAt])
+                      SELECT[taskName],[description],[taskType],[taskResultType],[dbusername],[topLevelMenu]
+                      ,[dbPass],[sqlScript],[jsScript],@createdByUser,GETDATE() FROM[dbo].[SupportTask]
+                WHERE id = @taskToDuplicate;
+                            select @newTaskId =@@IDENTITY;
+                            INSERT INTO[dbo].[TaskFlowItem] ([supportTaskFlowId],[controlName],[description],[flowItemType]
+                               ,[flowData],[flowGroup],[controlIdentifier])
+                SELECT @newTaskId,[controlName],[description],[flowItemType],[flowData]
+                      ,[flowGroup],[controlIdentifier] FROM[dbo].[TaskFlowItem]
+                WHERE supportTaskFlowId = @taskToDuplicate;
+                            select @newTaskId 'retVal'; ",id,createdBy);
+             var list= DbHandler.Instance.ExecuteOnHostDb(sql);
+            if (list.Any())
+            {
+                dynamic row = list.First();
+                return row.retVal;
+            }
+            return 0;
         }
 
         public List<ScriptParameter> GetScriptParameters()
@@ -99,8 +128,7 @@ namespace ZenExpressoCore.Models
             else
             {
                 dbusername = dbusername.Encrypt();
-                dbPass = dbPass.Encrypt();
-
+                dbPass = dbPass.Encrypt(); 
             }
             var updated = DbHandler.Instance.Update(this);
             if (updated)
@@ -118,6 +146,25 @@ namespace ZenExpressoCore.Models
             }
             return 0;
         }
+
+        public int SaveAdvancedTaskFlow()
+        {
+
+            if (id == 0)
+            {
+                id = DbHandler.Instance.Save(this);
+                return id;
+            }
+            var updated = DbHandler.Instance.Update(this);
+            if (updated)
+            {
+                DbHandler.Instance.DeleteTaskFlowItemByTaskId(id);
+            }
+
+            return id;
+        }
+
+
 
         public void SetParameterValues(JObject value)
         {
@@ -158,6 +205,16 @@ namespace ZenExpressoCore.Models
         public List<TaskFlowItem> GetFlowItemsForAdvancedTask()
         {
             return DbHandler.Instance.GetAdvancedTaskFlowItems(id);
+        }
+
+        public List<TaskFlowItem> GetFlowItemsForAdvancedTask(string flowGroup)
+        {
+            return DbHandler.Instance.GetAdvancedTaskFlowItems(id,flowGroup);
+        }
+
+        public bool IsAdvancedTask()
+        {
+            return this.taskType == Constants.TaskType.AdvancedTaskFlow;
         }
     }
 

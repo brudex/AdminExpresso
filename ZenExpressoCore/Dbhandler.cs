@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using DapperExtensions;
+using MySql.Data.MySqlClient;
+using Npgsql;
 using ZenExpresso.Helpers;
 using ZenExpressoCore.Helpers;
 using ZenExpressoCore.Models;
@@ -21,10 +22,11 @@ namespace ZenExpressoCore
         static DbHandler instance = null;
         static readonly object padlock = new object();
         private readonly string DefaultConnection;
-        
+
         DbHandler()
         {
-            DefaultConnection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            DefaultConnection = SettingsData.DefaultConnection;
+            Console.WriteLine("Default connection >"+DefaultConnection);
         }
 
         public static DbHandler Instance
@@ -45,7 +47,6 @@ namespace ZenExpressoCore
             }
         }
 
-        
         public bool Update<T>(T obj) where T : class
         {
             using (var connection = GetOpenDefaultConnection())
@@ -65,12 +66,33 @@ namespace ZenExpressoCore
             }
         }
 
+        public List<TopMenu> GetTopMenus()  
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                return connection.Query<TopMenu>("SELECT  * FROM [dbo].[TopMenu] where menuName!='exe' order by menuOrder").ToList();
+            }
+        }
+
         public List<TaskFlowItem> GetAdvancedTaskFlowItems(int supportTaskFlowId)
         {
             using (var connection = GetOpenDefaultConnection())
             {
                 var p1 = Predicates.Field<TaskFlowItem>(f => f.supportTaskFlowId, Operator.Eq, supportTaskFlowId);
                 var list = connection.GetList<TaskFlowItem>(p1);
+                return list.ToList();
+            }
+        }
+
+        public List<TaskFlowItem> GetAdvancedTaskFlowItems(int supportTaskFlowId,string flowGroup)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var p1 = Predicates.Field<TaskFlowItem>(f => f.supportTaskFlowId, Operator.Eq, supportTaskFlowId);
+                var p2 = Predicates.Field<TaskFlowItem>(f => f.flowGroup, Operator.Eq, flowGroup);
+                var predicate = Predicates.Group(GroupOperator.And, p1, p2);
+                var sort = new Sort(){PropertyName = "Id",Ascending = true};
+                var list = connection.GetList<TaskFlowItem>(predicate,new List<ISort>(){sort});
                 return list.ToList();
             }
         }
@@ -84,6 +106,16 @@ namespace ZenExpressoCore
             }
         }
 
+        public void DeleteDataSourceById(int id)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var p1 = Predicates.Field<DataSource>(f => f.Id, Operator.Eq, id);
+                var list = connection.Delete<DataSource>(p1);
+            }
+        }
+
+
         public void DeleteAdminById(int id)
         {
             using (var connection = GetOpenDefaultConnection())
@@ -92,6 +124,17 @@ namespace ZenExpressoCore
                 var list = connection.Delete<DedicatedAdmin>(p1);
             }
         }
+
+
+        public List<string> GetUsersList()
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var list = connection.Query<string>("SELECT userName 'string' from AspNetUsers");
+                return list.ToList();
+            }
+        }
+
         public IDbConnection GetOpenDefaultConnection()
         {
             var connection = new SqlConnection(DefaultConnection);
@@ -143,23 +186,57 @@ namespace ZenExpressoCore
                         break;
 
                     }
-                case "sybase":
+               
+
+                case "postgres":
+                {
+                    if (dataSource.useRawConnectingString)
                     {
-                        if (dataSource.useRawConnectingString)
-                        {
-                            var conString = string.Format(dataSource.connectionString, userId, pass);
-                            connection = new Sybase.Data.AseClient.AseConnection(conString);
-                            connection.Open();
-                        }
-                        else
-                        {
-                            string conString = string.Format("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4};CharSet=utf8;", dataSource.serverIp, dataSource.serverPort,
-                            dataSource.defaultDatabase, userId, pass);
-                            connection = new Sybase.Data.AseClient.AseConnection(conString);
-                            connection.Open();
-                        }
-                        break;
+                        var conString = string.Format(dataSource.connectionString, userId, pass);
+                        connection = new NpgsqlConnection(conString);
+                        connection.Open();
                     }
+                    else
+                    {
+                        string conString = $"Server={dataSource.serverIp};Port={dataSource.serverPort};Database={dataSource.defaultDatabase};User Id={userId};Password={pass};";
+                        connection = new NpgsqlConnection(conString);
+                        connection.Open();
+                    }
+                    break;
+                }
+                case "mysql":
+                {
+                    if (dataSource.useRawConnectingString)
+                    {
+                        var conString = string.Format(dataSource.connectionString, userId, pass);
+                        connection = new MySqlConnection(conString);
+                        connection.Open();
+                    }
+                    else
+                    {
+                        string conString = $"Server={dataSource.serverIp};Port={dataSource.serverPort};Database={dataSource.defaultDatabase};Uid={userId};Pwd={pass}";
+                        connection = new MySqlConnection(conString);
+                        connection.Open();
+                    }
+                    break;
+                }
+                case "sybase":
+                {
+                    // if (dataSource.useRawConnectingString)
+                    // {
+                    //     var conString = string.Format(dataSource.connectionString, userId, pass);
+                    //     connection = new Sybase.Data.AseClient.AseConnection(conString);
+                    //     connection.Open();
+                    // }
+                    // else
+                    // {
+                    //     string conString = string.Format("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4};CharSet=utf8;", dataSource.serverIp, dataSource.serverPort,
+                    //     dataSource.defaultDatabase, userId, pass);
+                    //     connection = new Sybase.Data.AseClient.AseConnection(conString);
+                    //     connection.Open();
+                    // }
+                    break;
+                }
             }
             return connection;
         }
@@ -180,6 +257,22 @@ namespace ZenExpressoCore
             {
                 var id = connection.Insert(obj);
                 return id;
+            }
+        }
+        
+        public void UpdateAdmin(DedicatedAdmin obj)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var id = connection.Update(obj);
+             }
+        }
+
+        public int GetUsersCount()
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                return connection.Query<int>("select count(*) 'int' from [AspNetUsers]").FirstOrDefault(); 
             }
         }
 
@@ -230,6 +323,15 @@ namespace ZenExpressoCore
             }
         }
 
+        public bool DeleteTaskFlowItemByTaskId(int id)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var affected = connection.Execute("DELETE FROM [dbo].[TaskFlowItem] where supportTaskFlowId=@id", new { id });
+                return affected > 0;
+            }
+        }
+
         public List<LogManagement> GetLogManagements()
         {
             using (var connection = GetOpenDefaultConnection())
@@ -269,8 +371,8 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                var predicte = Predicates.Field<SupportTask>(f => f.id, Operator.Eq, id);
-                return connection.GetList<SupportTask>(predicte).FirstOrDefault();
+                var predicate = Predicates.Field<SupportTask>(f => f.id, Operator.Eq, id);
+                return connection.GetList<SupportTask>(predicate).FirstOrDefault();
             }
         }
 
@@ -278,7 +380,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                return connection.GetList<SupportTask>().ToList();
+                return connection.GetList<SupportTask>().OrderBy(x=>x.id).ToList();
             }
         }
         public List<SupportTaskLite> GetSupportTaskWithGroupsAssigned()
@@ -301,7 +403,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                var list = connection.Query<ExecutedTasks>("select top 10000 * from ExecutedTasks order by id desc");
+                var list = connection.Query<ExecutedTasks>("select top 1000 * from ExecutedTasks order by id desc");
                 return list.ToList();
             }
         }
@@ -328,6 +430,16 @@ namespace ZenExpressoCore
         public List<dynamic> ExecuteTaskScript(string sqlQuery,DataSource dataSource,string dbusername,string dbpass)
         {
             using (var connection = CreateDbConnection(dataSource, dbusername, dbpass))
+            {
+                var list = connection.Query(sqlQuery);
+                return list.ToList();
+            }
+        }
+
+
+        public List<dynamic> ExecuteOnHostDb(string sqlQuery)
+        {
+            using (var connection = GetOpenDefaultConnection())
             {
                 var list = connection.Query(sqlQuery);
                 return list.ToList();
@@ -371,14 +483,14 @@ namespace ZenExpressoCore
         //            }
         //        }
 
-        public List<dynamic> ExecuteTaskScriptSybaseLive(SupportTask task, string sqlQuery)
-        {
-            using (var connection = CreateDbConnectionSybase(task.dbusername.Decrypt(), task.dbPass.Decrypt(), ServiceConfiguration.SybaseLiveDatabaseServer))
-            {
-                var list = connection.Query(sqlQuery);
-                return list.ToList();
-            }
-        }
+        //public List<dynamic> ExecuteTaskScriptSybaseLive(SupportTask task, string sqlQuery)
+        //{
+        //    using (var connection = CreateDbConnectionSybase(task.dbusername.Decrypt(), task.dbPass.Decrypt(), ServiceConfiguration.SybaseLiveDatabaseServer))
+        //    {
+        //        var list = connection.Query(sqlQuery);
+        //        return list.ToList();
+        //    }
+        //}
 
         public bool TestDbConnection(string connectionType, string dbuser,string dbpass)
         {
@@ -407,7 +519,7 @@ namespace ZenExpressoCore
         {
             using (var connection = GetOpenDefaultConnection())
             {
-                var query = string.Format("select top 20 max(id) 'id',taskId,taskName,taskDescription,topMenu, max(dateExecuted) 'dateExecuted' FROM ExecutedTasks  where executedBy='{0}' group by taskId, taskName, taskDescription, topMenu order by id desc",
+                var query = string.Format("select top 20 max(id) 'id',taskId,taskName,taskDescription,topMenu, max(dateExecuted) 'dateExecuted' FROM ExecutedTasks  where executedBy='{0}' and topMenu!='exe' group by taskId, taskName, taskDescription, topMenu order by id desc",
                     userName);
                 return connection.Query<ExecutedTasks>(query).ToList();
             }
