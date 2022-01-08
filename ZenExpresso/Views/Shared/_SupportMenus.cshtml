@@ -1,19 +1,23 @@
 ﻿@model List<ZenExpressoCore.Models.SupportMenuModel>
+@{
+    int index = 0;
+}
 <div class="sidebar-heading"> Menu</div>
 @foreach (var supportMenuModel in Model)
-{ 
+{
+    index += 1;
     <ul class="sidebar-menu">
 
         <li class="sidebar-menu-item">
             <a class="sidebar-menu-button js-sidebar-collapse"
                data-toggle="collapse"
-               href="#enterprise_menu">
-                <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">donut_large</span>
+               href="#enterprise_menu-@index">
+                <span class="fa fa-bars sidebar-menu-icon sidebar-menu-icon--left"></span>
                 @supportMenuModel.menuName
                 <span class="ml-auto sidebar-menu-toggle-icon"></span>
             </a>
             <ul class="sidebar-submenu collapse sm-indent"
-                id="enterprise_menu">
+                id="enterprise_menu-@index">
                 @foreach (var subMenu in supportMenuModel.SubMenus)
                 {
                     <li class="sidebar-menu-item">

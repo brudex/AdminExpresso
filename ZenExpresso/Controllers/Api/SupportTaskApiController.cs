@@ -127,6 +127,96 @@ namespace ZenExpresso.Controllers.Api
             }
             return response;
         }
+        
+        [HttpPost]
+        public ServiceResponse AssignTaskToUser([FromBody]JObject value)
+        {
+            var response = new ServiceResponse();
+            var taskId= value["taskId"].ToInteger();
+            string userName = value["userName"].ToStringOrEmpty();
+            var task=  DbHandler.Instance.GetTaskAssignedGroupsByTaskId(taskId);
+            if (task == null)
+            {
+                task = new TaskAssignedGroups();
+                task.taskId = taskId;
+                task.createdAt = DateTime.Now;
+                task.createdBy = User.Identity.Name;
+            }
+            else
+            {
+                if (task.assginedGroups.IndexOf(userName, StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    response.status = "00";
+                    response.message = "Task already assigned";
+                    return response;
+                }
+            }
+            
+            var groups = task.GetGroups();
+            var group = JToken.Parse("{}");
+            group["groupName"] = userName;
+            group["groupType"] = "SingleUser";
+            groups.Add(group);
+            task.SetGroups(groups);
+            int id = task.Save(); 
+            if (id > 0)
+            {
+                response.status = "00";
+                response.message = "Role updated successfully";
+                MemDb.Instance.ReloadSupportTasksInMemory();
+            }
+            else
+            {
+                response.status = "03";
+                response.message = "Error Saving Data";
+            }
+            return response;
+        }
+        
+        
+        [HttpPost]
+        public ServiceResponse RemoveUserFromTask([FromBody]JObject value)
+        {
+            var response = new ServiceResponse();
+            var taskId= value["taskId"].ToInteger();
+            string userName = value["userName"].ToStringOrEmpty();
+            var task=  DbHandler.Instance.GetTaskAssignedGroupsByTaskId(taskId);
+            if (task != null)
+            {
+                if (task.assginedGroups.IndexOf(userName, StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    var groups = task.GetGroups();
+                    var list = new JArray();
+                    foreach (var item in groups)
+                    {
+                        if (item["groupName"].ToStringOrEmpty().Equals(userName,StringComparison.OrdinalIgnoreCase))
+                        { 
+                            continue;
+                        }
+                        list.Add(item);
+                    }
+                    task.SetGroups(list);
+                    int id = task.Save(); 
+                    response.status = "00";
+                    response.message = "Task successfully assigned";
+                    return response;
+                }
+            }
+            
+            response.status = "03";
+            response.message = "There was and error. Role does not exist"; 
+            return response;
+        }
+        
+        [HttpPost]
+        public ServiceResponse UserAssignedTasks([FromBody]JObject value)
+        {
+            var response = new ServiceResponse();
+            string userName = value["userName"].ToStringOrEmpty();
+            var tasks = DbHandler.Instance.GetUserAssignedTasks(userName);
+            response.status = "00"; response.data = tasks;
+            return response;
+        }
 
 
         [HttpPost]
@@ -250,6 +340,16 @@ namespace ZenExpresso.Controllers.Api
         public ServiceResponse ListTasks()
         {
             var tasks = DbHandler.Instance.GetAllSupportTasks();
+            var response = new ServiceResponse();
+            response.status = "00";
+            response.data = tasks;
+            return response;
+        }
+        
+        [HttpGet]
+        public ServiceResponse ListTasksLite()
+        {
+            var tasks = DbHandler.Instance.GetAllSupportTaskLite();
             var response = new ServiceResponse();
             response.status = "00";
             response.data = tasks;

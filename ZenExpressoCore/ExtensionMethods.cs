@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using Extend;
 
 namespace ZenExpressoCore
 {
@@ -106,6 +109,17 @@ namespace ZenExpressoCore
                 return str.Equals("true");
             }
             return false;
+
+        }
+        
+        public static string UrlEncode(this string str)
+        {
+            if (str != null)
+            {
+                str = HttpUtility.UrlEncode(str,Encoding.UTF8);
+                return str;
+            }
+            return string.Empty;
 
         }
         

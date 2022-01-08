@@ -82,13 +82,14 @@
                 currentTaskResult = taskResult;
                 vm.formData = taskResult.formData;
                 executeOnFormSubmitScripts(); 
-            } else {
+            }else {
                 if (taskResult.status === "00") {
                     currentValidationScript = null;
                 }
-            } 
+            }
         }
-
+        
+        //todo raise an event get all inputs and s
 
         function getControllerByFlowItemType(flowItemType) {
             var dict = {

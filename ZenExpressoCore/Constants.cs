@@ -27,5 +27,10 @@ namespace ZenExpressoCore
             public static string BasicTaskFlow = "BasicTaskFlow";
             public static string AdvancedTaskFlow = "AdvancedTaskFlow";
         }
+        
+        public static class SettingsKeys
+        {
+            public static readonly  string InstallSettings = "InstallSettings";
+        }
     }
 }

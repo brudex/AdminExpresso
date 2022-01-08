@@ -134,6 +134,27 @@ namespace ZenExpressoCore
                 return list.ToList();
             }
         }
+        
+        public List<AspnetUser> GetAspnetUsers()
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var list = connection.Query<AspnetUser>("SELECT  id,email,UserName FROM [dbo].[AspNetUsers]");
+                return list.ToList();
+            }
+        }
+        
+        public AspnetUser GetUserById(string id)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var list = connection.Query<AspnetUser>($"SELECT  id,email,UserName FROM [dbo].[AspNetUsers] where id='{id}'");
+                return list.ToList().FirstOrDefault();
+            }
+        }
+        
+         
+
 
         public IDbConnection GetOpenDefaultConnection()
         {
@@ -265,9 +286,19 @@ namespace ZenExpressoCore
             using (var connection = GetOpenDefaultConnection())
             {
                 var id = connection.Update(obj);
-             }
+            }
         }
 
+        
+        public DedicatedAdmin GetDedicatedAdminByUserName(string userName)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var predicate = Predicates.Field<DedicatedAdmin>(f => f.userName, Operator.Eq, userName);
+                var list = connection.GetList<DedicatedAdmin>(predicate);
+                return list.FirstOrDefault();
+            }
+        }
         public int GetUsersCount()
         {
             using (var connection = GetOpenDefaultConnection())
@@ -366,6 +397,15 @@ namespace ZenExpressoCore
                 return connection.GetList<ScriptParameter>(predicte).ToList();
             }
         }
+        
+        public AppSettingsTable GetAppSettings(string settingsKey)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var predicte = Predicates.Field<AppSettingsTable>(f => f.SettingsKey, Operator.Eq, settingsKey);
+                return connection.GetList<AppSettingsTable>(predicte).FirstOrDefault();
+            }
+        }
 
         public SupportTask GetSupportTaskById(int id)
         {
@@ -383,6 +423,16 @@ namespace ZenExpressoCore
                 return connection.GetList<SupportTask>().OrderBy(x=>x.id).ToList();
             }
         }
+        
+        public List<SupportTaskLite> GetAllSupportTaskLite()
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                return connection
+                    .Query<SupportTaskLite>(
+                        "select s.[id],s.[topLevelMenu],s.[taskName],s.[description] from [SupportTask] s").ToList();
+            }
+        }
         public List<SupportTaskLite> GetSupportTaskWithGroupsAssigned()
         {
             using (var connection = GetOpenDefaultConnection())
@@ -396,6 +446,13 @@ namespace ZenExpressoCore
             using (var connection = GetOpenDefaultConnection())
             {
                 return connection.Query<SupportTaskLite>("select s.[id],s.[topLevelMenu],s.[taskName],s.[description],t.[assginedGroups] from [SupportTask] s left join [TaskAssignedGroups] t on s.id =t.taskId where s.id=@id",new {id=taskId}).FirstOrDefault();
+            }
+        }
+        public List<SupportTaskLite> GetUserAssignedTasks(string userName)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                return connection.Query<SupportTaskLite>($"select s.[id],s.[topLevelMenu],s.[taskName],s.[description] from [SupportTask] s left join [TaskAssignedGroups] t on s.id =t.taskId where t.assginedGroups like '%{userName}%'").ToList();
             }
         }
 

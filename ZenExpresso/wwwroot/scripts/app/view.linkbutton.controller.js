@@ -38,10 +38,30 @@
             return true;
         }
 
+        function containsParamReplacement(str) {
+            try {
+               return  str.indexOf("${") > -1;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function replaceParams(str) {
+            var scriptParameters = parentActions.get;
+            scriptParameters.forEach(function (parameter){
+                str = str.replace("${" + parameter.parameterName + "}", parameter.parameterValue);
+            });
+            return str; 
+        }
+        
+
         function buildActionLink(button,action) {
             var taskData = action.taskData;
             var data = '';
             if (isJsonString(taskData)) {
+                if(containsParamReplacement(taskData)){
+                    
+                }
                 data = encodeURIComponent(taskData);
             }
             var actionLink;
@@ -108,11 +128,7 @@
             }
             recursiveIterator();
         }
-
-         
-
-         
-
+ 
         function getAlignmentCss() {
             var alignment = vm.taskInfo.flowData.alignment;
             switch (alignment) {

@@ -57,6 +57,7 @@ namespace ZenExpresso.Controllers
                 Email = model.Email,
             };
             var result = await _userManager.CreateAsync(user, model.Password);
+            
             if (result.Succeeded)
             {
                 _logger.LogInformation("New account with password.");

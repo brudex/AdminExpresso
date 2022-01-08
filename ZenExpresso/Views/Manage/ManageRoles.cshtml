@@ -1,0 +1,61 @@
+@using ZenExpressoCore.Models
+@model AspnetUser
+@{
+    ViewBag.Title = "Manage Roles ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row" ng-app="app">
+    <div class="card col-md-12" >
+        <div class="card-header pb-0">
+           <h3 class="">@ViewBag.Title : <span class="text-info">@Model.UserName</span> </h3>
+        </div>
+        <div class="card-body" data-ng-controller="RoleSetupController as vm" data-ng-init="vm.init('@Model.UserName')">
+            <div class="col-sm-12">
+                <form   class="" autocomplete="off" novalidate="" >
+                                                  <input autocomplete="false" name="hidden" type="text" style="display:none;">
+                                                   
+                                                  <div class="form-group row">
+                                                      <label class="col-sm-4 form-label col-form-label">Select Task to Assign </label>
+                                                      <div class="col-sm-4"> 
+                                                          <select data-toggle="select" type="text" class="form-control" data-ng-model="vm.taskId" data-ng-options="item.id as item.taskName for item in vm.tasks track by item.id">
+                                                                                                         <option value="">[ Select One.. ]</option>
+                                                                                                     </select>
+                                                       </div>
+                                                      <div class="col-md-2">
+                                                          <button type="button" class="btn btn-xs btn-primary" data-ng-click="vm.addRole()">Add</button>
+                                                      </div>
+                                                  </div>
+                                                  
+                                                   
+                                              </form>
+                              <div class="col-sm-12">
+                                  <label class="h5 ">List of Assigned Roles </label>
+                                  <table class=" table mb-0 thead-border-top-0  was-validated table-responsive">
+                                      <thead>
+                                      <tr class="col-md-12">
+                                          <th>Menu</th>
+                                          <th>Task/Role Name</th>
+                                          <th>Description</th>
+                                          <th></th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr data-ng-repeat="item in vm.list">
+                                          <td>{{item.topLevelMenu}} </td>
+                                          <td>{{item.taskName}}</td>
+                                          <td>{{item.description}}</td>
+                                          <td>
+                                              <div class="btn-group">
+                                                  <button class="btn btn-sm btn-danger" data-ng-click="vm.deleteRole(item)"> <i class="fa fa-trash"></i> Delete</button>
+                                              </div>
+                                          </td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+            </div> 
+
+        </div><!--/porlets-content-->
+        <!--/block-web-->
+    </div><!--/col-md-12-->
+</div>

@@ -119,9 +119,10 @@ namespace ZenExpresso
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            SettingsData.AspNetEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             loggerFactory.AddLog4Net();
             app.UseStaticFiles();
-           
             app.UseCookiePolicy();
             Logger.EnsureInitialized();
             //app.UseHttpsRedirection();
@@ -135,7 +136,6 @@ namespace ZenExpresso
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-
             new InitializeDatabase();
             int noOfUsers = DbHandler.Instance.GetUsersCount();
             if (noOfUsers == 0)

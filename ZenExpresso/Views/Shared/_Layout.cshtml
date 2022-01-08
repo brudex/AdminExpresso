@@ -11,32 +11,7 @@
     <title>@ViewBag.Title - USSD Amdin</title>
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex" />
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap" rel="stylesheet" />
-    <!-- Preloader -->
-    <link type="text/css" href="~/vendor/spinkit.css" rel="stylesheet" />
-    <!-- Perfect Scrollbar -->
-    <link type="text/css" href="~/vendor/perfect-scrollbar.css" rel="stylesheet" />
-    <!-- Material Design Icons -->
-    <link type="text/css" href="~/css/material-icons.css" rel="stylesheet" />
-    <!-- Font Awesome Icons -->
-    <link type="text/css" href="~/css/fontawesome.css" rel="stylesheet" />
-    <!-- Preloader -->
-    <link type="text/css" href="~/css/preloader.css" rel="stylesheet" />
-    <!-- App CSS -->
-    <link type="text/css" href="~/css/app.css" rel="stylesheet" />
-    <!-- Toastr -->
-    <link type="text/css" href="~/vendor/toastr.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/sweetalert.css">
-    <link href="~/css/toastr.css" rel="stylesheet" />
-    <!-- Flatpickr -->
-    <link type="text/css" href="~/css/flatpickr.css" rel="stylesheet">
-    <link type="text/css" href="~/css/flatpickr-airbnb.css" rel="stylesheet">
-    <link href="~/assets/plugins/dropzone/dropzone.css" rel="stylesheet" />
-    <link type="text/css" href="~/vendor/select2/select2.min.css" rel="stylesheet">
-    <link type="text/css" href="~/css/select2.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/cr-1.5.3/datatables.min.css" />
-    <link type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css" rel="stylesheet">
-    <link type="text/css" href="~/assets/plugins/spinjs/spin.css" rel="stylesheet" />
+    <partial name="_HeadLinks"/>
 </head>
 
 <body class="layout-app ">
@@ -89,9 +64,12 @@
 
                 @if (userPreviledges.HasPreviledges())
                 {
-                    <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="btn btn-outline-dark "> <i class="material-icons ">launch</i> <span>Basic Task</span> </a>
-                    <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user btn btn-outline-dark" style="margin-left:5px"> <i class="material-icons icon--plus">launch</i> <span>Advanced Task</span> </a>
-                }
+                    if (userPreviledges.canCreateTask)
+                    {
+                        <a href="@Url.Action("CreateSupportTask", "SupportTask")" class="btn btn-outline-dark "> <i class="material-icons ">launch</i> <span>Basic Task</span> </a>
+                        <a href="@Url.Action("CreateAdvancedTask", "SupportTask")" class="add_user btn btn-outline-dark" style="margin-left:5px"> <i class="material-icons icon--plus">launch</i> <span>Advanced Task</span> </a>
+                    }
+               }
 
                 <div class="flex"></div>
 
@@ -120,29 +98,18 @@
                     </div>
                 </div>
                 <!-- // END Navbar Menu -->
-            </div>
-
-            <!-- // END Navbar -->
-            <!-- // END Header -->
-            <!-- BEFORE Page Content -->
-            <!-- // END BEFORE Page Content -->
+            </div> 
             <!-- Page Content -->
             <!-- Replace this with your page content -->
-
             <div class=" page__container flex my-32pt">
                 @RenderBody()
             </div>
-
             <!-- // END Replace this with your page content -->
             <!-- // END Page Content -->
             <!-- Footer -->
-
             @await Html.PartialAsync("_Footer.cshtml")
-
             <!-- // END Footer -->
-
         </div>
-
         <!-- // END drawer-layout__content -->
         <!-- Drawer -->
 
@@ -151,25 +118,15 @@
             <div class="mdk-drawer__content">
                 <div class="sidebar sidebar-dark-pickled-bluewood sidebar-left"
                      data-perfect-scrollbar=data-perfect-scrollbar>
-
                     <!-- Sidebar Content -->
-
-
                     <a href="/"
                        class="sidebar-brand ">
                         <!-- <img class="sidebar-brand-icon" src="~/images/illustration/student/128/white.svg" alt="Luma"> -->
-                        <span class="avatar avatar-xl sidebar-brand-icon h-auto">
-
-
+                        <span class="avatar avatar-xl sidebar-brand-icon h-auto"> 
                             <span class="avatar-title rounded ">
-                                <img src="~/assets/images/logo.jpg"
-                                     class="img-fluid"
-                                     alt="logo" />
-
+                                <img src="~/assets/images/logo.jpg" class="img-fluid" alt="logo" />
                             </span>
-
                         </span>
-
                         <span>TM1 Admin</span>
                     </a>
                     @await Html.PartialAsync("_MenuPartial2")
@@ -180,94 +137,9 @@
         <!-- // END Drawer -->
 
     </div>
-
-    <!-- // END Drawer Layout -->
-    <!-- jQuery -->
-    <script src="~/vendor/jquery.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="~/vendor/popper.min.js"></script>
-    <script src="~/vendor/bootstrap.min.js"></script>
-
-    <!-- Perfect Scrollbar -->
-    <script src="~/vendor/perfect-scrollbar.min.js"></script>
-
-    <!-- DOM Factory -->
-    <script src="~/vendor/dom-factory.js"></script>
-    <!-- MDK -->
-    <script src="~/vendor/material-design-kit.js"></script>
-    <script src="~/vendor/flatpickr/flatpickr.min.js"></script>
-    <script src="~/vendor/select2/select2.min.js"></script>
-    <script src="~/js/select2.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js" integrity="sha512-oQq8uth41D+gIH/NJvSJvVB85MFk1eWpMK6glnkg6I7EdMqC1XVkW7RxLheXwmFdG03qScCM7gKS/Cx3FYt7Tg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    @* <script src="~/assets/plugins/dropzone/dropzone.min.js"></script> *@
-    <!-- App JS -->
-    <script src="~/js/app.js"></script>
-    <!-- Preloader -->
-    <script src="~/js/preloader.js"></script>
-    <input type="hidden" value="@Url.Content("~")" id="___applicationbaseUrl" />
-    <script src="~/assets/js/jquery.slimscroll.min.js"></script>
-    <script src="~/assets/js/jPushMenu.js"></script>
-    <script src="~/assets/js/sweetalert.js"></script>
-    <script src="~/assets/plugins/spinjs/spin.js"></script>
-    <script src="~/scripts/buckets.min.js"></script>
-    <script src="~/scripts/angular.js"></script>
-    <script src="~/scripts/angular-animate.js"></script>
-    <script src="~/scripts/app/app.module.js"></script>
-    <script src="~/scripts/app/services.factory.js"></script>
-    <script src="~/scripts/app/dataholder.factory.js"></script>
-    <script src="~/scripts/app/utils.factory.js"></script>
-    <script src="~/assets/js/validate.min.js"></script>
-    <script src="~/assets/js/lodash.min.js"></script>
-    <script src="~/assets/js/toastr.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.7/datatables.min.css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.7/datatables.min.js"></script>
-    <script type="text/javascript" src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
-
-
-    @RenderSection("MyScripts", required: false)
-    <script src="~/js/list.js"></script>
-    <script src="~/vendor/list.min.js"></script>
-    <script src="~/scripts/app/dblog.controller.js"></script>
-    <script src="~/scripts/app/searchlog.controller.js"></script>
-    <script src="~/scripts/app/createsupporttask.controller.js"></script>
-    <script src="~/scripts/app/menu.setup.controller.js"></script>
-    <script src="~/scripts/app/datasource.setup.controller.js"></script>
-    <script src="~/scripts/app/executetask.controller.js"></script>
-    <script src="~/scripts/app/execute.advanced.task.controller.js"></script>
-    <script src="~/scripts/app/assigngroups.controller.js"></script>
-    <script src="~/scripts/app/admin.setup.controller.js"></script>
-    <script src="~/scripts/app/widget.successmessage.controller.js"></script>
-    <script src="~/scripts/app/createadvanced.supporttask.controller.js"></script>
-    <script src="~/scripts/app/widget.dynamicform.controller.js"></script>
-    <script src="~/scripts/app/widget.clientinput.controller.js"></script>
-    <script src="~/scripts/app/widget.restapi.controller.js"></script>
-    <script src="~/scripts/app/widget.sqlquery.controller.js"></script>
-    <script src="~/scripts/app/widget.javascript.controller.js"></script>
-    <script src="~/scripts/app/widget.tableresult.controller.js"></script>
-    <script src="~/scripts/app/widget.carddesign.controller.js"></script>
-    <script src="~/scripts/app/widget.fileuploadclient.controller.js"></script>
-    <script src="~/scripts/app/widget.fileuploadserver.controller.js"></script>
-    <script src="~/scripts/app/widget.pdfforminput.controller.js"></script>
-    <script src="~/scripts/app/widget.filedownload.controller.js"></script>
-    <script src="~/scripts/app/widget.linkbutton.controller.js"></script>
-    <script src="~/scripts/app/widget.excelcsv.controller.js"></script>
-
-    <script src="~/scripts/app/view.tableresult.controller.js"></script>
-    <script src="~/scripts/app/view.cardresult.controller.js"></script>
-    <script src="~/scripts/app/view.inputform.controller.js"></script>
-    <script src="~/scripts/app/vexecute.script.controller.js"></script>
-    <script src="~/scripts/app/view.successmessage.controller.js"></script>
-    <script src="~/scripts/app/view.filedownload.controller.js"></script>
-    <script src="~/scripts/app/view.fileupload.controller.js"></script>
-    <script src="~/scripts/app/view.linkbutton.controller.js"></script>
-    <script src="~/scripts/app/view.dynamic.form.controller.js"></script>
-    <script src="~/js/toastr.js"></script>
-
-
+<partial name="_VendorScripts"/>
+<partial name="_AppScripts"/>
+@await RenderSectionAsync("MyScripts", required: false)
 </body>
 
 </html>

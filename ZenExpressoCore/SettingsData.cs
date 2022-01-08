@@ -12,6 +12,7 @@ namespace ZenExpressoCore
         public static Dictionary<string,string> appSettings;
         public static string WebRootPath = "";
         public static string HostUrl = "";
+        public static string AspNetEnv = "";
  
         public static void Initialize(Dictionary<string, string> settings)
         {

@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using ZenExpresso.Helpers;
+using ZenExpressoCore;
+using ZenExpressoCore.Models;
 
 
 namespace ZenExpresso.Controllers
@@ -7,6 +12,8 @@ namespace ZenExpresso.Controllers
    
     public class SetupController : Controller
     {
+        
+        
         // GET: Settings
         [DedicatedAdminsAllowed]
         public ActionResult ManageTopMenus()
@@ -20,13 +27,6 @@ namespace ZenExpresso.Controllers
             return View();
         }
 
-        [DedicatedAdminsAllowed]
-        public ActionResult ManageAdmins()
-        {
-            return View();
-        }
-
-         
 
         [DedicatedAdminsAllowed]
         public ActionResult ReloadMemory()
@@ -42,6 +42,9 @@ namespace ZenExpresso.Controllers
             ViewBag.Loaded = true;
             return View();
         }
+        
+       
+
 
       
     }

@@ -22,6 +22,7 @@
             getScriptParameters: postData('api/SupportTaskApi/ScriptParameters'),
             getSupportTaskGroups: getData('api/SupportTaskApi/TaskGroups'),
             getAllSupportTasks: getData('api/SupportTaskApi/ListTasks'),
+            getAllSupportTasksLite: getData('api/SupportTaskApi/ListTasksLite'),
             saveSupportTaskGroup: postData('api/SupportTaskApi/SaveSupportTaskGroup'),
             executeSupportTask: postData('api/SupportTaskApi/ExecuteSupportTask'),
             executeAdvancedTask: postData('api/SupportTaskApi/ExecuteAdvancedTask'),
@@ -32,6 +33,9 @@
             addMenu: postData('api/SetupApi/SaveMenu'),
             deleteMenu: postData('api/SetupApi/DeleteMenu'),
             getUsersList: getData('api/SetupApi/GetUsersList'),
+            userAssignedTasks: postData('api/SupportTaskApi/UserAssignedTasks'),
+            assignTaskToUser: postData('api/SupportTaskApi/AssignTaskToUser'),
+            deleteUserRole: postData('api/SupportTaskApi/RemoveUserFromTask'),
 
             getDataSources: getData('api/SetupApi/GetDataSources'),
             saveDataSource: postData('api/SetupApi/SaveDataSource'),

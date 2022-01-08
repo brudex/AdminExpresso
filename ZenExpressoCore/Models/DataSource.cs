@@ -17,4 +17,10 @@ namespace ZenExpressoCore.Models
         public string defaultDatabase { get; set; }
         public string dataProvider { get; set; } //SqlServer,Sybase
     }
+
+    public class DataSourceExtended :DataSource
+    {
+        public string userName { get; set; }
+        public string password { get; set; }
+    }
 }

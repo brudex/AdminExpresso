@@ -7,7 +7,6 @@
   <ItemGroup>
     <Content Remove="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
@@ -39,6 +38,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="wwwroot\images" />
       <Folder Include="wwwroot\uploads\" />
     </ItemGroup>
 

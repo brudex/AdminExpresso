@@ -49,11 +49,9 @@ namespace ZenExpresso.Controllers
             return response;
         }
 
-        /***************************************************DataSources***************************************/ 
-
+        /***************************************************DataSources***************************************/
         public ServiceResponse GetDataSources()
         {
-
             var response = new ServiceResponse();
             var list = DbHandler.Instance.GetList<DataSource>();
             response.status = "00";
@@ -86,7 +84,6 @@ namespace ZenExpresso.Controllers
         [HttpPost]
         public ServiceResponse DeleteDataSource([FromBody]JObject data)
         {
-
             int id = data["id"].ToInteger();
             DbHandler.Instance.DeleteDataSourceById(id);
             MemDb.Instance.ReloadMenus();

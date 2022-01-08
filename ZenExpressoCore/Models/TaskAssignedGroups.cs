@@ -38,8 +38,13 @@ namespace ZenExpressoCore.Models
 
         public JArray GetGroups()
         {
-            var groups = JArray.Parse(assginedGroups);
-            return groups;
+            if (!string.IsNullOrEmpty(assginedGroups))
+            {
+                var groups = JArray.Parse(assginedGroups);
+                return groups;
+            }
+
+            return new JArray();
         }
     }
 }

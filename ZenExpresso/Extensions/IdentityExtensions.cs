@@ -62,6 +62,10 @@ namespace ZenExpresso
             {
                 admin.canCreateUser = true;
             }
+            if (roleClaims.Any(x => x.Value == "canManageUserRoles"))
+            {
+                admin.canManageUserRoles = true;
+            }
             if (roleClaims.Any(x => x.Value == "canManageLogs"))
             {
                 admin.canManageLogs = true;
@@ -94,6 +98,10 @@ namespace ZenExpresso
                 if (admin.canCreateAdmin)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "canCreateAdmin"));
+                }
+                if (admin.canManageUserRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "canManageUserRoles"));
                 }
                 if (admin.canCreateUser)
                 {

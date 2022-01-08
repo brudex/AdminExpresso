@@ -2,7 +2,6 @@
     ViewBag.Title = "Setup Admins";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row" ng-app="app">
     <div class="card col-md-12" data-ng-Controller="AdminSetupController as vm" data-ng-init="vm.init()">
         <div class="card-header pb-0">
@@ -29,8 +28,9 @@
                                         <tr class="col-md-12">
                                             <th>User Name</th>
                                             <th>Full Name</th>
-                                            <th>Can Create task</th>
+                                            <th>Can Create Task</th>
                                             <th>Can Create User</th>
+                                            <th>Can Manage Roles</th>
                                             <th>Can Create Admin</th>
                                             <th>Can Manage Logs</th>
                                             <th></th>
@@ -42,27 +42,34 @@
                                             <td data-ng-bind="item.fullName"></td>
                                             <td>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input id="canCreateTask" type="checkbox" checked="" data-ng-model="item.canCreateTask" class="custom-control-input">
-                                                    <label for="canCreateTask" class="custom-control-label"></label>
+                                                    <input ng-attr-id="{{ 'canCreateTask-' + item.id }}"  type="checkbox" checked="" data-ng-model="item.canCreateTask" class="custom-control-input">
+                                                    <label for="{{ 'canCreateTask-' + item.id }}" class="custom-control-label"></label>
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input data-ng-model="item.canCreateUser" id="canCreateUser" type="checkbox" checked="" class="custom-control-input">
-                                                    <label for="canCreateUser" class="custom-control-label"></label>
+                                                    <input ng-attr-id="{{ 'canCreateUser-' + item.id }}" data-ng-model="item.canCreateUser"  type="checkbox" checked="" class="custom-control-input">
+                                                    <label  for="{{ 'canCreateUser-' + item.id }}"  class="custom-control-label"></label>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input data-ng-model="item.canCreateAdmin" id="canCreateAdmin" type="checkbox" checked="" class="custom-control-input">
-                                                    <label for="canCreateAdmin" class="custom-control-label"></label>
+                                                    <input ng-attr-id="{{ 'canManageUserRoles-' + item.id }}" data-ng-model="item.canManageUserRoles"  type="checkbox" checked="" class="custom-control-input">
+                                                    <label for="{{ 'canManageUserRoles-' + item.id }}" class="custom-control-label"></label>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input  data-ng-model="item.canManageLogs" id="canManageLogs" type="checkbox" checked="" class="custom-control-input">
-                                                    <label for="canManageLogs" class="custom-control-label"></label>
+                                                    <input ng-attr-id="{{ 'canCreateAdmin-' + item.id }}" data-ng-model="item.canCreateAdmin"  type="checkbox" checked="" class="custom-control-input">
+                                                    <label for="{{ 'canCreateAdmin-' + item.id }}" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input ng-attr-id="{{ 'canManageLogs-' + item.id }}" data-ng-model="item.canManageLogs"  type="checkbox" checked="" class="custom-control-input">
+                                                    <label for="{{ 'canManageLogs-' + item.id }}" class="custom-control-label"></label>
                                                 </div>
                                             </td>
                                             <td>
@@ -76,9 +83,7 @@
                                 </table>
                             
                         </div>
-                    </div>
-
-                 
+                    </div> 
                 <!--/form-group-->
             </form>
 

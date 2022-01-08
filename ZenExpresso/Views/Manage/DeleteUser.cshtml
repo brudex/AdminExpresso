@@ -1,0 +1,54 @@
+﻿@model ZenExpressoCore.Models.AspnetUser
+
+@{
+    ViewBag.Title = "Delete User  ";
+   
+}
+
+@if (Model != null)
+{
+    
+    <section class="panel default blue_title h2">
+         
+        <div class="panel-heading"><span class="semi-bold">@ViewBag.Title :<span class="text-info">@Model.UserName</span>  </span> </div>
+        <div class="panel-body">
+            <div class="bs-example">
+                @using (Html.BeginForm("DeleteUser", "Manage", method: FormMethod.Post))
+                {
+                    @Html.HiddenFor(x => x.id)
+                    <div class="alert alert-warning h4">
+                          <label class="control-label">Are you sure you want to Delete :   <strong class="h4"> @Model.UserName</strong></label>
+                         <p>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </p>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </section>
+}
+ 
+
+@if (ViewBag.Deleted != null)
+{
+    @if ((bool)ViewBag.Deleted)
+    {
+        <section class="panel default blue_title h2">
+            <div class="panel-heading">Delete <span class="semi-bold"> Successful</span> </div>
+            <div class="panel-body">
+
+                <div class="alert alert-success h4">
+                    User Successfully Deleted
+                </div>
+                <a href="@Url.Action("ManageRoles","Manage")" class="btn btn-primary">Back to Users</a>
+            </div>
+        </section>
+    }
+    else
+    {
+        <div class="alert alert-danger"> <strong>Oh snap!</strong> <a class="alert-link" href="#">An error occured</a> and try submitting again. </div>
+    }
+
+}
