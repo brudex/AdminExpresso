@@ -10,7 +10,7 @@ using ZenExpressoCore.Models;
 
 namespace ZenExpresso.Controllers
 {
-    [Route("[controller]/[action]")]
+    
     [AllowAnonymous]
     public class InstallController : Controller
     {
@@ -50,14 +50,14 @@ namespace ZenExpresso.Controllers
             }
             if (string.IsNullOrEmpty(connectionString))
             {
-                ViewBag["error"] = error;
+                ViewBag.error = error;
                 return View();
             }
 
             string fileName = await HandleLogoUpload(logo);
             if (string.IsNullOrEmpty(fileName))
             {
-                ViewBag["error"] = "Please upload application logo";
+                ViewBag.error = "Please upload application logo";
                 return View();
             }
             new InitializeDatabase(); //install scripts
@@ -69,8 +69,12 @@ namespace ZenExpresso.Controllers
                 AppInstallHandler.SaveAppSettings(installSettings);
                 return RedirectToAction(nameof(AccountController.Login), "Account");
             }
-            error = "Creating admin failed";
-            ViewBag["error"] = error;
+            else
+            {
+                error = "Creating admin failed";
+                ViewBag.error= error;
+            }
+           
             return View(model);
         }
         

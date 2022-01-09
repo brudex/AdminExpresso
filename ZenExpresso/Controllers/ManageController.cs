@@ -37,31 +37,31 @@ namespace ZenExpresso.Controllers
             _httpContextAccessor = accessor;
         }
  
-        //
+        
         // GET: /Manage/Index
-        // public async Task<ActionResult> Index(ManageMessageId? message)
-        // {
-        //     ViewBag.StatusMessage =
-        //         message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-        //         : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-        //         : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-        //         : message == ManageMessageId.Error ? "An error has occurred."
-        //         : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-        //         : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-        //         : "";
-        //
-        //     var tUser = await _userManager.GetUserAsync(User);
-        //     var model = new IndexViewModel
-        //     {
-        //         HasPassword = true,
-        //         PhoneNumber = await _userManager.GetPhoneNumberAsync(tUser),
-        //         TwoFactor = await _userManager.GetTwoFactorEnabledAsync(tUser),
-        //         Logins = await _userManager.GetLoginsAsync(tUser),
-        //         
-        //         BrowserRemembered = false
-        //     };
-        //     return View(model);
-        // }
+        public async Task<ActionResult> Index(ManageMessageId? message)
+        {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
+                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : "";
+        
+            var tUser = await _userManager.GetUserAsync(User);
+            var model = new IndexViewModel
+            {
+                HasPassword = true,
+                PhoneNumber = await _userManager.GetPhoneNumberAsync(tUser),
+                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(tUser),
+                Logins = await _userManager.GetLoginsAsync(tUser),
+                
+                BrowserRemembered = false
+            };
+            return View(model);
+        }
 
         [DedicatedAdminsAllowed]
         public async Task<ActionResult> DeleteUser(string id)
@@ -123,37 +123,43 @@ namespace ZenExpresso.Controllers
         }
 
  
-        //
+        
         // GET: /Manage/ChangePassword
-        // public ActionResult ChangePassword()
-        // {
-        //     return View();
-        // }
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
 
-        //
+        
         // POST: /Manage/ChangePassword
-        // [HttpPost]
-        // [ValidateAntiForgeryToken]
-        // public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
-        // {
-        //     if (!ModelState.IsValid)
-        //     {
-        //         return View(model);
-        //     }
-        //     var tUser = await _userManager.GetUserAsync(User);
-        //     var result = await _userManager.ChangePasswordAsync(tUser, model.OldPassword, model.NewPassword);
-        //     if (result.Succeeded)
-        //     {
-        //         var user = await _userManager.FindByIdAsync(tUser.Id);
-        //         if (user != null)
-        //         {
-        //             await _signInManager.SignInAsync(user, isPersistent: false);
-        //         }
-        //         return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
-        //     }
-        //     AddErrors(result);
-        //     return View(model);
-        // }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var tUser = await _userManager.GetUserAsync(User);
+            var result = await _userManager.ChangePasswordAsync(tUser, model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByIdAsync(tUser.Id);
+                if (user != null)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                }
+
+                ViewBag.Changed = true;
+             }
+            else
+            {
+                ViewBag.Error = result.Errors.FirstOrDefault();
+                ViewBag.Changed = false;
+            }
+            AddErrors(result);
+            return View(model);
+        }
 
         
 

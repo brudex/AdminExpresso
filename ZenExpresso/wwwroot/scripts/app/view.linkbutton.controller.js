@@ -47,10 +47,21 @@
         }
 
         function replaceParams(str) {
-            var scriptParameters = parentActions.get;
-            scriptParameters.forEach(function (parameter){
-                str = str.replace("${" + parameter.parameterName + "}", parameter.parameterValue);
-            });
+            var taskResults = parentActions.getTaskResults();
+            var taskResult = _.find(taskResults, function(o) { return o.flowItemType === ""; });
+            var initialData=null;
+            if (taskResult && taskResult.status === "00") {
+                if (_.isArray(taskResult.data)) {
+                    initialData = taskResult.data.length ? taskResult.data[0] : null;
+                 } else {
+                    initialData = taskResult.data;
+                }
+            }
+            if(initialData){
+                Object.keys(initialData).forEach(function (key){
+                    str = str.replace("${" + key + "}", initialData[key]);
+                })
+            } 
             return str; 
         }
         

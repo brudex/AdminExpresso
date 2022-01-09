@@ -32,7 +32,8 @@ namespace ZenExpressoCore
             error = String.Empty;
             string appSettingsFileName = Path.Combine(System.IO.Directory.GetCurrentDirectory(),
                 $"appsettings.{SettingsData.AspNetEnv}.json");
-            if (!System.IO.File.Exists(appSettingsFileName))
+            
+            if (string.IsNullOrEmpty(SettingsData.AspNetEnv))
             {
                 appSettingsFileName = "appsettings.json";
             }
@@ -57,6 +58,7 @@ namespace ZenExpressoCore
             }
             catch (Exception ex)
             {
+                error = ex.Message;
                 Logger.Error(typeof(AppInstallHandler),ex.Message,ex);
                 return string.Empty;
             }

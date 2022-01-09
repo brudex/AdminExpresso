@@ -88,6 +88,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-header"><strong>@User.Identity.Name</strong></div>
+                            <a class="dropdown-item h5 text-info" href="@Url.Action("Index", "Manage")"> Account Settings</a>
                             <div class="dropdown-item">
                                 <form method="POST" action="@Url.Action("Logout", "Account")">
                                     @Html.AntiForgeryToken()
