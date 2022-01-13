@@ -27,6 +27,7 @@
             executeSupportTask: postData('api/SupportTaskApi/ExecuteSupportTask'),
             executeAdvancedTask: postData('api/SupportTaskApi/ExecuteAdvancedTask'),
             testDbConnection: postData('api/SupportTaskApi/TestDbConnection'),
+            testDbConnectionRaw: postData('api/SupportTaskApi/TestDbConnectionRaw'),
             listActiveDirectoryGroups: getData('api/SupportTaskApi/ListActiveDirectoryGroups'),
 
             getMenuList: getData('api/SetupApi/GetMenuList'),

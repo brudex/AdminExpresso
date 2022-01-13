@@ -16,6 +16,11 @@ namespace ZenExpressoCore.Models
         public string serverPort { get; set; }
         public string defaultDatabase { get; set; }
         public string dataProvider { get; set; } //SqlServer,Sybase
+
+        public DataSource GetDataSource()
+        {
+            return this;
+        }
     }
 
     public class DataSourceExtended :DataSource

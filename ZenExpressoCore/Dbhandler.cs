@@ -21,7 +21,7 @@ namespace ZenExpressoCore
     {
         static DbHandler instance = null;
         static readonly object padlock = new object();
-        private readonly string DefaultConnection;
+        private static string DefaultConnection;
 
         DbHandler()
         {
@@ -47,6 +47,10 @@ namespace ZenExpressoCore
             }
         }
 
+        public void UpdateDefaultConnectionString()
+        {
+            DefaultConnection = SettingsData.DefaultConnection;
+        }
         public bool Update<T>(T obj) where T : class
         {
             using (var connection = GetOpenDefaultConnection())
@@ -122,6 +126,15 @@ namespace ZenExpressoCore
             {
                 var p1 = Predicates.Field<DedicatedAdmin>(f => f.id, Operator.Eq, id);
                 var list = connection.Delete<DedicatedAdmin>(p1);
+            }
+        }
+
+        public void DeleteAppSettingsByKey(string key)
+        {
+            using (var connection = GetOpenDefaultConnection())
+            {
+                var p1 = Predicates.Field<AppSettingsTable>(f => f.SettingsKey, Operator.Eq, key);
+                var list = connection.Delete<AppSettingsTable>(p1);
             }
         }
 
@@ -258,6 +271,7 @@ namespace ZenExpressoCore
                     // }
                     break;
                 }
+               
             }
             return connection;
         }
@@ -570,7 +584,28 @@ namespace ZenExpressoCore
             return connected;
         }
 
-        
+        public bool TestDbConnectionRaw(DataSourceExtended dataSource,out string error)
+        {
+            error = string.Empty;
+            bool connected = false;
+            try
+            {
+                var dt = dataSource.GetDataSource();
+               
+                using (var connection = CreateDbConnection(dt, dataSource.userName, dataSource.password))
+                {
+                    connected = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                Logger.Error(this, "Error connecting to Db >>", ex);
+            }
+            return connected;
+        }
+
+
 
         public List<ExecutedTasks> GetRecentTasks(string userName)
         {

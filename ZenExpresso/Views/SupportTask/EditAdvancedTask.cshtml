@@ -25,6 +25,7 @@
         @* Server Widgets *@
         @await Html.PartialAsync("_FileUploadServerWidget")
         @await Html.PartialAsync("_SqlScriptWidget", Model.GetDataSources())
+        @await Html.PartialAsync("_MongoDbWidget", Model.GetDataSources())
         @await Html.PartialAsync("_RestApiWidget")
         @await Html.PartialAsync("_ExcelCsvProcessorWidget")
         @await Html.PartialAsync("_DataTransformationWidget")

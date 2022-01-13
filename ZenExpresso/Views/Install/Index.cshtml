@@ -1,7 +1,13 @@
+@using ZenExpressoCore
 @model ZenExpresso.Models.InstallViewModel
 @{
     ViewBag.Title = "Installation Setup";
     Layout = "~/Views/Shared/_InstallLayout.cshtml";
+    string modelJson = "";
+    if (Model!=null && !string.IsNullOrEmpty(Model.error))
+    {
+        modelJson = Model.ToJsonString();
+    } 
 }
  
 <div class="pt-32pt">
@@ -14,128 +20,136 @@
     </div>
 </div>
  
-<div class="container page__container page-section">
-       @using (Html.BeginForm("Index", "Install", FormMethod.Post))
-       {
-           @Html.AntiForgeryToken()
-           if (ViewBag.error != null)
-           {
-               <div class="form-group row">
-                   <label class="col-md-4"></label>
-                   <div class="col-md-8">
-                       <div class="alert alert-danger">
-                          Error: @ViewBag.error
-                       </div>  
-                   </div>
-               </div>
-           }
-           <div class="row mb-32pt">
-               <div class="col-lg-4">
-                   <div class="page-separator">
-                       <div class="page-separator__text">Database Setup</div>
-                   </div>
-                   <p class="card-subtitle text-70 mb-16pt mb-lg-0">
-                       ZenExpresso uses MSSQL server to host application data and user accounts. Configure the database settings to use for this applicaiton.
-                   </p>
-               </div>
-               <div class="col-lg-8 d-flex align-items-center">
-                   <div class="flex"
-                        style="max-width: 100%">
-                       <div class="form-group">
-                           <label class="form-label">Dabase Host:</label>
-                           @Html.TextBoxFor(m => m.dbHost, new { @class = "form-control", placeholder="127.0.0.1", required="true" })
-                       </div>
-                       <div class="form-group">
-                           <label class="form-label">Database Port :</label>
-                           @Html.TextBoxFor(m => m.dbPort, new {@class = "form-control", placeholder = "1433"})
-                       </div>
-                       <div class="form-group">
-                           <label class="form-label">Database Name :</label>
-                           @Html.TextBoxFor(m => m.dbName, new {@class = "form-control", placeholder = "ZenExpresso",required="true"})
-                       </div>
-                       <div class="form-group">
-                           <label class="form-label">Database User :</label>
-                           @Html.TextBoxFor(m => m.dbUser, new {@class = "form-control", placeholder = "sa",required="true"})
-                       </div>
-                       <div class="form-group">
+<div class="container page__container page-section" ng-app="app" >
+    <div data-ng-controller="SetupInstallController as vm">
+        @using (Html.BeginForm("Index", "Install", FormMethod.Post, new { name = "setupForm", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            if (Model!=null && !string.IsNullOrEmpty(Model.error))
+            {
+                <div class="form-group row" data-ng-init="vm.init(@modelJson)">
+                    <label class="col-md-4"></label>
+                    <div class="col-md-8">
+                        <div class="alert alert-danger">
+                            Error: @Model.error
+                        </div>
+                    </div>
+                </div>
+            }
+            if (Model!=null && Model.dbInitialized)
+            {
+                
+                <div class="form-group row" data-ng-init="vm.init(@modelJson)">
+                    <label class="col-md-4"></label>
+                    <div class="col-md-8">
+                        <div class="alert alert-success">
+                            Installation Successful. Redirecting...
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row mb-32pt">
+                <div class="col-lg-4">
+                    <div class="page-separator">
+                        <div class="page-separator__text">Database Setup</div>
+                    </div>
+                    <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                        ZenExpresso uses MSSQL server to host application data and user accounts. Configure the database settings to use for this applicaiton.
+                    </p>
+                </div>
+                <div class="col-lg-8 d-flex align-items-center">
+                    <div class="flex" style="max-width: 100%">
+                        <div class="form-group">
+                            <label class="form-label">Dabase Host:</label>
+                            @Html.TextBoxFor(m => m.dbHost, new { @class = "form-control", placeholder = "127.0.0.1", required = "true", data_ng_model = "vm.model.dbHost", data_ng_class = "{'is-invalid': vm.dbTestSubmitted && setupForm.dbHost.$invalid }" })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Database Port :</label>
+                            @Html.TextBoxFor(m => m.dbPort, new { @class = "form-control", placeholder = "1433", required = "true", data_ng_model = "vm.model.dbPort", data_ng_class = "{'is-invalid': vm.dbTestSubmitted && setupForm.dbPort.$invalid }" })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Database Name :</label>
+                            @Html.TextBoxFor(m => m.dbName, new { @class = "form-control", placeholder = "ZenExpresso", required = "true", data_ng_model = "vm.model.dbName", data_ng_class = "{'is-invalid': vm.dbTestSubmitted && setupForm.dbName.$invalid }" })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Database User :</label>
+                            @Html.TextBoxFor(m => m.dbUser, new { @class = "form-control", placeholder = "sa", required = "true", data_ng_model = "vm.model.dbUser", data_ng_class = "{'is-invalid': vm.dbTestSubmitted && setupForm.dbUser.$invalid }" })
+                        </div>
+                        <div class="form-group">
                             <label class="form-label">Database Password :</label>
-                            @Html.PasswordFor(m => m.dbPass, new {@class = "form-control", placeholder = "",required="true"})
+                            @Html.PasswordFor(m => m.dbPass, new { @class = "form-control", placeholder = "", required = "true", data_ng_model = "vm.model.dbPass", data_ng_class = "{'is-invalid': vm.dbTestSubmitted && setupForm.dbPass.$invalid }" })
                         </div>
-                   </div>
-               </div>
-           </div>
-           
-           <div class="row mb-32pt">
-               <div class="col-lg-4">
-                   <div class="page-separator">
-                       <div class="page-separator__text">App Name and Logo</div>
-                   </div>
-                   <p class="card-subtitle text-70 mb-16pt mb-lg-0">
-                       Configure logo and application name. Logo will be displayed on login page and applcation dashboard Menu.
-                   </p>
-               </div>
-               <div class="col-lg-8 d-flex align-items-center">
-                   <div class="flex" 
-                        style="max-width: 100%">
-                       <div class="form-group">
-                           <label class="form-label">App Name:</label>
-                           @Html.TextBoxFor(m => m.appName, new { @class = "form-control", placeholder="Enter App Name .." ,required="true"})
-                       </div>
-                       <div class="form-group">
-                          <label class="form-label">Application Description:</label>
-                         @Html.TextAreaFor(m => m.appDescription, new { @class = "form-control", placeholder="Enter App Name .." ,required="true"})
+                        <div class="form-group">
+                            <label class="form-label"></label>
+                            <button type="button" class="btn btn-info float-right" data-ng-click="vm.testConnection()">Test Connection</button>
                         </div>
-                       <div class="form-group m-0">
-                          <label class="form-label">Upload Logo for App:</label>
-                          <div class="custom-file">
-                              <input type="file"
-                                     name="logo"
-                                     id="file" accept="image/png, image/gif, image/jpeg"
-                                     class="custom-file-input">
-                              <label for="file"
-                                     class="custom-file-label">Select Logo</label>
-                          </div>
-                      </div>
-                   </div>
-               </div> 
-    
-           </div>
-           
-           <div class="row mb-32pt">
-               <div class="col-lg-4">
-                   <div class="page-separator">
-                       <div class="page-separator__text">Admin Account Setup</div>
-                   </div>
-                   <p class="card-subtitle text-70 mb-16pt mb-lg-0">
-                       Create admin account.
-                   </p>
-               </div>
-               <div class="col-lg-8 d-flex align-items-center">
-                   <div class="flex"
-                        style="max-width: 100%"> 
-                       <div class="form-group">
-                           <label class="form-label">Admin Email:</label>
-                           @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder="Admin Email .." })
-                      
-                       </div>
-                       <div class="form-group">
-                           <label class="form-label">Choose a Password :</label>
-                     
-                           @Html.PasswordFor(m => m.password, new { @class = "form-control", })
-                                          
-                       </div>
-                       <div class="form-group">
-                           <label class="form-label">Confirm Password :</label>
-                           @Html.PasswordFor(m => m.confirmPass, new { @class = "form-control", })
-                       </div>
-                       <button type="submit" class="btn btn-success btn-lg float-right">Submit</button>
-                   </div>
-               </div>
-             </div>
-          
-       }
-       
+                    </div>
+                </div>
+            </div>
 
+            <div class="row mb-32pt">
+                <div class="col-lg-4">
+                    <div class="page-separator">
+                        <div class="page-separator__text">App Name and Logo</div>
+                    </div>
+                    <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                        Configure logo and application name. Logo will be displayed on login page and application dashboard Menu.
+                    </p>
+                </div>
+                <div class="col-lg-8 d-flex align-items-center">
+                    <div class="flex"
+                         style="max-width: 100%">
+                        <div class="form-group">
+                            <label class="form-label">App Name:</label>
+                            @Html.TextBoxFor(m => m.appName, new { @class = "form-control", placeholder = "Enter App Name ..", required = "true" })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Application Description:</label>
+                            @Html.TextAreaFor(m => m.appDescription, new { @class = "form-control", placeholder = "Application Description ..", required = "true" })
+                        </div>
+                        <div class="form-group m-0">
+                            <label class="form-label">Upload Logo for App:</label>
+                            <div class="custom-file">
+                                <input type="file"
+                                       name="logo"
+                                       id="file" accept="image/png, image/gif, image/jpeg"
+                                       class="custom-file-input">
+                                <label for="file"
+                                       class="custom-file-label">Select Logo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-32pt">
+                <div class="col-lg-4">
+                    <div class="page-separator">
+                        <div class="page-separator__text">Admin Account Setup</div>
+                    </div>
+                    <p class="card-subtitle text-70 mb-16pt mb-lg-0">
+                        Create admin account.
+                    </p>
+                </div>
+                <div class="col-lg-8 d-flex align-items-center">
+                    <div class="flex"
+                         style="max-width: 100%">
+                        <div class="form-group">
+                            <label class="form-label">Admin Email:</label>
+                            @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Admin Email .." })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Choose a Password :</label>
+                            @Html.PasswordFor(m => m.password, new { @class = "form-control", })
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password :</label>
+                            @Html.PasswordFor(m => m.confirmPass, new { @class = "form-control", })
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right">Submit</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+  
 </div>
-
-      

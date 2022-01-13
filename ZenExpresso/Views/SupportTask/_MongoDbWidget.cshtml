@@ -1,0 +1,183 @@
+﻿@model List<ZenExpressoCore.Models.DataSource>
+    <div class="modal fade  " id="mongoDbModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-lg" role="document" data-ng-controller="MongoDbWidgetController as vm">
+            <div class="modal-content">
+                <div class="modal-header row  pb-0">
+                    <div class="col-10 ">
+                        <div class="row">
+                            <div class="col-8"> <h5 class="modal-title">Mongodb Query</h5></div>
+                            <div class="col-4">
+                                <form>
+                                    <div class="input-group mb-2 mr-sm-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">Control ID</div>
+                                        </div>
+                                        <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="col-8">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="skipSqlTaskFlowItemExecution" data-ng-model="vm.model.skipExecution">
+                                <label class="form-check-label form-label" for="skipSqlTaskFlowItemExecution">
+                                    Skip Execution
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" data-ng-show="vm.errorMsg.length">
+                        <div class="col-8">
+                            <div class="alert alert-danger">
+                                <span data-ng-repeat="err in vm.errorMsg">{{err}}<br/></span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="card p-relative o-hidden mb-0">
+                       
+                        <div class="card-header card-header-tabs-basic nav px-0" role="tablist">
+                            <a href="#mongodbWidgetTabQuery" class="active" data-toggle="tab" role="tab"> Query</a>
+                            <a href="#mongodbWidgetTabDatasource" data-toggle="tab" role="tab">Select Data Source</a>
+                        </div>
+                        <div class="card-body tab-content">
+                           
+                            <div id="mongodbWidgetTabQuery" class="tab-pane active">
+                                <form autocomplete="off">
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-6 form-label col-form-label pt-0">Operation Type</label>
+                                                <div class="col-sm-5">
+                                                    <select class="form-control form-control-sm" data-ng-model="vm.model.operationType">
+                                                        <option value="">..Select One..</option>
+                                                        <option value="find">FIND</option>
+                                                        <option value="insert">INSERT</option>
+                                                        <option value="update">UPDATE</option>
+                                                        <option value="delete">DELETE</option>
+                                                        <option value="command">RAW COMMAND</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" data-ng-hide="vm.model.operationType=='command'">
+                                            <div class="form-group row">
+                                                <label class="col-sm-6 form-label col-form-label pt-0">Collection Name</label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control form-control-sm" name="collectionName" value="" data-ng-model="vm.model.collection"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-show="vm.model.operationType=='insert' || vm.model.operationType=='delete' || vm.model.operationType=='command'">
+                                        <div class="col-md-12">
+                                            <h5>Query</h5>
+                                            <textarea data-ng-model="vm.model.queryScript1" cols="10" rows="8" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-show="vm.model.operationType=='find'">
+                                        <div class="col-md-4">
+                                            <h5>Find Query</h5>
+                                            <textarea data-ng-model="vm.model.queryScript1"  cols="10" rows="8" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h5>Select Columns</h5>
+                                            <textarea data-ng-model="vm.model.queryScript2" cols="10" rows="8" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h5>Sort Expression</h5>
+                                            <textarea data-ng-model="vm.model.queryScript3"  cols="10" rows="8" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row" data-ng-show="vm.model.operationType=='update'">
+                                        <div class="col-md-6">
+                                            <h5> Filter</h5>
+                                            <textarea data-ng-model="vm.model.queryScript1"  cols="10" rows="8" class="form-control"></textarea>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>Update Data</h5>
+                                            <textarea data-ng-model="vm.model.queryScript2" cols="10" rows="8" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row" data-ng-show="vm.formControls.length">
+                                        <div class="col-md-12">
+                                            <h5>Available Input FieldNames</h5>
+                                            <table class="table ">
+                                                <thead>
+                                                <tr>
+                                                    <th>Parameter Label</th>
+                                                    <th>Parameter Name</th>
+                                                    <th>Parameter Type</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr data-ng-repeat="item in vm.formControls">
+                                                    <td><span data-ng-bind="item.fieldLabel"></span></td>
+                                                    <td><span class="font-weight-bold" data-ng-bind="item.fieldName"></span></td>
+                                                    <td><span data-ng-bind="item.fieldType"></span></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="mongodbWidgetTabDatasource" class="tab-pane fade">
+                                <form autocomplete="off">
+                                    <input type="hidden" value="" autocomplete="off" />
+                                    <div class="form-group row">
+                                        <label class="col-3 control-label col-form-label">Sql Data Source</label>
+                                        <div class="col-7">
+                                            <select class="form-control form-control-sm" data-ng-model="vm.model.dataSource" required="">
+                                                <option value="">[Select Data Source]</option>
+                                                @foreach (var dataSource in Model)
+                                                {
+                                                    <option value="@dataSource.dataSourceName">@dataSource.dataSourceLabel</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="form-group row">
+                                        <label class="col-3 control-label col-form-label">Database</label>
+                                        <div class="col-7">
+                                            <input type="text" name="database" class="form-control form-control-sm" data-ng-model="vm.model.database" value="" placeholder="Different databse from default" />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <label class="col-3 control-label">Database Credentials</label>
+                                        <div class="col-2" data-ng-class="{'has-error':vm.model.error.dbusername }">
+                                            <input type="text" autocomplete="off" data-ng-model="vm.model.dbusername" name="dbusername" class="form-control form-control-sm" required="" placeholder="DbUser">
+                                        </div>
+                                        <div class="col-2" data-ng-class="{'has-error':vm.model.error.dbPass }">
+                                            <input type="password" autocomplete="off" data-ng-model="vm.model.dbPass" name="dbPass" class="form-control form-control-sm" required="" placeholder="DbPass">
+                                        </div>
+                                        <div class="col-3">
+                                            <button type="button" class="btn btn-sm btn-primary " data-ng-click="vm.testConnection()">Test Connection</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        </div>
+    </div>

@@ -55,8 +55,13 @@
                     <ul class="list-group card-title">
                         <li class="list-group-item">
                             <button class="badge badge-success btn" data-toggle="modal" data-target="#sqlModal" data-ng-click="vm.onModalOpen('sqlModal',@Model)">
-                            <i class="fa fa-plus"></i>
-                        </button> Sql Query
+                                <i class="fa fa-plus"></i>
+                            </button> Sql Query
+                        </li>
+                        <li class="list-group-item">
+                            <button class="badge badge-success btn" data-toggle="modal" data-target="#mongoDbModal" data-ng-click="vm.onModalOpen('mongoDbModal',@Model)">
+                                <i class="fa fa-plus"></i>
+                            </button> MongoDb
                         </li>
                         <li class="list-group-item ">
                             <button class="badge badge-success btn" data-toggle="modal" data-target="#restApiModal" data-ng-click="vm.onModalOpen('restApiModal')">
@@ -73,35 +78,41 @@
                                 <i class="fa fa-plus"></i>
                             </button> Excel Csv Reader
                         </li>
-                        <li class="list-group-item">
-                            <button class="badge badge-success btn " data-toggle="modal" data-target="#pdfFormInputModal" data-ng-click="vm.onModalOpen('pdfFormInputModal',@Model)">
-                            <i class="fa fa-plus"></i>
-                        </button> Pdf Form Input
-                        </li>
-                        <li class="list-group-item ">
-                            <button class="badge badge-success btn" data-toggle="modal" data-target="#dataTransformModal">
-                            <i class="fa fa-plus"></i>
-                        </button> Data Transformation(using Js)
-                        </li>
-                        <li class="list-group-item ">
-                            <button class="badge badge-success btn" data-toggle="modal" data-target="#mergetTablesModal">
-                            <i class="fa fa-plus"></i>
-                        </button> Merge tables with lookup
-                        </li>
-                        <li class="list-group-item ">
-                            <button class="badge badge-success btn" data-toggle="modal" data-target="#exportDataModal">
-                            <i class="fa fa-plus"></i>
-                        </button> Export Data
-                        </li>
-                        <li class="list-group-item">
-                            <button class="badge badge-success btn " data-toggle="modal" data-target="#serverSideJavascriptModal">
-                            <i class="fa fa-plus"></i>
-                        </button> Sever Side Script
-                        </li>
-                        <li class="list-group-item ">
-                            <button class="badge badge-success btn" data-toggle="modal" data-target="#looperModal">
-                            <i class="fa fa-plus"></i>
-                        </button> Looper
-                        </li>
+                        @if (false)
+                        {
+                            <div>
+                                <li class="list-group-item">
+                                    <button class="badge badge-success btn " data-toggle="modal" data-target="#pdfFormInputModal" data-ng-click="vm.onModalOpen('pdfFormInputModal',@Model)">
+                                        <i class="fa fa-plus"></i>
+                                    </button> Pdf Form Input
+                                </li>
+                                <li class="list-group-item ">
+                                    <button class="badge badge-success btn" data-toggle="modal" data-target="#dataTransformModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button> Data Transformation(using Js)
+                                </li>
+                                <li class="list-group-item ">
+                                    <button class="badge badge-success btn" data-toggle="modal" data-target="#mergetTablesModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button> Merge tables with lookup
+                                </li>
+                                <li class="list-group-item ">
+                                    <button class="badge badge-success btn" data-toggle="modal" data-target="#exportDataModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button> Export Data
+                                </li>
+                                <li class="list-group-item">
+                                    <button class="badge badge-success btn " data-toggle="modal" data-target="#serverSideJavascriptModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button> Sever Side Script
+                                </li>
+                                <li class="list-group-item ">
+                                    <button class="badge badge-success btn" data-toggle="modal" data-target="#looperModal">
+                                        <i class="fa fa-plus"></i>
+                                    </button> Looper
+                                </li>
+                            </div>
+                        }
+                        
                     </ul>
                 </div>

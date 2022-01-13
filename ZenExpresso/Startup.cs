@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -120,9 +121,16 @@ namespace ZenExpresso
                 app.UseHsts();
             }
 
+            var dbInitialized = true;
             SettingsData.AspNetEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             loggerFactory.AddLog4Net();
             app.UseStaticFiles();
+            if (!InitializeDatabase.DbInitialized())
+            {
+                dbInitialized = false;
+                SettingsData.DbInitialzed = false;
+            }
+            
             app.UseCookiePolicy();
             Logger.EnsureInitialized();
             //app.UseHttpsRedirection();
@@ -136,22 +144,22 @@ namespace ZenExpresso
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            new InitializeDatabase();
-            int noOfUsers = DbHandler.Instance.GetUsersCount();
-            if (noOfUsers == 0)
+            if (dbInitialized)
             {
-               using (var scope = app.ApplicationServices.CreateScope())
-               {
-                   var userManager = (UserManager<ApplicationUser>)scope.ServiceProvider.GetService(typeof(UserManager<ApplicationUser>));
-                   var user = new ApplicationUser() { Email = "brudexgh@gmail.com" ,UserName = "brudexgh@gmail.com" };
-                   var result = userManager.CreateAsync(user, "Pass@1234").Result;
-                   if (result.Succeeded)
-                   {
-                       Logger.Info(this, "Initial account created.");
-                   }
-               }
+                var superAdmin = AppInstallHandler.GetInitialAdmin();
+                if (superAdmin != null)
+                {
+                    var adminPass = AppInstallHandler.GetAdminInitialPassword();
+                    if (!string.IsNullOrEmpty(adminPass))
+                    {
+                        SettingsData.SuperAdminCreationPending = true;
+                    }
+                }
+                MemDb.Instance.Init();
             }
-            MemDb.Instance.Init();
+                
+           
+          
         }
     }
 }

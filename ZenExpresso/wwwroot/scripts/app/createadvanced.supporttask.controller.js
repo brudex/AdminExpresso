@@ -105,6 +105,7 @@
             var dict = {
                 'inputForm': 'ClientInputWidgetController',
                 'sqlQuery': 'SqlQueryWidgetController',
+                'mongodb': 'MongoDbWidgetController',
                 'successMessage': 'SuccessMessageWidgetController',
                 'tableResult': 'TableResultWidgetController',
                 'cardResult': 'CardWidgetController',

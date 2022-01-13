@@ -31,6 +31,8 @@ namespace ZenExpressoCore
         public static class SettingsKeys
         {
             public static readonly  string InstallSettings = "InstallSettings";
+            public static readonly  string InitialDedicatedAdmin = "InitialDedicatedAdmin";
+            public static readonly  string AdminInitialPassword = "AdminInitialPassword";
         }
     }
 }

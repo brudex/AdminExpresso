@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
-using Dapper;
-using DapperExtensions;
 using LazyCache;
 using ZenExpressoCore;
 using ZenExpressoCore.Models;
@@ -57,7 +51,7 @@ namespace ZenExpresso.Helpers
             _supportTasksList = DbHandler.Instance.GetSupportTaskWithGroupsAssigned();
             _dataSources = DbHandler.Instance.GetList<DataSource>();
             _cache = new CachingService();
-            SetupInitialAdmin();
+            // SetupInitialAdmin();
         }
 
 
@@ -117,19 +111,19 @@ namespace ZenExpresso.Helpers
         }
 
 
-        public void SetupInitialAdmin()
-        { 
-
-            var admins = DbHandler.Instance.GetList<DedicatedAdmin>();
-            if (admins.Count == 0)
-            {
-                var admin = new DedicatedAdmin();
-                admin.userName = "brudexgh@gmail.com";
-                admin.fullName = "Nana Safo";
-                DbHandler.Instance.Save(admin);
-            }
-
-        }
+        // public void SetupInitialAdmin()
+        // { 
+        //
+        //     var admins = DbHandler.Instance.GetList<DedicatedAdmin>();
+        //     if (admins.Count == 0)
+        //     {
+        //         var admin = new DedicatedAdmin();
+        //         admin.userName = "brudexgh@gmail.com";
+        //         admin.fullName = "Nana Safo";
+        //         DbHandler.Instance.Save(admin);
+        //     }
+        //
+        // }
 
 
     }

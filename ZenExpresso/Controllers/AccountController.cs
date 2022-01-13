@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using ZenExpresso.Models;
 using System.Linq;
+using ZenExpresso.Helpers;
+using ZenExpressoCore.Models;
 
 namespace ZenExpresso.Controllers
 {
@@ -82,6 +84,15 @@ namespace ZenExpresso.Controllers
         public async Task<IActionResult> Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
+            if (!SettingsData.DbInitialzed)
+            {
+                return RedirectToLocal("/Install");
+            }
+
+            if (SettingsData.SuperAdminCreationPending)
+            {
+                CreateAdmin();
+            }
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -145,7 +156,7 @@ namespace ZenExpresso.Controllers
                 Regex re = new Regex(emailRegex);
                 if (!re.IsMatch(model.Email))
                 {
-                    ModelState.AddModelError("Email", "Email is not valid");
+                    ModelState.AddModelError("", "Email is not valid");
                 }
             }
             else
@@ -155,7 +166,7 @@ namespace ZenExpresso.Controllers
                 Regex re = new Regex(emailRegex);
                 if (!re.IsMatch(model.Email))
                 {
-                    ModelState.AddModelError("", "Username or email is not valid");
+                    ViewBag.error = "Username or email is not valid";
                 }
             }
             if (ModelState.IsValid)
@@ -169,7 +180,7 @@ namespace ZenExpresso.Controllers
 
                     if (user == null)
                     {
-                        ModelState.AddModelError(string.Empty, "Invalid login attempt or account inactive");
+                        ViewBag.error = "Invalid login attempt or account inactive";
                         return false;
                     }
                     else
@@ -214,7 +225,7 @@ namespace ZenExpresso.Controllers
                 //                {
                 //                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
                 //                }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt or account inactive");
+                ViewBag.error =  "Invalid login attempt or account inactive";
                 return false;
             }
             return false;
@@ -264,6 +275,25 @@ namespace ZenExpresso.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
+        }
+
+        private bool CreateAdmin()
+        {
+            var admin = AppInstallHandler.GetInitialAdmin();
+            var adminPassword = AppInstallHandler.GetAdminInitialPassword();
+            var user = new ApplicationUser() { Email = admin.userName, UserName = admin.userName };
+            var result = _userManager.CreateAsync(user, adminPassword).Result;
+            if (result.Succeeded)
+            {
+                DbHandler.Instance.Save(admin);
+                MemDb.Instance.ReloadAdmins();
+                AppSettingsTable.DeleteSetting(Constants.SettingsKeys.AdminInitialPassword);
+                AppSettingsTable.DeleteSetting(Constants.SettingsKeys.InitialDedicatedAdmin);
+                Logger.Info(this, "Initial account created.");
+                SettingsData.SuperAdminCreationPending = false;
+                return true;
+            }
+            return false;
         }
         #endregion
     }

@@ -9,7 +9,6 @@ namespace ZenExpressoCore.TaskFlows
         private List<TaskFlowItem> taskFlowItems;
         private SupportTask _supportTask;
         public List<TaskFlowResult> taskFlowResults { get; set; }
-        
         public AdvancedSupportTaskResult(SupportTask supportTask, List<TaskFlowItem> taskFlowItems)
         {
             _supportTask = supportTask;
@@ -21,6 +20,7 @@ namespace ZenExpressoCore.TaskFlows
         {
             return _supportTask;
         }
+
         public  void ExecuteResult(ClientInputTaskFlowItem clientInputTaskFlow=null)
         {
 
@@ -46,6 +46,9 @@ namespace ZenExpressoCore.TaskFlows
                             break;
                         case "sqlQuery":
                             flowItem = new SqlTaskFlowItem(taskFlowItem);
+                            break;
+                        case "mongodb":
+                            flowItem = new MongoDbTaskFlowItem(taskFlowItem);
                             break;
                         case "rest":
                         case "restApi":

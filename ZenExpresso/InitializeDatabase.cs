@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Extend;
 using ZenExpressoCore;
 
 namespace ZenExpresso
@@ -10,14 +9,16 @@ namespace ZenExpresso
 
         public InitializeDatabase()
         {
-            Init();
+            
         }
-        private static void Init()
+        public static bool Init(out string error)
         {
+            error = "";
+            bool initialized = false;
             if (DbInitialized())
             {
-                return;
-
+                error = "Database already setup";
+                return initialized;
             }
             try
             {
@@ -30,25 +31,37 @@ namespace ZenExpresso
                 {
 					DbHandler.Instance.ExecuteOnHostDb(commandText);
 				}
-			}
+
+                initialized = true;
+            }
             catch (Exception ex)
             {
+                error = ex.Message;
                Logger.Error(typeof(InitializeDatabase),"Database intialization failed",ex);
             }
+
+            return initialized;
         }
 
 
-        private static bool DbInitialized()
+        public static bool DbInitialized()
         {
-            var result = DbHandler.Instance.ExecuteOnHostDb(@" IF OBJECT_ID('AspnetUsers', 'U') IS NOT NULL  select  '00' 'status' ELSE  select  'Not Exists' 'status'");
-            if (result.Any())
+            try
             {
-                if (result.First().status == "00")
+                var result = DbHandler.Instance.ExecuteOnHostDb(@" IF OBJECT_ID('AspnetUsers', 'U') IS NOT NULL  select  '00' 'status' ELSE  select  'Not Exists' 'status'");
+                if (result.Any())
                 {
-                    return true;
+                    if (result.First().status == "00")
+                    {
+                        return true;
+                    }
                 }
+				
+			}
+            catch (Exception ex )
+            {
+                Console.WriteLine(ex.Message);
             }
-
             return false;
         } 
         
@@ -66,7 +79,7 @@ CREATE TABLE [dbo].[AspNetRoleClaims](
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[AspNetRoles]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -83,7 +96,7 @@ CREATE TABLE [dbo].[AspNetRoles](
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[AspNetUserClaims]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -100,7 +113,7 @@ CREATE TABLE [dbo].[AspNetUserClaims](
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[AspNetUserLogins]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -118,7 +131,7 @@ CREATE TABLE [dbo].[AspNetUserLogins](
 	[LoginProvider] ASC,
 	[ProviderKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[AspNetUserRoles]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -162,7 +175,7 @@ CREATE TABLE [dbo].[AspNetUsers](
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[AspNetUserTokens]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -181,7 +194,7 @@ CREATE TABLE [dbo].[AspNetUserTokens](
 	[LoginProvider] ASC,
 	[Name] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[DataSource]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -203,7 +216,7 @@ CREATE TABLE [dbo].[DataSource](
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[DedicatedAdmin]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -213,13 +226,19 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[DedicatedAdmin](
 	[id] [int] IDENTITY(1,1) NOT NULL,
-	[userName] [nvarchar](max) NULL,
-	[fullName] [nvarchar](max) NULL,
+	[userName] [varchar](200) NULL,
+	[fullName] [varchar](200) NULL,
+    [canCreateUser] [bit] NULL,
+    [canManageUserRoles] [bit] NULL,
+    [canCreateTask] [bit] NULL,
+    [canManageLogs] [bit] NULL,
+    [canCreateAdmin] [bit] NULL,
+
  CONSTRAINT [PK_DedicatedAdmin] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]  
 
 GO
 /****** Object:  Table [dbo].[ExecutedTasks]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -241,7 +260,7 @@ CREATE TABLE [dbo].[ExecutedTasks](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[LogManagement]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -263,7 +282,7 @@ CREATE TABLE [dbo].[LogManagement](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[ScriptParameter]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -285,7 +304,7 @@ CREATE TABLE [dbo].[ScriptParameter](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[SupportTask]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -310,7 +329,7 @@ CREATE TABLE [dbo].[SupportTask](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[SupportTaskLite]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -328,7 +347,7 @@ CREATE TABLE [dbo].[SupportTaskLite](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[TaskAssignedGroups]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -346,7 +365,7 @@ CREATE TABLE [dbo].[TaskAssignedGroups](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 /****** Object:  Table [dbo].[TaskFlowItem]    Script Date: 17/01/2021 12:49:47 AM ******/
@@ -365,7 +384,7 @@ CREATE TABLE [dbo].[TaskFlowItem](
 	[flowData] [text] NULL,
 	[flowGroup] [varchar](50) NULL,
 	[controlIdentifier] [varchar](100) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 SET ANSI_PADDING OFF
@@ -377,12 +396,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[TopMenu](
 	[id] [int] IDENTITY(1,1) NOT NULL,
-	[menuName] [nvarchar](max) NULL,
+	[menuName] [varchar](200) NULL,
+	[menuOrder] [int] NULL,
  CONSTRAINT [PK_TopMenu] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 
 GO
 SET ANSI_PADDING ON
@@ -488,6 +508,11 @@ ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[AspNetUserTokens] CHECK CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId]
 GO
+CREATE TABLE [dbo].[AppSettingsTable](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SettingsKey] [varchar](100) NULL,
+	[SettingsData] [varchar](max) NULL
+) ON [PRIMARY] 
 ";
     }
 }

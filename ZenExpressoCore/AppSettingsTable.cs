@@ -13,5 +13,11 @@ namespace ZenExpressoCore
         {
             return JsonConvert.DeserializeObject<T>(SettingsData);
         }
+
+
+        public static void DeleteSetting(string settingKey)
+        {
+            DbHandler.Instance.DeleteAppSettingsByKey(settingKey);
+        }
     }
 }   

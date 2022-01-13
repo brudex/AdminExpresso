@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -8,6 +9,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using Extend;
+using MongoDB.Bson;
+using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization;
+using Newtonsoft.Json.Bson;
+using JsonConvert = Newtonsoft.Json.JsonConvert;
 
 namespace ZenExpressoCore
 {
@@ -169,7 +175,81 @@ namespace ZenExpressoCore
             return response;
         }
 
- 
+        public static string ToNormalJson(this BsonValue bson)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new BsonBinaryWriter(stream))
+                {
+                    BsonSerializer.Serialize(writer, typeof(BsonValue), bson);
+                }
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using (var reader = new BsonDataReader(stream))
+                {
+                    var sb = new StringBuilder();
+                    var sw = new StringWriter(sb);
+                    using (var jWriter = new JsonTextWriter(sw))
+                    {
+                        jWriter.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        jWriter.WriteToken(reader);
+                    }
+                    return sb.ToString();
+                }
+            }
+
+        }
+
+        public static string ToNormalJson(this BsonDocument bson)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new BsonBinaryWriter(stream))
+                {
+                    BsonSerializer.Serialize(writer, typeof(BsonDocument), bson);
+                }
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using (var reader = new BsonDataReader(stream))
+                {
+                    var sb = new StringBuilder();
+                    var sw = new StringWriter(sb);
+                    using (var jWriter = new JsonTextWriter(sw))
+                    {
+                        jWriter.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        jWriter.WriteToken(reader);
+                    }
+                    return sb.ToString();
+                }
+            }
+
+        }
+
+        public static string ToNormalJson(this BsonArray bson)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new BsonBinaryWriter(stream))
+                {
+                    BsonSerializer.Serialize(writer, typeof(BsonArray), bson);
+                }
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using (var reader = new BsonDataReader(stream))
+                {
+                    var sb = new StringBuilder();
+                    var sw = new StringWriter(sb);
+                    using (var jWriter = new JsonTextWriter(sw))
+                    {
+                        jWriter.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        jWriter.WriteToken(reader);
+                    }
+                    return sb.ToString();
+                }
+            }
+
+        }
+
 
 
     }
