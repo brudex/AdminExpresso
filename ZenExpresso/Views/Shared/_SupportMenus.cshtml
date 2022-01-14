@@ -1,6 +1,8 @@
-﻿@model List<ZenExpressoCore.Models.SupportMenuModel>
+﻿@using ZenExpressoCore
+@model List<ZenExpressoCore.Models.SupportMenuModel>
 @{
     int index = 0;
+    string path = Context.Request.Path.ToString().ToLower();
 }
 <div class="sidebar-heading"> Menu</div>
 @foreach (var supportMenuModel in Model)
@@ -8,8 +10,8 @@
     index += 1;
     <ul class="sidebar-menu">
 
-        <li class="sidebar-menu-item">
-            <a class="sidebar-menu-button js-sidebar-collapse"
+        <li class="sidebar-menu-item @supportMenuModel.GetActiveCss()">
+            <a class="sidebar-menu-button js-sidebar-collapse "
                data-toggle="collapse"
                href="#enterprise_menu-@index">
                 <span class="fa fa-bars sidebar-menu-icon sidebar-menu-icon--left"></span>
@@ -20,7 +22,7 @@
                 id="enterprise_menu-@index">
                 @foreach (var subMenu in supportMenuModel.SubMenus)
                 {
-                    <li class="sidebar-menu-item">
+                    <li class="sidebar-menu-item @subMenu.GetActiveCss()">
                         <a class="sidebar-menu-button"
                            href="@Url.Action("ExecuteTask", "SupportTask",new {id=subMenu.taskId})">
                             <span class="sidebar-menu-text">@subMenu.taskName</span>

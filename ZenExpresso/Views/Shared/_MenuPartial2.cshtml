@@ -1,6 +1,9 @@
-﻿@using ZenExpresso
+﻿
+@using ZenExpresso
+@using ZenExpressoCore
 @{
     var userPreviledges = User.GetPreviledges();
+    string path = Context.Request.Path.ToString().ToLower();
 }
 
 @if (userPreviledges.HasPreviledges())
@@ -9,28 +12,28 @@
     {
         <div class="sidebar-heading">Support Tasks</div>
         <ul class="sidebar-menu"> 
-            <li class="sidebar-menu-item active">
+            <li class="sidebar-menu-item @path.GetActiveClass("/SupportTask/CreateAdvancedTask")">
                 <a class="sidebar-menu-button"
                    href="@Url.Action("CreateAdvancedTask", "SupportTask")">
                     <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">launch</span>
                     <span class="sidebar-menu-text">Create Advanced Task</span>
                 </a>
             </li>
-            <li class="sidebar-menu-item ">
+            <li class="sidebar-menu-item @path.GetActiveClass("/SupportTask/CreateSupportTask")">
                 <a class="sidebar-menu-button"
                    href="@Url.Action("CreateSupportTask", "SupportTask")">
                     <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">launch</span>
                     <span class="sidebar-menu-text">Create Task</span>
                 </a>
             </li>
-            <li class="sidebar-menu-item ">
+            <li class="sidebar-menu-item @path.GetActiveClass("/SupportTask/ListTasks")">
                 <a class="sidebar-menu-button"
                    href="@Url.Action("ListTasks", "SupportTask")">
                     <span class="fa fa-tasks sidebar-menu-icon sidebar-menu-icon--left"></span>
                     <span class="sidebar-menu-text">List Tasks</span>
                 </a>
             </li>
-            <li class="sidebar-menu-item ">
+            <li class="sidebar-menu-item @path.GetActiveClass("/SupportTask/ListExecutedTasks")">
                 <a class="sidebar-menu-button"
                    href="@Url.Action("ListExecutedTasks", "SupportTask")">
                     <span class="fa fa-tasks sidebar-menu-icon sidebar-menu-icon--left"></span>
@@ -46,7 +49,7 @@
 
         @if (userPreviledges.canCreateTask)
         {
-            <li class="sidebar-menu-item">
+            <li class="sidebar-menu-item  @path.GetActiveClass("/Setup/ManageTopMenus")">
                 <a class="sidebar-menu-button"
                    href="@Url.Action("ManageTopMenus", "Setup")">
                     <span class=" sidebar-menu-icon sidebar-menu-icon--left">
@@ -55,7 +58,7 @@
                     <span class="sidebar-menu-text">Manage Menus</span>
                 </a>
             </li>
-            <li class="sidebar-menu-item">
+            <li class="sidebar-menu-item @path.GetActiveClass("/Setup/ManageDataSources")" >
                 <a class="sidebar-menu-button"
                    href="@Url.Action("ManageDataSources", "Setup")">
                     <span class=" sidebar-menu-icon sidebar-menu-icon--left">
@@ -68,7 +71,7 @@
        
        @if (userPreviledges.canCreateUser)
        {
-           <li class="sidebar-menu-item">
+           <li class="sidebar-menu-item @path.GetActiveClass("/Account/CreateUser")">
                <a class="sidebar-menu-button"
                   href="@Url.Action("CreateUser", "Account")">
                    <span class="sidebar-menu-icon sidebar-menu-icon--left">
@@ -80,7 +83,7 @@
        }
         @if (userPreviledges.canManageUserRoles)
        {
-           <li class="sidebar-menu-item">
+           <li class="sidebar-menu-item @path.GetActiveClass("/Manage/ManageRoles")">
                <a class="sidebar-menu-button"
                   href="@Url.Action("ManageRoles", "Manage")">
                    <span class="sidebar-menu-icon sidebar-menu-icon--left">
@@ -92,7 +95,7 @@
        }
        @if (userPreviledges.canCreateAdmin)
        {
-           <li class="sidebar-menu-item">
+           <li class="sidebar-menu-item @path.GetActiveClass("/Manage/ManageAdmins")">
                <a class="sidebar-menu-button"
                   href="@Url.Action("ManageAdmins", "Manage")">
                    <span class="fa fa-user-cog sidebar-menu-icon sidebar-menu-icon--left"></span>
@@ -102,7 +105,7 @@
        }
        @if (userPreviledges.canCreateTask)
        {
-           <li class="sidebar-menu-item">
+           <li class="sidebar-menu-item @path.GetActiveClass("/Setup/ReloadMemory")">
                <a class="sidebar-menu-button"
                   href="@Url.Action("ReloadMemory", "Setup")">
                    <span class="material-icons sidebar-menu-icon sidebar-menu-icon--left">refresh</span>
@@ -118,14 +121,14 @@
         <div class="sidebar-heading">DbLog Management</div>
         <ul class="sidebar-menu">
 
-            <li class="sidebar-menu-item">
+            <li class="sidebar-menu-item @path.GetActiveClass("/DbLogManager/Index")">
                 <a class="sidebar-menu-button"
                    href="@Url.Action("Index", "DbLogManager")">
                     <span class="fa fa-history sidebar-menu-icon sidebar-menu-icon--left"></span>
                     <span class="sidebar-menu-text">Register Log</span>
                 </a>
             </li>
-            <li class="sidebar-menu-item">
+            <li class="sidebar-menu-item @path.GetActiveClass("/DbLogManager/ListApps")">
                 <a class="sidebar-menu-button"
                    href="@Url.Action("ListApps", "DbLogManager")">
                     <span class="fa fa-history sidebar-menu-icon sidebar-menu-icon--left"></span>

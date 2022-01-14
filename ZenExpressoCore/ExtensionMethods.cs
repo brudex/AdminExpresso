@@ -175,29 +175,13 @@ namespace ZenExpressoCore
             return response;
         }
 
-        public static string ToNormalJson(this BsonValue bson)
+        public static string GetActiveClass(this string currentPath, string pathLink)
         {
-            using (var stream = new MemoryStream())
+            if (currentPath.Equals(pathLink, StringComparison.CurrentCultureIgnoreCase))
             {
-                using (var writer = new BsonBinaryWriter(stream))
-                {
-                    BsonSerializer.Serialize(writer, typeof(BsonValue), bson);
-                }
-                stream.Seek(0, SeekOrigin.Begin);
-
-                using (var reader = new BsonDataReader(stream))
-                {
-                    var sb = new StringBuilder();
-                    var sw = new StringWriter(sb);
-                    using (var jWriter = new JsonTextWriter(sw))
-                    {
-                        jWriter.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                        jWriter.WriteToken(reader);
-                    }
-                    return sb.ToString();
-                }
+                return " active ";
             }
-
+            return "";
         }
 
         public static string ToNormalJson(this BsonDocument bson)
@@ -225,30 +209,7 @@ namespace ZenExpressoCore
 
         }
 
-        public static string ToNormalJson(this BsonArray bson)
-        {
-            using (var stream = new MemoryStream())
-            {
-                using (var writer = new BsonBinaryWriter(stream))
-                {
-                    BsonSerializer.Serialize(writer, typeof(BsonArray), bson);
-                }
-                stream.Seek(0, SeekOrigin.Begin);
-
-                using (var reader = new BsonDataReader(stream))
-                {
-                    var sb = new StringBuilder();
-                    var sw = new StringWriter(sb);
-                    using (var jWriter = new JsonTextWriter(sw))
-                    {
-                        jWriter.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                        jWriter.WriteToken(reader);
-                    }
-                    return sb.ToString();
-                }
-            }
-
-        }
+      
 
 
 

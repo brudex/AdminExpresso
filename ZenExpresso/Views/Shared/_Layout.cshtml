@@ -1,6 +1,6 @@
-﻿@{
+﻿@using ZenExpressoCore
+@{
     var userPreviledges = User.GetPreviledges();
-   
 }
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>@ViewBag.Title - USSD Amdin</title>
+    <title>@ViewBag.Title - @SettingsData.InstallSettings.appName</title>
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex" />
     <partial name="_HeadLinks"/>
@@ -128,7 +128,7 @@
                                 <img src="~/assets/images/logo.jpg" class="img-fluid" alt="logo" />
                             </span>
                         </span>
-                        <span>TM1 Admin</span>
+                        <span>@SettingsData.InstallSettings.appName</span>
                     </a>
                     @await Html.PartialAsync("_MenuPartial2")
                 </div>

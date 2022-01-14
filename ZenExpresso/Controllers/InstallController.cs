@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +21,15 @@ namespace ZenExpresso.Controllers
         
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private IApplicationLifetime ApplicationLifetime { get; set; }
         public InstallController(
-            UserManager<ApplicationUser> userManager 
+            UserManager<ApplicationUser> userManager,
+            IApplicationLifetime appLifetime
+
         )
         {
-            _userManager = userManager; 
+            _userManager = userManager;
+            ApplicationLifetime = appLifetime;
         }
         
         [HttpGet]
@@ -114,27 +119,44 @@ namespace ZenExpresso.Controllers
                 AppInstallHandler.SaveAdminInitialPassword(model.password);
                 SettingsData.DbInitialzed = true;
                 model.dbInitialized = true;
+                return RedirectToAction(nameof(InstallController.InstallCompleted), "Install");
             }
             else
             {
                 model.error = error;
             }
-            
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult InstallCompleted()
+        {
+            // if (!SettingsData.DbInitialzed)
+            // {
+            //     return RedirectToAction(nameof(InstallController.Index), "Install");
+            // }
+            Func<int> restart =() => {
+                ApplicationLifetime.StopApplication();
+                return 0;
+            };
+            //Task.Factory.StartNew(() => { setTimeOut(restart, 5000); });
+            Task.Factory.StartNew(() => { setTimeOut(restart, 5000); });
+            return View();
+        }
 
-        // private int setTimeOut(Func<int> action,int seconds )
-        // {
-        //     var task = Task.Run(() => action());
-        //     if (task.Wait(TimeSpan.FromSeconds(seconds)))
-        //         return task.Result;
-        //     else
-        //         return 0;
-        // }
+
+        private int setTimeOut(Func<int> action,int seconds )
+        {
+            var task = Task.Run(() => action());
+            if (task.Wait(TimeSpan.FromSeconds(seconds)))
+                return task.Result;
+            else
+                return 0;
+        }
         private async Task<string>  HandleLogoUpload(IFormFile file)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/images", file.FileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/images", "logo.jpg");
             if (System.IO.File.Exists(path))
             {
                 System.IO.File.Delete(path);

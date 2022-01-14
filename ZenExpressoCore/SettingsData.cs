@@ -15,9 +15,17 @@ namespace ZenExpressoCore
         public static string AspNetEnv = "";
         public static bool DbInitialzed=true;
         public static bool SuperAdminCreationPending=false;
- 
+        public static AppInstallSettings InstallSettings;
+
         public static void Initialize(Dictionary<string, string> settings)
         {
+            InstallSettings = AppInstallHandler.GetInstallSettings();
+            if (InstallSettings == null)
+            {
+                InstallSettings= new AppInstallSettings();
+                InstallSettings.appName = "ZenExpresso";
+                InstallSettings.appDescription = "ZenExpresso";
+            }
             appSettings = settings;
         }
     }

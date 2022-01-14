@@ -34,6 +34,11 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="col-4">
+                            <span class="pull-right">
+                                <a href="https://docs.mongodb.com/manual/reference/command/" class="text-info btn-link" target="_blank">Check MongoDb Command Reference</a>
+                            </span>
+                        </div>
                     </div>
                     <div class="form-group row" data-ng-show="vm.errorMsg.length">
                         <div class="col-8">
@@ -53,7 +58,7 @@
                            
                             <div id="mongodbWidgetTabQuery" class="tab-pane active">
                                 <form autocomplete="off">
-                                    
+                                   
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group row">
@@ -88,7 +93,7 @@
                                     <div class="row" data-ng-show="vm.model.operationType=='find'">
                                         <div class="col-md-4">
                                             <h5>Find Query</h5>
-                                            <textarea data-ng-model="vm.model.queryScript1"  cols="10" rows="8" class="form-control"></textarea>
+                                            <textarea data-ng-model="vm.model.queryScript1" cols="10" rows="8" class="form-control"></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <h5>Select Columns</h5>
@@ -96,13 +101,13 @@
                                         </div>
                                         <div class="col-md-4">
                                             <h5>Sort Expression</h5>
-                                            <textarea data-ng-model="vm.model.queryScript3"  cols="10" rows="8" class="form-control"></textarea>
+                                            <textarea data-ng-model="vm.model.queryScript3" cols="10" rows="8" class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="row" data-ng-show="vm.model.operationType=='update'">
                                         <div class="col-md-6">
                                             <h5> Filter</h5>
-                                            <textarea data-ng-model="vm.model.queryScript1"  cols="10" rows="8" class="form-control"></textarea>
+                                            <textarea data-ng-model="vm.model.queryScript1" cols="10" rows="8" class="form-control"></textarea>
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Update Data</h5>
