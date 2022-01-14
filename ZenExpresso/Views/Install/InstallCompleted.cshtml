@@ -1,0 +1,65 @@
+﻿@using ZenExpressoCore
+@model ZenExpresso.Models.InstallViewModel
+@{
+    ViewBag.Title = "Installation Complete";
+    Layout = "~/Views/Shared/_InstallLayout.cshtml";
+}
+
+<div class="pt-32pt">
+    <div class="container page__container d-flex flex-column flex-md-row align-items-center text-center text-sm-left">
+        <div class="flex d-flex flex-column flex-sm-row align-items-center">
+            <div class="mb-24pt mb-sm-0 mr-sm-24pt">
+                <h2 class="mb-0"> Installation Successfully Completed </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container page__container page-section" ng-app="app">
+    <div class="card ">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 pull-right" id="">
+                    <p>
+                        <div class="h4">
+                            Server Restarting In ...  <span id="time" class="h1">10</span>
+                        </div>
+                    </p>
+                    <a id="loginBtn" class="btn btn-success btn-lg invisible" href="@Url.Action("Login", "Account")">Click To Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            var interval =setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent =  seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                    clearInterval(interval);
+                    showButton();
+                }
+            }, 1000);
+        }
+        window.onload = function () {
+            var fiveMinutes = 60 * 0.18,
+                display = document.querySelector('#time');
+            startTimer(fiveMinutes, display);
+        };
+
+        function showButton() {
+            $("#loginBtn").removeClass("invisible").slideDown();
+        }
+
+    }(window.jQuery))
+</script>
