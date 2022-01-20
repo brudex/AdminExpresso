@@ -125,10 +125,14 @@ namespace ZenExpresso
             SettingsData.AspNetEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             loggerFactory.AddLog4Net();
             app.UseStaticFiles();
-            if (!InitializeDatabase.DbInitialized())
+            if (InitializeDatabase.DbInitialized())
+            {
+                SettingsData.DbInitialzed = true;
+            }
+            else
             {
                 dbInitialized = false;
-                SettingsData.DbInitialzed = false;
+                SettingsData.DbInitialzed = false; 
             }
             
             app.UseCookiePolicy();
