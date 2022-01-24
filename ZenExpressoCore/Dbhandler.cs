@@ -243,12 +243,18 @@ namespace ZenExpressoCore
                     if (dataSource.useRawConnectingString)
                     {
                         var conString = string.Format(dataSource.connectionString, userId, pass);
+                        Console.WriteLine("The mysql connectionstring>>"+conString);
+                        Logger.Info(this,"The mysql connectionstring>>"+conString);
                         connection = new MySqlConnection(conString);
                         connection.Open();
                     }
                     else
                     {
+                        //server=localhost;user id=plendify_root;password=Plend!fy2019;persistsecurityinfo=True;port=3306;database=plendify_api;SslMode=none	
+
                         string conString = $"Server={dataSource.serverIp};Port={dataSource.serverPort};Database={dataSource.defaultDatabase};Uid={userId};Pwd={pass}";
+                        Console.WriteLine("The mysql connectionstring>>"+conString);
+                        Logger.Info(this,"The mysql connectionstring>>"+conString);
                         connection = new MySqlConnection(conString);
                         connection.Open();
                     }
