@@ -94,9 +94,10 @@ namespace ZenExpressoCore
             }
             else
             {
-                conString = $"mongodb://{userId}:{pass}@{dataSource.serverIp}{port}/{dbName}";
+                conString = $"mongodb://{userId}:{pass}@{dataSource.serverIp}:{port}/{dbName}";
             }
-
+            Console.WriteLine("MonogDb Connection String >>"+conString);
+            Logger.Info(this,"MonogDb Connection String >>"+conString);
             MongoClient client = new MongoClient(conString);
             _db = client.GetDatabase(dbName);
             return this;

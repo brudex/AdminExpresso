@@ -7,3 +7,8 @@ http://scriptcs.net/
 
 https://itnext.io/hitchhikers-guide-to-the-c-scripting-13e45f753af9
 
+**ISSUES TO SOLVE**
+Appsettings Production file none existence
+ssh connections for mysql
+logo upload grant folder rights
+When adding a datasource make sure name does not already exist
