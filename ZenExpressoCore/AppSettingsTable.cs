@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -11,6 +12,8 @@ namespace ZenExpressoCore
 
         public T GetSettings<T>() where T:class
         {
+            Console.WriteLine("Install Settings>>");
+            Console.WriteLine(SettingsData);
             return JsonConvert.DeserializeObject<T>(SettingsData);
         }
 

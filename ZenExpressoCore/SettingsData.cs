@@ -18,6 +18,11 @@ namespace ZenExpressoCore
         public static AppInstallSettings InstallSettings;
 
         public static void Initialize(Dictionary<string, string> settings)
+        { 
+            appSettings = settings;
+        }
+
+        public static void SetInstallSettings()
         {
             if (DbInitialzed)
             {
@@ -29,7 +34,6 @@ namespace ZenExpressoCore
                     InstallSettings.appDescription = "ZenExpresso";
                 }
             }
-            appSettings = settings;
         }
     }
 }

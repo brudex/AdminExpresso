@@ -92,7 +92,7 @@ namespace ZenExpresso
             if (_env.IsProduction())
             {
                  services.AddDataProtection()
-                .SetApplicationName("ZenExpresso");
+                .SetApplicationName("AdminExpresso");
                 //.PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/var/www/dashboard.cedix/keys"));
             }
 
@@ -134,7 +134,6 @@ namespace ZenExpresso
                 dbInitialized = false;
                 SettingsData.DbInitialzed = false; 
             }
-            
             app.UseCookiePolicy();
             Logger.EnsureInitialized();
             //app.UseHttpsRedirection();
@@ -150,6 +149,7 @@ namespace ZenExpresso
             });
             if (dbInitialized)
             {
+                SettingsData.SetInstallSettings();
                 var superAdmin = AppInstallHandler.GetInitialAdmin();
                 if (superAdmin != null)
                 {
@@ -160,9 +160,7 @@ namespace ZenExpresso
                     }
                 }
                 MemDb.Instance.Init();
-            }
-                
-           
+            } 
           
         }
     }
