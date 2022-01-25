@@ -81,17 +81,14 @@ namespace ZenExpresso.Controllers.Api
             {
                 taskFlowItems.Add(TaskFlowItem.CreateTaskFlow(flow, "clientRender"));
             }
-
             foreach (var flow in postActionsFlows)
             {
                 taskFlowItems.Add(TaskFlowItem.CreateTaskFlow(flow, "postAction"));
             }
-
             foreach (var flow in clientResultFlows)
             {
                 taskFlowItems.Add(TaskFlowItem.CreateTaskFlow(flow, "clientResult"));
             }
-
             int id = task.SaveAdvancedTaskFlow();
             if (id > 0)
             {
@@ -158,7 +155,6 @@ namespace ZenExpresso.Controllers.Api
                     return response;
                 }
             }
-
             var groups = task.GetGroups();
             var group = JToken.Parse("{}");
             group["groupName"] = userName;

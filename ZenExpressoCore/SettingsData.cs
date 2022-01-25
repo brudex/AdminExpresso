@@ -35,5 +35,24 @@ namespace ZenExpressoCore
                 }
             }
         }
+
+        public static string GetAppSettingsJson()
+        {
+            string s = @"{
+               ""ConnectionStrings"": {
+               ""DefaultConnection"": ""Persist Security Info=False;database=;server=localhost;user id=sa;Password=pass""
+           },
+           ""Urls"": ""http://localhost:5005"",
+           ""Logging"": {
+               ""LogLevel"": {
+                   ""Default"": ""Information"",
+                   ""Microsoft"": ""Warning"",
+                   ""Microsoft.Hosting.Lifetime"": ""Information""
+               }
+           },
+           ""AllowedHosts"": ""*""
+               }";
+            return s;
+        }
     }
 }

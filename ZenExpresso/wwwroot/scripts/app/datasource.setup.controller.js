@@ -50,6 +50,13 @@
             if (formValid) {
                 var payload = vm.model;
                 vm.editMode = false;
+                var duplicateDsName = vm.list.some(function (dt) {
+                   return dt.dataSourceName===vm.model.dataSourceName;
+                });
+                if(duplicateDsName) {
+                    utils.alertError("Duplicate Data Source Name");
+                    return;
+                }
                 services.saveDataSource(payload, function (response) {
                     if (response.status === "00") {
                         utils.alertSuccess("", response.message);

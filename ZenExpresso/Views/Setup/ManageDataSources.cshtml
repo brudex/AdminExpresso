@@ -117,7 +117,7 @@
                                         <th class="col-1"> Data Provider</th>
                                         <th class="col-1"> DefaultDb</th>
                                         <th class="col-2"> Is ConnString</th>
-                                        <th class="col-1"> ConnString</th>
+                                        @* <th class="col-1"> ConnString</th> *@
                                         <th class="col-2"></th>
                                     </tr>
                                     </thead>
@@ -129,7 +129,7 @@
                                         <td data-ng-bind="item.dataProvider"></td>
                                         <td data-ng-bind="item.defaultDatabase"></td>
                                         <td data-ng-bind="item.useRawConnectingString"></td>
-                                        <td data-ng-bind="item.connectionString"></td>
+                                        @* <td data-ng-bind="item.connectionString"></td> *@
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-sm btn-danger action-view" data-ng-click="vm.deleteDataSource(item)"><i class="fa fa-eye"></i>Delete</button>

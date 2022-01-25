@@ -63,12 +63,10 @@ namespace ZenExpressoCore
             {
                 dbName = "admin";
             }
-
             if (string.IsNullOrEmpty(dbName))
             {
                 _db = client.GetDatabase(dbName);
             }
-
             _db = client.GetDatabase(dbName);
             return this;
         }
@@ -87,7 +85,6 @@ namespace ZenExpressoCore
             {
                 port = dataSource.serverPort;
             }
-
             if (string.IsNullOrEmpty(userId))
             {
                 conString = $"mongodb://{dataSource.serverIp}:{port}/{dbName}";
@@ -189,7 +186,6 @@ namespace ZenExpressoCore
 
         public BsonDocument RunShellCommand(string commandString)
         {
-            
             var commdDoc = new BsonDocumentCommand<BsonDocument>(BsonDocument.Parse(commandString));
             var result = _db.RunCommand<BsonDocument>(commdDoc);
             return result;

@@ -62,14 +62,22 @@ namespace ZenExpressoCore
         public static string WriteConnectionStringToAppSettings(DataSourceExtended datasource, out string error)
         {
             error = String.Empty;
-            string appSettingsFileName = Path.Combine(System.IO.Directory.GetCurrentDirectory(),
-                $"appsettings.{SettingsData.AspNetEnv}.json");
+            string appSettingsFileName = null;
             if (string.IsNullOrEmpty(SettingsData.AspNetEnv))
             {
                 appSettingsFileName = "appsettings.json";
             }
-            var appSettingsPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), appSettingsFileName);
-            var appSettingsJson = File.ReadAllText(appSettingsPath);
+            else
+            {
+                appSettingsFileName = $"appsettings.{SettingsData.AspNetEnv}.json";
+            } 
+            var appSettingsPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "appsettings.json");
+            var newAppSettingsFile = Path.Combine(System.IO.Directory.GetCurrentDirectory(), appSettingsFileName);
+            var appSettingsJson = SettingsData.GetAppSettingsJson();
+            if (System.IO.File.Exists(appSettingsPath))
+            {
+                 appSettingsJson = File.ReadAllText(appSettingsPath);
+            } 
             var connString = "";
             if (datasource.serverPort.Trim() == "1433")
             {
@@ -97,7 +105,7 @@ namespace ZenExpressoCore
                 {
                     jobject["ConnectionStrings"]["DefaultConnection"] = connString;
                 }
-                File.WriteAllText(appSettingsPath, jobject.ToJsonString());
+                File.WriteAllText(newAppSettingsFile, jobject.ToJsonString());
                 return connString; 
             }
             catch (Exception ex)

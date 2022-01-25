@@ -22,6 +22,7 @@ namespace ZenExpresso.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private IApplicationLifetime ApplicationLifetime { get; set; }
+        List<string> _errors ;
         public InstallController(
             UserManager<ApplicationUser> userManager,
             IApplicationLifetime appLifetime
@@ -29,6 +30,7 @@ namespace ZenExpresso.Controllers
         )
         {
             _userManager = userManager;
+            _errors=new List<string>();
             ApplicationLifetime = appLifetime;
         }
         
@@ -49,6 +51,7 @@ namespace ZenExpresso.Controllers
         {
             // model.dbInitialized = true;
             // return View(model);
+            _errors= new List<string>();
             string error = "";
             model.error = null;
             model.dbInitialized = false;
@@ -91,7 +94,7 @@ namespace ZenExpresso.Controllers
                 string fileName = await HandleLogoUpload(logo);
                 if (string.IsNullOrEmpty(fileName))
                 {
-                    model.error = "Please upload application logo";
+                    model.error = _errors.FirstOrDefault();
                     return View(model);
                 }
             }
@@ -156,15 +159,28 @@ namespace ZenExpresso.Controllers
         }
         private async Task<string>  HandleLogoUpload(IFormFile file)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/images", "logo.jpg");
-            if (System.IO.File.Exists(path))
+            
+                
+            try
             {
-                System.IO.File.Delete(path);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/images", "logo.jpg");
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                var stream = new FileStream(path, FileMode.Create);
+                await file.CopyToAsync(stream);
+                stream.Dispose();
+                return file.FileName;
             }
-            var stream = new FileStream(path, FileMode.Create);
-            await file.CopyToAsync(stream);
-            stream.Dispose();
-            return file.FileName;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Logger.Error(this,ex);
+                _errors.Add(ex.Message);
+            }
+
+            return "";
         }
         
        
