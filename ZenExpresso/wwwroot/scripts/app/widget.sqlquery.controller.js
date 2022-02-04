@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('SqlQueryWidgetController', SqlQueryWidgetController);
-    SqlQueryWidgetController.$inject = ['brudexservices', 'brudexutils', '$window', 'DataHolder','$scope'];
-    function SqlQueryWidgetController(services, utils, $window, DataHolder, $scope) {
+    SqlQueryWidgetController.$inject = ['brudexservices', 'brudexutils', 'DataHolder','$scope','AceEditor'];
+    function SqlQueryWidgetController(services, utils, DataHolder, $scope,AceEditor) {
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
@@ -97,6 +97,10 @@
             if (currentWidgetOption === 'postAction') {
                 vm.formControls = parentActions.getParentModel().getInputFields();
             }
+            AceEditor.initialize('sql',"sqlCodeEditor1","",onEditorTextChange);
+        }
+        function onEditorTextChange(editorContent){
+            vm.model.sqlQuery=editorContent;
         }
 
         function onModalOpen(event, data) {

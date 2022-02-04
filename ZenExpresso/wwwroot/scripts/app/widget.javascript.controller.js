@@ -3,8 +3,8 @@
     angular
         .module('app')
         .controller('JavascriptWidgetController', JavascriptWidgetController);
-    JavascriptWidgetController.$inject = ['brudexutils', 'DataHolder','$scope'];
-    function JavascriptWidgetController(utils, DataHolder, $scope) {
+    JavascriptWidgetController.$inject = ['brudexutils', 'DataHolder','$scope','AceEditor'];
+    function JavascriptWidgetController(utils, DataHolder, $scope,AceEditor) {
         var vm = this;
         var _ = utils._;
         vm.errorMsg = [];
@@ -14,7 +14,7 @@
         vm.modalName = 'validationFormatingModal';
         var currentWidgetOption = '';
         $scope.$on('modalOpened', onModalOpen);
-
+        
         vm.initDataModel = function (data) {
             currentWidgetOption = data.flowGroup;
             if (data.flowData && typeof data.flowData === 'string') {
@@ -89,6 +89,21 @@
             } else {
                 vm.model.runMode = 'followFlow';
             }
+            var code ='/**Your code will be embedded in a function with the following arguments **/\n' +
+                '    //flowArray=Array of outputs results from previously executed flows\n' +
+                '    //formInput=Form input field values in json e.g. formInput.age,formInput.firstname\n' +
+                '    //utils=utils.alertSuccess, utils.alertError,utils.alertConfirm, utils.sweetAlert, utils.toastr, utils._ (lodash)\n' +
+                '    //next=next(null,[result of script execution]) if no error OR next("Error message") \n' +
+                '    //if error (prevents form submission with error message shown to user)\n' +
+                '    function(flowArray, formInput, utils, next)\n' +
+                '    {  \n' +
+                '      //put your code in the box below\n\n' +
+                '    }'
+            AceEditor.initialize('javascript',"jsCodeEditor",code,onEditorTextChange);
+        }
+
+        function onEditorTextChange(editorContent){
+            vm.model.jsScript=editorContent;
         }
 
         function onModalOpen(event, data) {
@@ -109,8 +124,9 @@
                     }
                 }  
             }
-
         }
+        
+        
        
     }
 })();

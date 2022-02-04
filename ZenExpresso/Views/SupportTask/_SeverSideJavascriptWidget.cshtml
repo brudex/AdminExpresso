@@ -1,28 +1,57 @@
-﻿<div class="modal fade  " id="serverSideJavascriptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+﻿<div class="modal fade  " id="serverSideJavascriptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document" data-ng-controller="ServerScriptWidgetController as vm">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Server Side Script Design</h4>
+                <div class="col-10 ">
+                    <div class="row">
+                        <div class="col-8"> <h5 class="modal-title" id="myModalLabel">Server Script  </h5></div>
+                        <div class="col-4">
+                            <form>
+                                <div class="input-group mb-2 mr-sm-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Control ID</div>
+                                    </div>
+                                    <input type="text" value="" placeholder="Control ID" class="form-control" data-ng-model="vm.model.controlIdentifier" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal group-border-dashed">
-                    <pre style="padding: 0">
-                    <code data-language="javascript">
-                        //Your code will be embedded in a function with the following arguemnents
-                        //flowArray,utils.alertSuccess, utils.alertError, utils.sweetAlert, utils.alertConfirm, utils.toastr, utils._
-                        //flowArray=Array of outputs results from client widgets
-                        function(flowArray,utils)
-                        {  //put your code in the box below
-                      </code>
-                    </pre>
-                    <textarea data-ng-model="vm.validationScript" name="validationCode" cols="7" rows="15" class="form-control"></textarea>
+                    <div class="row">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-5">
+                            <div class="form-group row ">
+                                <label class="col-sm-5 col-form-label control-label"> Language : </label>
+                                <div class="col-sm-6 ">
+                                    <select class="form-control" data-ng-model="vm.model.language" data-ng-change="vm.changeMode()">
+                                        <option value="javascript">Javascript</option>
+                                        <option value="python">Python</option>
+                                        <option value="csharp">C# Script</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+                    <div class="row">
+                        <div class="col-md-12" style="min-height: 330px">
+                             <pre name="code" class="codeeditor" id="serverCodeEditor1" style="border: none;"></pre>
+                        </div>
+                    </div> 
                 </form>
-
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-ng-click="vm.saveInputValidation()">Save</button>
+                <button type="button" class="btn btn-success" data-ng-click="vm.saveData()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

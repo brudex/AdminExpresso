@@ -23,7 +23,6 @@
         vm.init = function(data) {
             vm.taskInfo = data;
             console.log('Fileupload data is>>>', vm.taskInfo);
-
             parentActions = DataHolder.getParentFunctions();
             vm.taskResults = parentActions.getTaskResults();
             vm.taskInfo.flowData.fieldName = vm.taskInfo.flowData.fieldName.replace(" ", "");

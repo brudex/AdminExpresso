@@ -18,9 +18,8 @@
             alertInfo : createAlert('info'),
             alertWarning: createAlert('warning'),
             alertConfirm: createAlertCustomized('warning'),
-
             toastSuccess: createToast('success'),
-            toastError: createToast('error'),
+            toastError: createToast('warning'),
             toastInfo: createToast('info'),
             toastWarning: createToast('warning'),
             _ :$window._

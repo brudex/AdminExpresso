@@ -117,7 +117,8 @@
                 'fileDownload': 'FileDownloadWidgetController',
                 'linkButton': 'LinkButtonWidgetController',
                 'excelCsvProcessing': 'ExcelCsvWidgetController',
-                'dynamicForm': 'DynamicFormWidgetController'
+                'dynamicForm': 'DynamicFormWidgetController',
+                'serverScript': 'ServerScriptWidgetController'
             }
             return $controller(dict[flowItemType], { $scope: $scope });
         }
@@ -148,6 +149,7 @@
                     if(vm.insertIndex >-1){
                         vm.beforeRenderFlows.splice(vm.insertIndex,0,data);
                     }else{
+                        console.log('Pushing to beforeRenderFlows>>>',data);
                         vm.beforeRenderFlows.push(data);
                     }
                     break;

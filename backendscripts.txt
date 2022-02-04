@@ -12,3 +12,26 @@ Appsettings Production file none existence
 ssh connections for mysql
 logo upload grant folder rights
 When adding a datasource make sure name does not already exist
+
+
+Ace Editor Theme Editor
+https://tmtheme-editor.herokuapp.com/#!/editor/theme/1337
+
+DemonZen
+DemonDash
+ChakraAdmin
+
+P
+
+Pending Features
+ Gray out a taskflow when is marked as skip
+ Expose a task as an api
+   baseUrl = {adminexpressUrl}/rest
+ Add add button to other tabs in design layout
+ Debug View with signal R  
+ Logging to Database
+ 
+ 
+ 
+  
+

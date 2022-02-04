@@ -37,7 +37,6 @@
                                 <i class="fa fa-plus"></i>
                             </button> Tabular output
                         </li>
-                         
                         <li class="list-group-item">
                             <button class="badge badge-primary btn " data-toggle="modal" data-target="#cardOutputModal" data-ng-click="vm.onModalOpen('cardOutputModal',@Model)">
                             <i class="fa fa-plus"></i>
@@ -78,6 +77,16 @@
                                 <i class="fa fa-plus"></i>
                             </button> Excel Csv Reader
                         </li>
+                        <li class="list-group-item">
+                            <button class="badge badge-success btn " data-toggle="modal" data-target="#pdfFormInputModal" data-ng-click="vm.onModalOpen('pdfFormInputModal',@Model)">
+                                <i class="fa fa-plus"></i>
+                            </button> Pdf Form Input
+                        </li>
+                         <li class="list-group-item">
+                            <button class="badge badge-success btn " data-toggle="modal" data-target="#serverSideJavascriptModal" data-ng-click="vm.onModalOpen('serverSideJavascriptModal',@Model)">
+                                <i class="fa fa-plus"></i>
+                            </button> Server Script
+                        </li>
                         @if (false)
                         {
                             <div>
@@ -100,11 +109,6 @@
                                     <button class="badge badge-success btn" data-toggle="modal" data-target="#exportDataModal">
                                         <i class="fa fa-plus"></i>
                                     </button> Export Data
-                                </li>
-                                <li class="list-group-item">
-                                    <button class="badge badge-success btn " data-toggle="modal" data-target="#serverSideJavascriptModal">
-                                        <i class="fa fa-plus"></i>
-                                    </button> Sever Side Script
                                 </li>
                                 <li class="list-group-item ">
                                     <button class="badge badge-success btn" data-toggle="modal" data-target="#looperModal">
