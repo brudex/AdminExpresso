@@ -21,7 +21,6 @@ namespace ZenExpressoCoreTest
             scriptInfo.scriptCode = @"
  const path = require('path');
  const axios = require('axios');
-
 return new Promise(function(resolve,reject){
     axios.get('https://api.github.com/users/mapbox')
       .then((response) => {
