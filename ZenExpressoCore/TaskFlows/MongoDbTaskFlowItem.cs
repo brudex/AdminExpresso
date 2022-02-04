@@ -60,7 +60,6 @@ namespace ZenExpressoCore.TaskFlows
                     var bsonValue =  dbhandler.Find(_collection, queryParam1,queryParam2,queryParam3);
                     var bsonJson = bsonValue.ToNormalJson();
                     var jobj = JObject.Parse(bsonJson);
-
                     result = jobj["cursor"]["firstBatch"];
                     break;
                 }

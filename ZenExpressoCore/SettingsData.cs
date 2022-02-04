@@ -15,6 +15,7 @@ namespace ZenExpressoCore
         public static string AspNetEnv = "";
         public static bool DbInitialzed=false;
         public static bool SuperAdminCreationPending=false;
+        public static bool NodejsRuntimeConfigured=false;
         public static AppInstallSettings InstallSettings;
 
         public static void Initialize(Dictionary<string, string> settings)
