@@ -31,8 +31,15 @@ namespace ZenExpressoCore.TaskFlows
 
         }
 
+        public static string EscapeQuotesForSql(string text,string quotes)
+        {
+            if(!string.IsNullOrEmpty(text))
+              return text.Replace("'", "''");
 
-        public static String InterpolateParams(string text, List<ScriptParameter> parameters,string quotes="'")
+            return text;
+        }
+
+        public static String InterpolateParams(string text, List<ScriptParameter> parameters,string quotes="'",bool escapeQuotes=false)
         {
             foreach (var parameter in parameters)
             {
@@ -44,15 +51,18 @@ namespace ZenExpressoCore.TaskFlows
                         break;
                     case "regex":
                     case "date":
-                        replaceVal = quotes + parameter.parameterValue + quotes;
-                        break;
                     case "text":
                     case "hidden":
                     case "textarea":
-                        replaceVal = quotes + parameter.parameterValue + quotes;
-                        break;
                     case "select":
-                        replaceVal = quotes + parameter.parameterValue + quotes;
+                        if (escapeQuotes)
+                        {
+                            replaceVal = quotes + parameter.parameterValue.EscapeQuotes(quotes) + quotes;
+                        }
+                        else
+                        {
+                            replaceVal = quotes + parameter.parameterValue + quotes;
+                        }
                         break;
                     case "multiselect":
                         List<string> selected = JsonConvert.DeserializeObject<List<string>>(parameter.parameterValue);
@@ -73,6 +83,57 @@ namespace ZenExpressoCore.TaskFlows
                         else
                         {
                             replaceVal = parameter.parameterValue == "true" ? "1" : "0";
+                        }
+                    }
+                        break;
+                    default:
+                        replaceVal = quotes + parameter.parameterValue + quotes;
+                        break;
+            }
+                text = text.Replace("@" + parameter.parameterName, replaceVal);
+                text = text.Replace("${" + parameter.parameterName + "}", parameter.parameterValue);
+            }
+
+            return text;
+        }
+        
+         public static String InterpolateParamsRest(string text, List<ScriptParameter> parameters,string quotes="'",bool escapeQuotes=false)
+        {
+            foreach (var parameter in parameters)
+            {
+                var replaceVal = "";
+                switch (parameter.parameterType)
+                {
+                        case "number":
+                        replaceVal = parameter.parameterValue;
+                        break;
+                    case "regex":
+                    case "date":
+                    case "text":
+                    case "hidden":
+                    case "textarea":
+                    case "select":
+                        if (escapeQuotes)
+                        {
+                            replaceVal = quotes + parameter.parameterValue + quotes; //todo check if escape is required for json value
+                        }
+                        else
+                        {
+                            replaceVal = quotes + parameter.parameterValue + quotes;
+                        }
+                        break;
+                    case "multiselect":
+                        replaceVal = parameter.parameterValue;
+                        break;
+                    case "checkbox":
+                    {
+                        if (string.IsNullOrEmpty(parameter.parameterValue))
+                        {
+                            replaceVal = "false";
+                        }
+                        else
+                        {
+                            replaceVal = parameter.parameterValue == "true" ? "true" : "false";
                         }
                     }
                         break;

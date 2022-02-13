@@ -37,7 +37,7 @@ namespace ZenExpressoCore.TaskFlows
             return result;
         }
 
-        protected string InterpolateParams(string sql, List<ScriptParameter> parameters)
+        protected string InterpolateParams1(string sql, List<ScriptParameter> parameters)
         {
             foreach (var parameter in parameters)
             {
@@ -53,12 +53,10 @@ namespace ZenExpressoCore.TaskFlows
                         break;
                     case "text":
                     case "textarea":
-                   
                         replaceVal = "'" + parameter.parameterValue + "'"; 
                         break;
-                        
                     case "select":
-                         replaceVal = "'" + parameter.parameterValue + "'";
+                        replaceVal = "'" + parameter.parameterValue + "'";
                         break;
                      case "multiselect":  
                          List<string> selected = JsonConvert.DeserializeObject<List<string>>(parameter.parameterValue);
@@ -68,7 +66,7 @@ namespace ZenExpressoCore.TaskFlows
                          {
                              sb.Append($",'{selected[i]}'");
                          }
-                        replaceVal = sb.ToString();
+                         replaceVal = sb.ToString();
                         break;
                     case "checkbox":
                     {
@@ -86,11 +84,9 @@ namespace ZenExpressoCore.TaskFlows
                         replaceVal = "'" + parameter.parameterValue + "'";
                         break;
                 }
-
                 sql = sql.Replace("@" + parameter.parameterName, replaceVal);
                 sql = sql.Replace("${" + parameter.parameterName + "}", parameter.parameterValue);
             }
-
             return sql;
         }
 
@@ -106,15 +102,13 @@ namespace ZenExpressoCore.TaskFlows
                 var sqlScript = _sqlScript;
                 if (inputList.Count > 0)
                 {
-                    sqlScript = InterpolateParams(sqlScript, inputList);
+                    sqlScript = TaskFlowUtilities.InterpolateParams(sqlScript, inputList,escapeQuotes:true);
                 }
-
                 if (resultSequence.Count > 0)
                 {
                     List<PlaceHolder> placeholders = TaskFlowUtilities.ExtractPlaceHolders(sqlScript);
                     sqlScript = TaskFlowUtilities.InterpolateSequenceParams(sqlScript, placeholders, resultSequence);
                 }
-
                 result = ExecuteSql(sqlScript);
                 response.status = "00";
                 response.message = "Success";

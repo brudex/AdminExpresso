@@ -1,6 +1,6 @@
 ## Documentation guid 
  
- #Table Widget
+#Table Widget
   The table widget can export data. if export buttons is check it will use data tables for rendering. Table widget should be able to get dataSource from javascript function.
 
 # Form Input
@@ -16,3 +16,6 @@ Clear items after saving
 # Link button
 Ability to run javascript
 Pass data to taskLink onclick
+
+#Dashboard Builder
+ Will use flow items from task design to render cards or graphs

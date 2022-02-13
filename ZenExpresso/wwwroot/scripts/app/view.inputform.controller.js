@@ -16,6 +16,7 @@
         vm.readOnlyFieldsOnly = true;
         var parentActions = null;
         var formSubmitActions = [];
+        var richTextEditors ={};
 
         DataHolder.setFormSubmitSubscription(function(action) {
             formSubmitActions.push(action);
@@ -45,6 +46,7 @@
                     }
                 }
                 var hasDateField = false;
+                var hasRichTextField = false;
                 var activateSelect2 = [];
                 for (var k = 0, len = flowData.formControls.length; k < len; k++) {
                     var item = flowData.formControls[k];
@@ -91,6 +93,10 @@
                     if (["date"].indexOf(control.fieldType) > -1) {
                         hasDateField = true;
                     }
+                    if (["richtext"].indexOf(control.fieldType) > -1) {
+                        richTextEditors[control.fieldName]=null;
+                        hasRichTextField = true;
+                    }
                     vm.formControls.push(control);
                 }
                 var queryData = BeforeRenderDataStore.getQueryData();
@@ -112,6 +118,15 @@
                 }
                 if (hasDateField) {
                     initFlatPickrDateControl();
+                }
+                if (hasRichTextField) {
+                    $(document).ready(function() {
+                        Object.keys(richTextEditors).forEach(function(field){
+                            richTextEditors[field] = new Quill('#'+field, {
+                                theme: 'snow'
+                            });
+                        }) 
+                    });
                 }
             }
         }
@@ -138,7 +153,7 @@
                     var arr = txt.split(/[ ;,.]+/);
                     if (arr.length > 1) {
                         dataSource.push({ label: arr[0], value: arr[1] });
-                    } else {
+                    } else  {
                         dataSource.push({ label: arr[0], value: arr[0] });
                     }
                 });
@@ -215,8 +230,12 @@
                         parameter.parameterValue = JSON.stringify(control.fieldValue);
                     }
                 }
+                if (["richtext"].indexOf(control.fieldType) > -1) {
+                    parameter.parameterValue = richTextEditors[control.fieldName].root.innerHTML;
+                }
                 scriptParameters.push(parameter);
             });
+            console.log('The build payload >>>',JSON.stringify(scriptParameters));
             return scriptParameters;
         }
 
@@ -243,7 +262,6 @@
         function executeFormSubmitActions(callback) {
             var indexIterator = 0;
             var formInputs = [];
-
             function recursiveIterator() {
                 console.log('The form submitt acctions>>>', formSubmitActions);
                 var action = formSubmitActions[indexIterator];
@@ -256,7 +274,6 @@
                     }
                     indexIterator += 1;
                     if (indexIterator < formSubmitActions.length) {
-
                         recursiveIterator();
                     } else {
                         callback(formInputs);
@@ -346,6 +363,20 @@
                             }
                             break;
                         }
+                    case "richtext":
+                    {
+                        if (control.required) {
+                            var editor = richTextEditors[control.fieldName];
+                             if( editor.getLength() > 2) {
+                                vm.formControls[p].valid = true;
+                            } else {
+                                vm.formControls[p].valid = false;
+                            }
+                        } else {
+                            vm.formControls[p].valid = true;
+                        }
+                        break;
+                    }
                     case "number":
                         {
                             if (control.required) {
@@ -390,7 +421,7 @@
                     case "select":
                         {
                             if (control.required) {
-                                if (!_.isEmpty(control.fieldValue)) {
+                                if (_.isNumber(control.fieldValue) || !_.isEmpty(control.fieldValue)) {
                                     control.valid = true;
                                 } else {
                                     control.valid = false;
@@ -422,7 +453,6 @@
             function isInvalid(c) {
                 return !c.valid;
             }
-
             var validationResult = !vm.formControls.some(isInvalid);
             return validationResult;
         }

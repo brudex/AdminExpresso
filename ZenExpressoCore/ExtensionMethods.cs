@@ -183,6 +183,13 @@ namespace ZenExpressoCore
             }
             return "";
         }
+        
+        public static string EscapeQuotes(this string text,string quotes="'")
+        {
+            if(!string.IsNullOrEmpty(text))
+                return text.Replace("'", "''");
+            return text;
+        }
 
         public static string ToNormalJson(this BsonDocument bson)
         {

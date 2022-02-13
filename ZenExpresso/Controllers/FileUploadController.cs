@@ -58,7 +58,7 @@ namespace ZenExpresso.Controllers
 
         private string GetPathAndFilename(string filename)
         {
-            return _hostEnvironment.WebRootPath + "\\uploads\\" + filename;
+            return System.IO.Path.Combine(_hostEnvironment.WebRootPath,"uploads", filename);
         }
     }
 }

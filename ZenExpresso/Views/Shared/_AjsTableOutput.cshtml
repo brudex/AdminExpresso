@@ -195,6 +195,10 @@
 
                 <div data-ng-if="control.fieldType=='richtext'" class="form-group row" data-ng-class="{'is-invalid': vm.formSubmitted && executeTaskForm[control.fieldName].$invalid }">
                     <label class="col-sm-3 form-label col-form-label">{{control.fieldLabel}}</label>
+                     <div class="col-sm-6 mb-5">
+                            <div data-ng-attr-id="{{control.fieldName}}"></div>
+                            <br>
+                    </div>
                 </div>
             </div>
             <div class="form-group row" data-ng-hide="vm.readOnlyFieldsOnly">
@@ -362,7 +366,11 @@
     </div>
 
 </script>
-
+<style>
+     .ql-container {
+       margin-bottom: 10px;
+     }
+</style>
 
 <partial name="_LinkButtonNgTemplate.cshtml" />
 <partial name="_FileUploadNgTemplate.cshtml" />

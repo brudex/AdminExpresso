@@ -20,7 +20,7 @@ namespace ZenExpressoCore.TaskFlows
             response.description = description;
             response.controlIdentifier = controlIdentifier;
 
-            flowData = TaskFlowUtilities.InterpolateParams(flowData, inputList,"\\\"");
+            flowData = TaskFlowUtilities.InterpolateParamsRest(flowData, inputList,"\\\"");
             if (resultSequence.Any())
             {
                 List<PlaceHolder> placeHolders = TaskFlowUtilities.ExtractPlaceHolders(flowData);
