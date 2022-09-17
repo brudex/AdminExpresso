@@ -19,3 +19,8 @@ Pass data to taskLink onclick
 
 #Dashboard Builder
  Will use flow items from task design to render cards or graphs
+ 
+#Merge Two Arrays of different dataSource
+ Look up Merge
+ 
+#When you make a copy change the title to copy of 

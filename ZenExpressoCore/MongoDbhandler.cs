@@ -189,6 +189,7 @@ namespace ZenExpressoCore
             var commdDoc = new BsonDocumentCommand<BsonDocument>(BsonDocument.Parse(commandString));
             var result = _db.RunCommand<BsonDocument>(commdDoc);
             return result;
+            
         }
 
 
