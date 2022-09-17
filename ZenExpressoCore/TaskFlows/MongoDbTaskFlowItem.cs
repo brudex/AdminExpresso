@@ -81,10 +81,15 @@ namespace ZenExpressoCore.TaskFlows
                 }
                 case "command":
                 {
+                    
                     var bsonValue = dbhandler.RunShellCommand(queryParam1);
                     var bsonJson = bsonValue.ToNormalJson();
                     var jobj = JObject.Parse(bsonJson);
                     result = jobj;
+                    if (queryParam1.IndexOf("find", StringComparison.InvariantCultureIgnoreCase) > -1)
+                    {
+                        result = jobj["cursor"]["firstBatch"];
+                    }
                     break;
                }
             }

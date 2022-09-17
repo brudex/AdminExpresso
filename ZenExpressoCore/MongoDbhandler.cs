@@ -178,7 +178,7 @@ namespace ZenExpressoCore
                     projection = jobj.ToString();
                 }
             }
-            string cmdText = $"{{ find: \"{collectionName}\", filter: {query},sort: {sort},projection:{projection} }}";
+            string cmdText = $"{{ find: \"{collectionName}\", filter: {query},sort: {sort},projection:{projection},batchSize: 200000,limit:200000 }}";
             var commdDoc = new BsonDocumentCommand<BsonDocument>(BsonDocument.Parse(cmdText));
             var result = _db.RunCommand<BsonDocument>(commdDoc);
             return result;
