@@ -12,7 +12,11 @@
         }         
         function initializeEditor(language,elementId,code,onchangeCb){
             if(Object.keys(editors).indexOf(elementId) > -1){
-                 return;
+                editors[elementId].setValue(code);
+                if(onchangeCb){
+                    onchangeCb(editors[elementId].getSession().getValue());
+                }
+                return;
             }
             var editor = $window.ace.edit(elementId);
             editor.setTheme("ace/theme/monokai");
@@ -34,10 +38,16 @@
             editors[elementId].setValue(code);
             editors[elementId].clearSelection();
         }
+        
+        function getValue(elementId){
+            return editors[elementId].getSession().getValue()
+        }
+        
 
         return {
             initialize: initializeEditor,
-            setMode:setMode
+            setMode:setMode,
+            getValue:getValue
         } 
     }
 })(window.jQuery);

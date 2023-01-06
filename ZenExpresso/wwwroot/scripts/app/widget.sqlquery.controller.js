@@ -97,10 +97,13 @@
             if (currentWidgetOption === 'postAction') {
                 vm.formControls = parentActions.getParentModel().getInputFields();
             }
-            AceEditor.initialize('sql',"sqlCodeEditor1","",onEditorTextChange);
         }
+        
         function onEditorTextChange(editorContent){
             vm.model.sqlQuery=editorContent;
+            // $scope.$apply(function(){
+            //     vm.model.sqlQuery=editorContent;
+            // });
         }
 
         function onModalOpen(event, data) {
@@ -109,15 +112,21 @@
                 if (data === vm.modalName) {
                     vm.init();
                 }
+                AceEditor.initialize('sql',"sqlCodeEditor1","",onEditorTextChange);
             } else {
+                var sql=''
                 if(data.modalName === vm.modalName) {
                     vm.init();
                     if (data.isEditting) {
                         isEditting = true;
                         editIndex = data.editIndex;
                         vm.initDataModel(data.flowItem);
+                        sql=vm.model.sqlQuery;
                     }
                 }
+                console.log('Editting modal item >>',vm.model.sqlQuery);
+                sql =vm.model.sqlQuery;
+                AceEditor.initialize('sql',"sqlCodeEditor1",sql,onEditorTextChange);
             }
             
         }
