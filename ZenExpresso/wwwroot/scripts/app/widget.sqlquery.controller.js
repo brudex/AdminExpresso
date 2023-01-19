@@ -18,25 +18,31 @@
         $scope.$on('modalOpened', onModalOpen);
          
         vm.initDataModel = function (data) {
+            vm.errorMsg = [];
             currentWidgetOption = data.flowGroup;
             if (data.flowData && typeof data.flowData==='string') {
                 var initData = JSON.parse(data.flowData);
                 vm.model = initData;
              } else {
-                vm.model = data.data;
+                vm.model = Object.assign({},data.data);
              } 
             var obj = { controlName: 'Sql Query', flowItemType: 'sqlQuery', flowGroup: currentWidgetOption, controlIdentifier: vm.model.controlIdentifier };
-            obj.data = vm.model;
+            obj.data = Object.assign({},vm.model);
             obj.htmlbind = buildHtmlBindView();
             return obj;
         }
 
         vm.openForEditting = function (flowItem) {
+            console.log('The item to edit >>',flowItem);
+            vm.model=Object.assign({},flowItem)
              $('#'+vm.modalName).modal('show'); 
         }
 
         vm.saveData = function() {
             console.log('Checking validations >>>');
+            if(vm.model.sqlQuery===''){
+                vm.model.sqlQuery= AceEditor.getValue("sqlCodeEditor1");
+            }
             vm.model.error = {};
             vm.errorMsg = [];
             if (vm.model.sqlQuery === '') {
@@ -50,7 +56,7 @@
                 currentWidgetOption = 'postAction';
             }
             var obj = { controlName: 'Sql Query', flowItemType: 'sqlQuery', flowGroup: currentWidgetOption, controlIdentifier:vm.model.controlIdentifier};
-            obj.data = vm.model;
+            obj.data = Object.assign({},vm.model);
             obj.htmlbind = buildHtmlBindView();
             obj.isEditting = isEditting;
             obj.editIndex = editIndex;
@@ -66,8 +72,7 @@
             payload.dbPass = vm.model.dbPass;
             payload.taskType = vm.model.dataSource;
             services.testDbConnection(payload, function (response) {
-                console.log("Connection Test Response >>", response);
-                if (response.status === "00") {
+                 if (response.status === "00") {
                     utils.toastSuccess("Connection Successful");
                 } else {
                     utils.toastError("Connection Failed");
@@ -89,8 +94,7 @@
 
         vm.init = function () {
             var parentActions = DataHolder.getParentFunctions();
-            console.log('parentActions', parentActions);
-            var controlIndex = parentActions.getFlowCounterIndex('sqlQuery');
+             var controlIndex = parentActions.getFlowCounterIndex('sqlQuery');
             vm.model.controlIdentifier = 'sqlQuery'+controlIndex;
             vm.formControls = [];
             currentWidgetOption = DataHolder.getValue('currentWidgetOption');
@@ -100,14 +104,11 @@
         }
         
         function onEditorTextChange(editorContent){
-            vm.model.sqlQuery=editorContent;
-            // $scope.$apply(function(){
-            //     vm.model.sqlQuery=editorContent;
-            // });
+            vm.model.sqlQuery=''+editorContent;
         }
 
         function onModalOpen(event, data) {
-            console.log(typeof data);
+            vm.errorMsg = [];
             if (typeof data === 'string') {
                 if (data === vm.modalName) {
                     vm.init();
@@ -124,9 +125,9 @@
                         sql=vm.model.sqlQuery;
                     }
                 }
-                console.log('Editting modal item >>',vm.model.sqlQuery);
-                sql =vm.model.sqlQuery;
-                AceEditor.initialize('sql',"sqlCodeEditor1",sql,onEditorTextChange);
+                 sql =vm.model.sqlQuery;
+                 AceEditor.initialize('sql',"sqlCodeEditor1",sql,onEditorTextChange);
+                
             }
             
         }

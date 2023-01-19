@@ -43,12 +43,13 @@
                         <div class="card-body tab-content">
                             <div id="home" class="tab-pane active">
                                 <form autocomplete="off">
+                                    <div data-ng-show="vm.errorMsg.length" class="alert alert-danger">{{vm.errorMsg[0]}}</div>
                                     <input type="hidden" value="" autocomplete="off"/>
                                     <h5>Sql Query</h5>
                                     <pre name="code" class="codeeditor" id="sqlCodeEditor1" style="border: none;"></pre>
                                     <br/>
                                     <div class="row" data-ng-show="vm.formControls.length">
-                                        <div class="col-md-12"> 
+                                        <div class="col-md-12">
                                             <h5>Available Input FieldNames</h5>
                                             <table class="table ">
 

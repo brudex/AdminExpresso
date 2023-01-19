@@ -303,9 +303,10 @@
         }
 
         vm.editFlowItem = function (flowArrayName, index) {
-            var itemToEdit = vm[flowArrayName][index];
+             var itemToEdit = vm[flowArrayName][index];
             var controller = getControllerByFlowItemType(itemToEdit.flowItemType);
             console.log('The controller', controller);
+            console.log('The item to edit >>', itemToEdit);
             controller.openForEditting(itemToEdit);
             var eventData = {};
             eventData.isEditting = true;

@@ -32,6 +32,8 @@
             console.log('Editor initialized') 
         }
         
+        
+        
         function setMode(language,elementId,code){
             console.log('Set mode The element >>'+elementId+ " the language>>"+language);
             editors[elementId].session.setMode("ace/mode/"+language);

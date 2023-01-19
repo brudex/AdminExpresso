@@ -82,10 +82,10 @@
         vm.saveFormInputControls = function () {
             vm.errorMsg = [];
             if(!isEditting) {
-                var parentActions = DataHolder.getParentFunctions();
-                if (parentActions.inputFormAdded()) {
-                    vm.errorMsg.push('Input form already present. There can be only one input form');
-                }
+                // var parentActions = DataHolder.getParentFunctions();
+                // if (parentActions.inputFormAdded()) {
+                //     vm.errorMsg.push('Input form already present. There can be only one input form');
+                // }
             }
             if (vm.errorMsg.length) {
                 return;

@@ -31,10 +31,11 @@
                     <div class="card-body  text-70">
                         <div id="restbody" class="tab-pane active">
                             <form autocomplete="off">
+                                 <div class="alert alert-danger" data-ng-if="vm.errorMsg.length">{{vm.errorMsg[0]}}</div>
                                 <div class="form-group row">
                                     <label class="col-sm-5 col-form-label form-label">Title/Description </label>
                                     <div class="col-sm-6">
-                                        <input type="text" value="" placeholder="Title/Description" class="form-control form-control-sm" data-ng-model="vm.model.description" />
+                                        <input type="text" value="" placeholder="Title/Description" class="form-control form-control-sm" data-ng-model="vm.model.description"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -46,7 +47,7 @@
                                             <option value="removeForm">Remove Form</option>
                                         </select>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-5 col-form-label form-label">Data Source</label>
@@ -54,8 +55,8 @@
                                         <select class="form-control form-control-sm" data-ng-model="vm.model.controlDataSource" data-ng-options="item for item in vm.dataSources">
                                             <option value="_none_">__None__</option>
                                         </select>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-5 col-form-label form-label">Data Source Format</label>
                                     <div class="col-sm-6">
@@ -63,7 +64,7 @@
                                             <option value="">__Select one__</option>
                                             <option value="array">Json Array</option>
                                             <option value="object">Json Object</option>
-                                         </select>
+                                        </select>
 
                                         <div class="row" data-ng-show="vm.model.dataSourceFormat=='array'">
                                             <div class="col-12">
@@ -96,19 +97,19 @@
                                             </div>
                                         </div>
                                         <div class="form-group row" data-ng-show="vm.model.dataSourceFormat=='object'">
-                                            <div class="col-8"> 
+                                            <div class="col-8">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" id="readOnlyFields" data-ng-model="vm.model.readOnlyFields">
                                                     <label class="form-check-label form-label" for="readOnlyFields">
                                                         Read only fields
-                                                    </label> 
-                                                </div> 
+                                                    </label>
+                                                </div>
                                             </div>
-                                        </div> 
-                                         
+                                        </div>
+
 
                                     </div>
-                                    
+
                                 </div>
 
                             </form>
